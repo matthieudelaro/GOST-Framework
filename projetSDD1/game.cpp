@@ -16,7 +16,8 @@ Game::Game(QDomDocument &xml)
         if(initialShape.attribute("type") == "defined") //pour le mode aléatoire, voir le Knuth's Shuffle
         {
             QDomNodeList tempListcolumns = xml.elementsByTagName("column");
-            QDomNodeList listLines = xml.elementsByTagName("line");
+            //QDomNodeList listLines = xml.elementsByTagName("line");
+            QDomNodeList listLines = initialShape.childNodes();
             if(!tempListcolumns.isEmpty() && !listLines.isEmpty())
             {
                 //Pour chaque pièce : son numéro, un tableau 2D de Graph::Node*, un Graph::Node* pour le début de la pièce
@@ -66,7 +67,7 @@ Game::Game(QDomDocument &xml)
                     it = it->next;
                 }
                 //Matrix<Graph::Node*> tabBoard(nbLines, nbMaxColumns);
-                m_boardMatrix.resize(nbLines, nbMaxColumns);
+                m_boardMatrix.resize(nbLines, nbMaxColumns, NULL);
 
                 //Etape 2 :
                 //Parcours du XML
@@ -92,7 +93,11 @@ Game::Game(QDomDocument &xml)
                         }
                         else
                         {
-                            m_boardMatrix(line, column) = new Graph::Node(m_boardMatrix.getIndex(line, column));
+                            m_boardMatrix(line, column) = new Graph::Node(index);
+
+                            if(!m_boardMatrix(line, column))
+                                throw BadAllocation("Impossible to allocate a new Node for m_boardMatrix.");
+
                             if(m_board == NULL)
                                 m_board = m_boardMatrix(line, column);
                             m_index[index] = m_boardMatrix(line, column);
@@ -134,7 +139,14 @@ Game::Game(QDomDocument &xml)
                             //Cette partie est spécifique à un système à base carrée !
                             //*((*(m_boardMatrix(line, column)))[0]) = m_boardMatrix(line-1, column);
                             if(line > 0)
+                            {
+                                //Graph::Node* temp0 = m_boardMatrix(line, column);
+                                //int temp12= temp0->info;
+                                //Graph::Node* temp1 = (*(m_boardMatrix(line, column)))[0];
+                                //Graph::Node* temp2 = m_boardMatrix(line-1, column);
                                 (*(m_boardMatrix(line, column)))[0] = m_boardMatrix(line-1, column);
+
+                            }
                             if(line + 1 < m_boardMatrix.getHeight())
                                 (*(m_boardMatrix(line, column)))[1] = m_boardMatrix(line+1, column);
                             if(column > 0)
@@ -197,6 +209,34 @@ Game::Game(QDomDocument &xml)
         //int exception = 10;
         //throw exception;
     }
+}
+
+Game::Game(QFile &input)
+{
+    QString line;
+    unsigned int nbMaxColumns = 0, nbLines = 0;
+
+    //Pour chaque pièce : son numéro, un tableau 2D de Graph::Node*, un Graph::Node* pour le début de la pièce
+    List::Node<Triple<int, Matrix<Graph::Node*>, Graph::Node*> > *pieces = NULL;
+
+    while( !input.atEnd() ){
+        nbLines++;
+        line = input.readLine();
+        if((unsigned int) line.length() > nbMaxColumns)
+            nbMaxColumns = line.length();
+    }
+
+    m_index = new Graph::Node* [m_nbNodes];
+    List::Node<Triple<int, Matrix<Graph::Node*>, Graph::Node*> > *it = pieces;
+    while(it)
+    {
+        it->info.second.resize(nbLines, nbMaxColumns);
+        it = it->next;
+    }
+    m_boardMatrix.resize(nbLines, nbMaxColumns, NULL);
+
+    /*qDebug() << str.section( " ", 0, 0 ).toInt();
+    qDebug() << str.section( " ", 1, 1 ).toFloat();*/
 }
 
 const Graph::Node *& Game::getNodePiece(unsigned int index, const Matrix<Graph::Node *> &etat) const

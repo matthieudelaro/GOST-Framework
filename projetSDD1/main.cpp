@@ -7,6 +7,7 @@
 
 #include "game.h"
 
+
 int main(int argc, char *argv[])
 {
     QApplication a(argc, argv);
@@ -23,6 +24,11 @@ int main(int argc, char *argv[])
         return EXIT_FAILURE;
     }
     file.close();
+
+    Matrix<int> m(1, 1, 5);
+    m.resize(2, 2, 6);
+    m(1,1) = 7;
+    qDebug() << m.toString();
 
     try
     {
@@ -46,7 +52,7 @@ int main(int argc, char *argv[])
     catch (int &exception)
     {
         qDebug() << "Erreur lors du chargement du XML.";
-        qDebug() << exception;
+        qDebug() << exception;moni
     }*/
 
 //    if (!file.open(QIODevice::WriteOnly)) // ouverture du fichier de sauvegarde

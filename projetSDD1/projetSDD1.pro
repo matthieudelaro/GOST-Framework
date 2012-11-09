@@ -21,6 +21,7 @@ HEADERS  += mainwindow.h \
     list.h \
     collection.h \
     matrix.h \
-    tools.h
+    tools.h \
+    vector.h
 
 FORMS    += mainwindow.ui
