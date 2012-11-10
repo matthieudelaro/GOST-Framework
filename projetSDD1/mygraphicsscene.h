@@ -1,6 +1,7 @@
 #ifndef MYGRAPHICSSCENE_H
 #define MYGRAPHICSSCENE_H
 
+#include <QPixmap>
 #include <QGraphicsScene>
 #include <QGraphicsPixmapItem>
 #include <QGraphicsSceneMouseEvent>
@@ -12,8 +13,9 @@ class MyGraphicsScene : public QGraphicsScene
     Q_OBJECT
 
 public:
-    MyGraphicsScene(Matrix<Graph::Node*>& m);
+    MyGraphicsScene();
     void callResize();
+    void setMatrix(Matrix<Graph::Node*>& m);
     ~MyGraphicsScene();
 
 
@@ -28,6 +30,7 @@ signals:
 private:
     QGraphicsPixmapItem ***itemTest;
     int TL,TH,T;
+    QPixmap base,vide;
 };
 
 #endif // MYGRAPHICSSCENE_H

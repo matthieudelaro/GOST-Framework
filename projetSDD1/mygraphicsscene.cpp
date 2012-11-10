@@ -5,7 +5,21 @@
 
 int myMax(int x,int y){return(x>y)?x:y;}
 
-MyGraphicsScene::MyGraphicsScene(Matrix<Graph::Node *> &m)
+MyGraphicsScene::MyGraphicsScene()
+{
+    //on charge les images, que ça à faire ?
+    // les mettres ailleurs ?
+    base = QPixmap("../res/case.png");
+    vide = QPixmap("../res/vide.png");
+}
+
+void MyGraphicsScene::callResize()
+{
+    //ici très beau pas y toucher
+    emit sendResize(TL*(500/T)+3,TH*(500/T)+3);
+}
+
+void MyGraphicsScene::setMatrix(Matrix<Graph::Node *> &m)
 {
     TH = m.getHeight();
     TL = m.getWidth();
@@ -13,9 +27,6 @@ MyGraphicsScene::MyGraphicsScene(Matrix<Graph::Node *> &m)
 
     qDebug() << TL << TH;
 
-
-    QPixmap base = QPixmap("../res/case.png");
-    QPixmap vide = QPixmap("../res/vide.png");
     itemTest = new QGraphicsPixmapItem**[TH];
     for(int i = 0; i < TH; i ++)
     {
@@ -33,20 +44,18 @@ MyGraphicsScene::MyGraphicsScene(Matrix<Graph::Node *> &m)
     }
 }
 
-void MyGraphicsScene::callResize()
-{
-    emit sendResize(TL*(500/T)+3,TH*(500/T)+3);
-}
-
 MyGraphicsScene::~MyGraphicsScene()
 {
-    for(int i = 0; i < TH; i ++)
+    if(itemTest != NULL)
     {
-        for(int j = 0; j < TL; j ++)
-            delete itemTest[i][j];
-        delete itemTest[i];
+        for(int i = 0; i < TH; i ++)
+        {
+            for(int j = 0; j < TL; j ++)
+                delete itemTest[i][j];
+            delete itemTest[i];
+        }
+        delete itemTest;
     }
-    delete itemTest;
 }
 
 void MyGraphicsScene::mousePressEvent(QGraphicsSceneMouseEvent *mouseEvent)
