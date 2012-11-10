@@ -1,5 +1,6 @@
 #on ignore tout
 *
+!README
 
 #sauf tout ce qui est dans res
 !res/
