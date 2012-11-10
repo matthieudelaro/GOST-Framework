@@ -13,7 +13,8 @@ TEMPLATE = app
 
 SOURCES += main.cpp\
         mainwindow.cpp \
-    game.cpp
+    game.cpp \
+    mygraphicsscene.cpp
 
 HEADERS  += mainwindow.h \
     game.h \
@@ -22,6 +23,7 @@ HEADERS  += mainwindow.h \
     collection.h \
     matrix.h \
     tools.h \
-    vector.h
+    vector.h \
+    mygraphicsscene.h
 
 FORMS    += mainwindow.ui
