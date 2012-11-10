@@ -5,19 +5,27 @@
 
 int myMax(int x,int y){return(x>y)?x:y;}
 
-MyGraphicsScene::MyGraphicsScene(int w, int h)
+MyGraphicsScene::MyGraphicsScene(Matrix<Graph::Node *> &m)
 {
-    TH = h;
-    TL = w;
+    TH = m.getHeight();
+    TL = m.getWidth();
     T = myMax(TH,TL);
+
+    qDebug() << TL << TH;
+
+
     QPixmap base = QPixmap("../res/case.png");
+    QPixmap vide = QPixmap("../res/vide.png");
     itemTest = new QGraphicsPixmapItem**[TH];
     for(int i = 0; i < TH; i ++)
     {
         itemTest[i] = new QGraphicsPixmapItem*[TL];
         for(int j = 0; j < TL; j ++)
         {
-            itemTest[i][j] = new QGraphicsPixmapItem(base);
+            if(m(i,j) == NULL)
+                itemTest[i][j] = new QGraphicsPixmapItem(vide);
+            else
+                itemTest[i][j] = new QGraphicsPixmapItem(base);
             itemTest[i][j]->setScale(1./(T)); //OK pour la redimension
             this->addItem(itemTest[i][j]);
             itemTest[i][j]->setPos(j*(500/T),i*(500/T)); //problèmes de position, plus la pièce est petite et plus elle se décale vers la gauche

@@ -4,6 +4,7 @@
 #include <QMainWindow>
 #include <QGraphicsView>
 #include <QVBoxLayout>
+#include "game.h"
 #include "mygraphicsscene.h"
 
 namespace Ui {
@@ -15,7 +16,7 @@ class MainWindow : public QMainWindow
     Q_OBJECT
 
 public:
-    explicit MainWindow(QWidget *parent = 0);
+    explicit MainWindow(Game& g,QWidget *parent = 0);
     ~MainWindow();
 
 public slots:

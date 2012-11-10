@@ -4,13 +4,15 @@
 #include <QGraphicsScene>
 #include <QGraphicsPixmapItem>
 #include <QGraphicsSceneMouseEvent>
+#include "matrix.h"
+#include "graph.h"
 
 class MyGraphicsScene : public QGraphicsScene
 {
     Q_OBJECT
 
 public:
-    MyGraphicsScene(int w = 2 , int h = 2);
+    MyGraphicsScene(Matrix<Graph::Node*>& m);
     void callResize();
     ~MyGraphicsScene();
 

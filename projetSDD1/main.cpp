@@ -24,13 +24,13 @@ int main(int argc, char *argv[])
         return EXIT_FAILURE;
     }
     file.close();
-
+/*
     Matrix<int> m(1, 1, 5);
-    m.resize(2, 2, 6);
+    m.resize(2, 6, 6);
     m(1,1) = 7;
     qDebug() << m.toString();
-
-    try
+*/
+/*    try
     {
         Game game(xml);
     }
@@ -55,13 +55,15 @@ int main(int argc, char *argv[])
         qDebug() << exception;moni
     }*/
 
-//    if (!file.open(QIODevice::WriteOnly)) // ouverture du fichier de sauvegarde
-//        return EXIT_FAILURE; // en écriture
-//    QTextStream out(&file);
-//    xml.save(out, 4);
+/*    if (!file.open(QIODevice::WriteOnly)) // ouverture du fichier de sauvegarde
+        return EXIT_FAILURE; // en écriture
+    QTextStream out(&file);
+    xml.save(out, 4);
+*/
+    Game game(xml);
 
-    MainWindow w;
+    MainWindow w(game);
     w.show();
-    
+
     return a.exec();
 }
