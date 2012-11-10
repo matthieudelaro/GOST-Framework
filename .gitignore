@@ -1,0 +1,18 @@
+#on ignore tout
+*
+
+#sauf tout ce qui est dans res
+!res/
+!res/*
+
+#et sauf tout ce qui est dans projetSDD1
+!projetSDD1/
+!projetSDD1/*
+
+#mais ignorer quand même
+*.pro.user
+*~
+
+#on n'ignore pas le .gitignore lui-même !
+!.gitignore
+
