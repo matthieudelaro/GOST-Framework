@@ -70,13 +70,11 @@ int main(int argc, char *argv[])
 }
 
 /*
-  Besoin de clarifier les choses sur le déroulement des opérations de chargement:
   - création du game avec xml
   - mise en place de ce game dans le mainWindows
   - utilisation de la matrix du game dans le graphicsView
 
   mais il y a un segfault qqpart
 
-  je pars sur une idée comme ça et on verra après
 
   */

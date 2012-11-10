@@ -4,6 +4,8 @@
 
 MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWindow)
 {
+    toView = NULL;
+
     ui->setupUi(this);
 
     myScene = new MyGraphicsScene();
@@ -25,8 +27,10 @@ void MainWindow::setGame(Game &g)
 
 MainWindow::~MainWindow()
 {
-    delete ui;
-    delete myScene;
+    if(ui)
+        delete ui;
+    if(myScene)
+        delete myScene;
 }
 
 void MainWindow::resize(int w, int h)

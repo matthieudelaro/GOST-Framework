@@ -9,13 +9,14 @@ MyGraphicsScene::MyGraphicsScene()
 {
     //on charge les images, que ça à faire ?
     // les mettres ailleurs ?
+    itemTest = NULL;
     base = QPixmap("../res/case.png");
     vide = QPixmap("../res/vide.png");
 }
 
 void MyGraphicsScene::callResize()
 {
-    //ici très beau pas y toucher
+    //ici très beau : pas y toucher
     emit sendResize(TL*(500/T)+3,TH*(500/T)+3);
 }
 
@@ -39,14 +40,14 @@ void MyGraphicsScene::setMatrix(Matrix<Graph::Node *> &m)
                 itemTest[i][j] = new QGraphicsPixmapItem(base);
             itemTest[i][j]->setScale(1./(T)); //OK pour la redimension
             this->addItem(itemTest[i][j]);
-            itemTest[i][j]->setPos(j*(500/T),i*(500/T)); //problèmes de position, plus la pièce est petite et plus elle se décale vers la gauche
+            itemTest[i][j]->setPos(j*(500/T),i*(500/T));
         }
     }
 }
 
 MyGraphicsScene::~MyGraphicsScene()
 {
-    if(itemTest != NULL)
+    if(itemTest)
     {
         for(int i = 0; i < TH; i ++)
         {
