@@ -4,6 +4,7 @@
 
 MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWindow)
 {
+    m_game = Game();
     /*faire une initialisation pour game du type
     game = Game();
 
@@ -26,9 +27,9 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWi
 
 void MainWindow::loadXMLFile(QDomDocument &xml)
 {
-    //initialisation du XML
-    //rajouter un constructeur par défaut pour la class game
-    //m_game = Game(xml);//très beau ou pas ? est ce que je ne crée pas deux objets ?
+    m_game.load(xml);
+    //on associe tout de suite après la matrice à la scene
+    m_scene->associateMatrix(m_game.getBoardMatrix());
 }
 
 MainWindow::~MainWindow()

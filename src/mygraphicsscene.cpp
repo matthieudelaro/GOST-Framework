@@ -25,6 +25,32 @@ MyGraphicsScene::MyGraphicsScene(int w, int h)
     }
 }
 
+void MyGraphicsScene::associateMatrix(const Matrix<Graph::Node *> &m)
+{
+    //ici le problème est qu'il faut initialiser une référence au constructeur, on est bloqué, comment faire ?
+    m_matrix = m;
+}
+
+void MyGraphicsScene::displayMatrix()
+{
+    /*
+      a mettre bien quand le constructeur et les chargements seront propres.s
+
+    QPixmap base = QPixmap("../res/case.png");
+    itemTest = new QGraphicsPixmapItem**[TH];
+    for(int i = 0; i < TH; i ++)
+    {
+        itemTest[i] = new QGraphicsPixmapItem*[TL];
+        for(int j = 0; j < TL; j ++)
+        {
+            itemTest[i][j] = new QGraphicsPixmapItem(base);
+            itemTest[i][j]->setScale(1./(T)); //OK pour la redimension
+            this->addItem(itemTest[i][j]);
+            itemTest[i][j]->setPos(j*(500/T),i*(500/T)); //problèmes de position, plus la pièce est petite et plus elle se décale vers la gauche
+        }
+    }*/
+}
+
 void MyGraphicsScene::callResize()
 {
     emit sendResize(TL*(500/T)+3,TH*(500/T)+3);

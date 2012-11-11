@@ -27,7 +27,7 @@ public slots:
 private:
     Ui::MainWindow *ui;
     MyGraphicsScene *m_scene;
-   // Game m_game;
+    Game m_game;
 };
 
 #endif // MAINWINDOW_H

@@ -30,6 +30,14 @@
 //    qDebug() << str.section( " ", 1, 1 ).toFloat();*/
 //}
 
+Game::Game()
+{
+    m_board = NULL;
+    m_pieces = NULL;
+    m_index = NULL;
+    unsigned int m_nbNodes;
+}
+
 bool Game::load(QDomDocument &xml)
 {
     //QDomElement root = xml.documentElement();
@@ -245,7 +253,8 @@ const Graph::Node *& Game::getNodePiece(unsigned int index, const Matrix<Graph::
 
 Game::~Game()
 {
-    delete [] m_index;
+    if(m_index != NULL)
+        delete [] m_index;
 }
 
 unsigned int Game::getNumberPiece(unsigned int index, const Matrix<Graph::Node *> &etat) const

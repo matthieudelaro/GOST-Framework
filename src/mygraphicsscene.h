@@ -4,6 +4,8 @@
 #include <QGraphicsScene>
 #include <QGraphicsPixmapItem>
 #include <QGraphicsSceneMouseEvent>
+#include "matrix.h"
+#include "graph.h"
 
 class MyGraphicsScene : public QGraphicsScene
 {
@@ -11,6 +13,8 @@ class MyGraphicsScene : public QGraphicsScene
 
 public:
     MyGraphicsScene(int w = 2 , int h = 2);
+    void associateMatrix(const Matrix<Graph::Node*>& m);//on associe la matrice chargée dans le xml à l'interface graphique
+    void displayMatrix(); //affiche la matrice nouvellement chargée
     void callResize();
     ~MyGraphicsScene();
 
@@ -26,6 +30,7 @@ signals:
 private:
     QGraphicsPixmapItem ***itemTest;
     int TL,TH,T;
+    Matrix<Graph::Node*>& m_matrix;
 };
 
 #endif // MYGRAPHICSSCENE_H
