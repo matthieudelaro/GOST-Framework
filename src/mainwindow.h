@@ -4,6 +4,7 @@
 #include <QMainWindow>
 #include <QGraphicsView>
 #include <QVBoxLayout>
+#include <QDomDocument>
 #include "mygraphicsscene.h"
 #include "game.h"
 
@@ -17,7 +18,7 @@ class MainWindow : public QMainWindow
 
 public:
     explicit MainWindow(QWidget *parent = 0);
-    void setGame(Game& g);
+    void loadXMLFile(QDomDocument &xml);
     ~MainWindow();
 
 public slots:
@@ -25,7 +26,8 @@ public slots:
 
 private:
     Ui::MainWindow *ui;
-    MyGraphicsScene *myScene;
+    MyGraphicsScene *m_scene;
+   // Game m_game;
 };
 
 #endif // MAINWINDOW_H
