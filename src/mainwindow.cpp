@@ -18,6 +18,13 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWi
     myScene->callResize();
 }
 
+void MainWindow::setGame(Game &g)
+{
+    qDebug() << "BEGIN\tSet Game ";
+
+    qDebug() << "END\tSet Game";
+}
+
 MainWindow::~MainWindow()
 {
     delete ui;
