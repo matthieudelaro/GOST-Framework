@@ -60,8 +60,11 @@ int main(int argc, char *argv[])
 //    QTextStream out(&file);
 //    xml.save(out, 4);
 
+    Game game(xml);
+
     MainWindow w;
+    w.setGame(game);
     w.show();
-    
+
     return a.exec();
 }
