@@ -7,3 +7,9 @@ git commit -m "message à écrire"
 
 Pour envoyer:
 git push seb master
+
+Pour générer la documentation :
+- aller dans le répertoire racine du projet
+- doxygen Doxyfile
+  La documentation est générée dans le dossier doc/
+  La page d'accueil est dans doc/html/index.html

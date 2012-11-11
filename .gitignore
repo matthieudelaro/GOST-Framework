@@ -1,14 +1,15 @@
 #on ignore tout
 *
 !README
+!Doxyfile
 
 #sauf tout ce qui est dans res
 !res/
 !res/*
 
-#et sauf tout ce qui est dans projetSDD1
-!projetSDD1/
-!projetSDD1/*
+#et sauf tout ce qui est dans src
+!src/
+!src/*
 
 #mais ignorer quand même
 *.pro.user
