@@ -5,7 +5,7 @@
 
 /*! \brief Le classe Vector gère un tableau générique à taille dynamique.
  *
- *  Detailed description starts here.
+ *
  */
 template <typename T>
 class Vector
@@ -13,23 +13,45 @@ class Vector
 public:
     /*! \brief Ce constructeur initialise la taille du tableau à la valeur de length.
      *
-     *  \param lenght Définit la taille du tableau. Vaut 0 par défaut.
+     *  \param lenght Définit la taille du tableau. Sa valeur par défaut est 0.
      */
     Vector(unsigned int length = 0) : m_tab(NULL)
     {
         resize(length);
     }
 
+    /*! \brief Ce constructeur initialise la taille du tableau à la valeur de length, en remplissant toutes les cases avec value.
+     *
+     *  \param lenght Définit la taille du tableau. Sa valeur par défaut est 0.
+     *  \param value La valeur que prendra chaque case du tableau.
+     */
     Vector(unsigned int length, const T &value) : m_tab(NULL)
     {
         resize(length, value);
     }
 
-    inline T& operator()(unsigned int index) { return m_tab[index];}
+    /*! \brief Permet d'accéder aux éléments du tableau.
+     *
+     *  \param index L'index dont on veut connaître la valeur.
+     *  \return Une référence vers la valeur contenue à l'index.
+     */
     inline T& operator[](unsigned int index) { return m_tab[index];}
+
+    /*! \brief Permet d'accéder aux éléments du tableau.
+     *
+     *  \param index L'index dont on veut connaître la valeur.
+     *  \return La valeur contenue à l'index.
+     */
     inline T operator[](unsigned int index) const { return m_tab[index];}
+
+    /*! \return La longueur du tableau.
+     */
     inline unsigned int getLength() const { return m_length; }
 
+    /*! \brief Redimensionne le tableau.
+     *
+     *  \param length Définit la taille du tableau.
+     */
     void resize(unsigned int length)
     {
         clear();
@@ -45,6 +67,12 @@ public:
         }
     }
 
+
+    /*! \brief Redimensionne le tableau.
+     *
+     *  \param length Définit la taille du tableau.
+     *  \param value Valeur des nouvelles cases.
+     */
     void resize(unsigned int length, const T &value)
     {
         resize(length);
@@ -54,6 +82,8 @@ public:
         }
     }
 
+    /*! \brief Réinitialise le Vector. Vide le tableau dynamique, et le redimensionne à 0 cases.
+     */
     void clear()
     {
         if(m_tab)
@@ -61,8 +91,16 @@ public:
             delete [] m_tab;
             m_tab = NULL;
         }
+        m_length = 0;
     }
 
+    /*! \brief Réinitialise le Vector.
+     *
+     *  Vide le tableau dynamique et delete tous ses éléments
+     *  (utile dans le cas d'un Vector de pointeurs), et le redimensionne à 0 cases.
+     *
+     *  \see Vector<T>::clear()
+     */
     void clearDelete()
     {
         if(m_tab)
@@ -74,6 +112,13 @@ public:
         }
     }
 
+    /*! \brief Convertit le Vector en QString.
+     *
+     *  Exemple : Pour un Vector<int> contenant 1, 5 et 6, la fonction renvoie (1, 5, 6).
+     *
+     *  \see Vector<T>::clear()
+     *  \return Un QString contenant une représentation textuelle du contenu du Vector.
+     */
     QString toString() const
     {
         QString out;
@@ -92,6 +137,8 @@ public:
         return out;
     }
 
+    /*! \brief Appelle clear().
+     */
     ~Vector()
     {
         clear();
