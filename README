@@ -1,9 +1,0 @@
-Pour recevoir :
-git pull seb master
-
-A chaque commit (souvent):
-git add .
-git commit -m "message à écrire"
-
-Pour envoyer:
-git push seb master
