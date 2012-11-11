@@ -4,31 +4,37 @@
 
 MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWindow)
 {
+    /*faire une initialisation pour game du type
+    game = Game();
+
+    puis ensuite dans  loadXMLFile() :
+    game.SetXmlFile()
+    */
     ui->setupUi(this);
 
-    myScene = new MyGraphicsScene();
-    ui->graphicsView->setScene(myScene);
+    m_scene = new MyGraphicsScene();
+    ui->graphicsView->setScene(m_scene);
     ui->graphicsView->setAlignment(Qt::AlignTop | Qt::AlignLeft); //permet d'aligner le (0,0) en haut et à gauche
     ui->graphicsView->setMouseTracking(true);
 
     this->setCentralWidget(ui->centralWidget);
 
-    QObject::connect(myScene,SIGNAL(sendResize(int,int)),this,SLOT(resize(int,int)));
+    QObject::connect(m_scene,SIGNAL(sendResize(int,int)),this,SLOT(resize(int,int)));
 
-    myScene->callResize();
+    m_scene->callResize();
 }
 
-void MainWindow::setGame(Game &g)
+void MainWindow::loadXMLFile(QDomDocument &xml)
 {
-    qDebug() << "BEGIN\tSet Game ";
-
-    qDebug() << "END\tSet Game";
+    //initialisation du XML
+    //rajouter un constructeur par défaut pour la class game
+    //m_game = Game(xml);//très beau ou pas ? est ce que je ne crée pas deux objets ?
 }
 
 MainWindow::~MainWindow()
 {
     delete ui;
-    delete myScene;
+    delete m_scene;
 }
 
 void MainWindow::resize(int w, int h)
