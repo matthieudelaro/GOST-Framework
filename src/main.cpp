@@ -30,7 +30,7 @@ int main(int argc, char *argv[])
     m(1,1) = 7;
     qDebug() << m.toString();
 
-    try
+    /*try
     {
         Game game(xml);
     }
@@ -39,7 +39,7 @@ int main(int argc, char *argv[])
         qDebug() << "Erreur lors du chargement du XML.";
         qDebug() << exception.what();
     }
-    /*catch (XMLFormatException &exception)
+    catch (XMLFormatException &exception)
     {
         qDebug() << "Erreur lors du chargement du XML.";
         qDebug() << exception.what();
@@ -60,7 +60,9 @@ int main(int argc, char *argv[])
 //    QTextStream out(&file);
 //    xml.save(out, 4);
 
-    Game game(xml);
+    Game game;
+    if(!game.load(xml))
+        return EXIT_FAILURE;
 
     MainWindow w;
     w.setGame(game);
