@@ -20,6 +20,13 @@
       <item>
        <layout class="QVBoxLayout" name="verticalLayout">
         <item>
+         <widget class="QPushButton" name="loadGameButton">
+          <property name="text">
+           <string>Load Game</string>
+          </property>
+         </widget>
+        </item>
+        <item>
          <widget class="QPushButton" name="associateButton">
           <property name="text">
            <string>Associate</string>
@@ -30,13 +37,6 @@
          <widget class="QPushButton" name="displayButton">
           <property name="text">
            <string>Display</string>
-          </property>
-         </widget>
-        </item>
-        <item>
-         <widget class="QPushButton" name="quitButton">
-          <property name="text">
-           <string>Quit</string>
           </property>
          </widget>
         </item>
@@ -73,6 +73,16 @@
      <height>25</height>
     </rect>
    </property>
+   <widget class="QMenu" name="menuPartie">
+    <property name="title">
+     <string>Partie</string>
+    </property>
+    <addaction name="actionChoixPartie"/>
+    <addaction name="actionNouvellePartie"/>
+    <addaction name="separator"/>
+    <addaction name="actionQuitter"/>
+   </widget>
+   <addaction name="menuPartie"/>
   </widget>
   <widget class="QToolBar" name="mainToolBar">
    <attribute name="toolBarArea">
@@ -83,6 +93,21 @@
    </attribute>
   </widget>
   <widget class="QStatusBar" name="statusBar"/>
+  <action name="actionChoixPartie">
+   <property name="text">
+    <string>Choisir une partie</string>
+   </property>
+  </action>
+  <action name="actionNouvellePartie">
+   <property name="text">
+    <string>Nouvelle partie</string>
+   </property>
+  </action>
+  <action name="actionQuitter">
+   <property name="text">
+    <string>Quitter</string>
+   </property>
+  </action>
  </widget>
  <layoutdefault spacing="6" margin="11"/>
  <resources/>

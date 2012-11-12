@@ -13,45 +13,12 @@ int main(int argc, char *argv[])
 {
     QApplication a(argc, argv);
 
-   /* QDomDocument xml;
-    QString fileName(RES_REPERTORY);
-    fileName += "games/game1/xml.xml";
-    QFile file(fileName);
-    if (!file.open(QIODevice::ReadOnly))
-        return EXIT_FAILURE;
-    if (!xml.setContent(&file))
-    {
-        file.close(); // établit le document XML à partir des données du fichier (hiérarchie, etc.)
-        return EXIT_FAILURE;
-    }
-    file.close();
-*/
-    QString selectDir = "../res/games";
-    QStringList files = findXMLFiles(selectDir);
-
-    qDebug()<<files;
-
-/*
-    Game game;
-    if(!game.load(xml))
-        return EXIT_FAILURE;
     MainWindow w;
-    w.loadXMLFile(xml);
     w.show();
-*/
-   // return a.exec();
-    return 0;
+
+    return a.exec();
 }
 
-QStringList findXMLFiles(QString dir)
-{
-    QStringList filtre;
-    filtre << "*.xml";
-    QDirIterator dirIterator(dir, filtre ,QDir::Files | QDir::NoSymLinks, QDirIterator::Subdirectories);
-    QStringList fileList;
-    while(dirIterator.hasNext()){fileList << dirIterator.next();}
-    return fileList;
-}
 
 /**MISE DE TOUT L'INUTIL A LA SUITE POUR L'INSTANT
 

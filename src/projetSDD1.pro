@@ -14,7 +14,8 @@ TEMPLATE = app
 SOURCES += main.cpp\
         mainwindow.cpp \
     game.cpp \
-    mygraphicsscene.cpp
+    mygraphicsscene.cpp \
+    xmlfilechoice.cpp
 
 HEADERS  += mainwindow.h \
     game.h \
@@ -24,6 +25,8 @@ HEADERS  += mainwindow.h \
     matrix.h \
     tools.h \
     vector.h \
-    mygraphicsscene.h
+    mygraphicsscene.h \
+    xmlfilechoice.h
 
-FORMS    += mainwindow.ui
+FORMS    += mainwindow.ui \
+    xmlfilechoice.ui
