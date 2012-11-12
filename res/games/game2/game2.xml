@@ -1,0 +1,89 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<game>
+    <identity>
+        <name name="First Game"/>
+        <date day="28" month="10" year="2012"/>
+        <creators>
+            <creator name="Matthieu"/>
+            <creator name="Sébastien"/>
+            <creator name="Victor"/>
+        </creators>
+        <versions>
+            <version changelog="Add colors" creator="Matthieu" number="1"/>
+        </versions>
+    </identity>
+    <board>
+        <background>
+            <color red="0" blue="0" green="255"/>
+            <image file="img.bmp"/>
+            <!--When there is both an image and a color, the color is used if an error occurs while loading the image.-->
+        </background>
+        <initialShape type="defined">
+            <line>
+                <column type="piece" number="1"/>
+                <column type="free"/>
+                <column type="free"/>
+            </line>
+            <line>
+                <column type="piece" number="1"/>
+                <column type="piece" number="1"/>
+            </line>
+            <line>
+                <column type="free"/>
+                <column type="void"/>
+                <column type="free"/>
+            </line>
+            <line>
+                <column type="free"/>
+                <column type="free"/>
+            </line>
+        </initialShape>
+        <finalShape>
+            <line>
+                <column type="joker"/>
+                <column type="void"/>
+                <column type="free"/>
+            </line>
+            <line>
+                <column type="piece" number="1"/>
+                <column type="joker"/>
+            </line>
+            <line>
+                <column type="piece" number="1"/>
+                <column type="piece" number="1"/>
+            </line>
+            <line>
+                <column type="free"/>
+            </line>
+        </finalShape>
+        <pieces>
+            <piece number="1">
+                <color red="255" blue="0" green="0"/>
+            </piece>
+        </pieces>
+        <free>
+            <color red="0" blue="255" green="0"/>
+        </free>
+    </board>
+</game>
+<!--commentaire
+
+        <initialShape type="defined">
+            <line>
+                <column type="piece" number="1"/>
+                <column type="void"/>
+                <column type="free"/>
+            </line>
+            <line>
+                <column type="piece" number="1"/>
+                <column type="piece" number="1"/>
+            </line>
+            <line>
+                <column type="free"/>
+                <column type="free"/>
+            </line>
+            <line>
+                <column type="free"/>
+            </line>
+        </initialShape>
+-->
