@@ -12,6 +12,7 @@
 class Game
 {
 public:
+    //Game(const Game &original); Il faut absolument instancier ce constructeur de copie
     bool load(QDomDocument &xml);
     inline unsigned int getNbNodes() const {return m_nbNodes;}
     const Graph::Node*& getNodePiece(unsigned int index, const Matrix<Graph::Node*> &etat) const;

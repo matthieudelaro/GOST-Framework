@@ -30,6 +30,17 @@ public:
         resize(length, value);
     }
 
+    /*! \brief Constructeur de copie. Recopie l'intégralité de l'ogininal dans un nouveau tableau.
+     *
+     *  \param original Le Vector copié.
+     */
+    Vector(const Vector<T> &original) : m_tab(NULL)
+    {
+        resize(original.getLength());
+        for(unsigned int i = 0; i < m_length; ++i)
+            m_tab[i] = original[i];
+    }
+
     /*! \brief Permet d'accéder aux éléments du tableau.
      *
      *  \param index L'index dont on veut connaître la valeur.
@@ -52,7 +63,7 @@ public:
      *
      *  \param length Définit la taille du tableau.
      */
-    void resize(unsigned int length)
+    virtual void resize(unsigned int length)
     {
         clear();
         m_length = length;
@@ -84,7 +95,7 @@ public:
 
     /*! \brief Réinitialise le Vector. Vide le tableau dynamique, et le redimensionne à 0 cases.
      */
-    void clear()
+    virtual void clear()
     {
         if(m_tab)
         {

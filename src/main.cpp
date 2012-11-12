@@ -22,10 +22,6 @@ int main(int argc, char *argv[])
     }
     file.close();
 
-    Game game;
-    if(!game.load(xml))
-        return EXIT_FAILURE;
-
     MainWindow w;
     w.loadXMLFile(xml);
     w.show();
@@ -33,6 +29,33 @@ int main(int argc, char *argv[])
     return a.exec();
 }
 /**MISE DE TOUT L'INUTIL A LA SUITE POUR L'INSTANT
+
+
+    Matrix<int> m(1, 1, 5);
+    m.resize(2, 2, 6);
+    qDebug() << m.getHeight() << m.getWidth() << m.getLength();
+    test(m);
+    m(1,1) = 7;
+    m.clear();
+    qDebug() << m.getHeight() << m.getWidth() << m.getLength();
+    m.resize(1, 3, 6);
+    qDebug() << m.getHeight() << m.getWidth() << m.getLength();
+    qDebug() << m[1];
+    //qDebug() << m(1);
+    qDebug() << m.toString();
+
+    Vector<int> v(3, 5);
+    qDebug() << "v : " << v.toString();
+    v[3] = 0;
+    test(v);
+    qDebug() << "v[3] : " << v[3];
+
+
+
+    Game game;
+    if(!game.load(xml))
+        return EXIT_FAILURE;
+
 
 Matrix<int> m(1, 1, 5);
 m.resize(2, 2, 6);
@@ -68,3 +91,22 @@ catch (int &exception)
 //        return EXIT_FAILURE; // en écriture
 //    QTextStream out(&file);
 //    xml.save(out, 4);
+
+
+
+//void test(Matrix<int> m)
+//{
+//    //m(1, 1) = 9;
+//    //m[3] = 8;
+//    qDebug() << "test matrice : " << m[3] << m(1, 1);
+//    Matrix<int> m2 = m;
+//    m2(1, 1) = 9;
+//    qDebug() << m2.getHeight() << m2.getWidth() << m2.getLength() << m2.toString();
+//    qDebug() << m(1,1);
+//}
+
+//void test(Vector<int> v)
+//{
+//    //v[3] = 1;
+//    qDebug() << "test : " << v[3];
+//}

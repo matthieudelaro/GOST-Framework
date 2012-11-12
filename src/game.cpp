@@ -30,6 +30,7 @@
 //    qDebug() << str.section( " ", 1, 1 ).toFloat();*/
 //}
 
+
 bool Game::load(QDomDocument &xml)
 {
     //QDomElement root = xml.documentElement();
