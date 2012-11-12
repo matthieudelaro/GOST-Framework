@@ -34,8 +34,8 @@ Game::Game()
 {
     m_board = NULL;
     m_pieces = NULL;
-    m_index = NULL;
-    unsigned int m_nbNodes;
+    //m_index = NULL;
+    m_nbNodes = 0;
 }
 
 bool Game::load(QDomDocument &xml)
@@ -95,7 +95,8 @@ bool Game::load(QDomDocument &xml)
                     }
                 }
 
-                m_index = new Graph::Node* [m_nbNodes];
+                //m_index = new Graph::Node* [m_nbNodes];
+                m_index.resize(m_nbNodes);
                 List::Node<Triple<int, Matrix<Graph::Node*>, Graph::Node*> > *it = pieces;
                 while(it)
                 {
@@ -246,21 +247,24 @@ bool Game::load(QDomDocument &xml)
     return true;
 }
 
-const Graph::Node *& Game::getNodePiece(unsigned int index, const Matrix<Graph::Node *> &etat) const
+const Graph::Node *& Game::getNodePiece(unsigned int index, const Vector<Graph::Node *> &etat) const
 {
     qDebug() << "Game::getNodePiece à implémenter !";
 }
 
 Game::~Game()
 {
-    if(m_index != NULL)
-        delete [] m_index;
+    //Supprimer le m_board
+    //Supprimer les pièces
+
+    //if(m_index != NULL)
+    //    delete [] m_index;
 }
 
-unsigned int Game::getNumberPiece(unsigned int index, const Matrix<Graph::Node *> &etat) const
+unsigned int Game::getNumberPiece(unsigned int index, const Vector<Graph::Node *> &etat) const
 {
-    qDebug() << "Game::getNumberPiece à implémenter !";
-    return 0;
+    qDebug() << "Game::getNumberPiece à tester !";
+    return etat[index]->info;
 }
 
 
