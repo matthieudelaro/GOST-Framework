@@ -1,17 +1,21 @@
 #include <QtGui/QApplication>
 #include <QFile>
 #include <QTextStream>
+#include <QDir>
+#include <QFileDialog>
 #include "mainwindow.h"
 
 #define RES_REPERTORY "../res/"
+
+QStringList findXMLFiles(QString dir);
 
 int main(int argc, char *argv[])
 {
     QApplication a(argc, argv);
 
-    QDomDocument xml;
+   /* QDomDocument xml;
     QString fileName(RES_REPERTORY);
-    fileName += "games/leNomNAAucuneImportance/xml2.xml";
+    fileName += "games/game1/xml.xml";
     QFile file(fileName);
     if (!file.open(QIODevice::ReadOnly))
         return EXIT_FAILURE;
@@ -21,13 +25,33 @@ int main(int argc, char *argv[])
         return EXIT_FAILURE;
     }
     file.close();
+*/
+    QString selectDir = "../res/games";
+    QStringList files = findXMLFiles(selectDir);
+
+    qDebug()<<files;
+
+    /*Game game;
+    if(!game.load(xml))
+        return EXIT_FAILURE;
 
     MainWindow w;
     w.loadXMLFile(xml);
-    w.show();
+    w.show();*/
 
     return a.exec();
 }
+
+QStringList findXMLFiles(QString dir)
+{
+    QStringList filtre;
+    filtre << "*.xml";
+    QDirIterator dirIterator(dir, filtre ,QDir::Files | QDir::NoSymLinks, QDirIterator::Subdirectories);
+    QStringList fileList;
+    while(dirIterator.hasNext()){fileList << dirIterator.next();}
+    return fileList;
+}
+
 /**MISE DE TOUT L'INUTIL A LA SUITE POUR L'INSTANT
 
 
@@ -62,7 +86,7 @@ m.resize(2, 2, 6);
 m(1,1) = 7;
 qDebug() << m.toString();
 
-/*try
+try
 {
     Game game(xml);
 }
@@ -85,7 +109,7 @@ catch (int &exception)
 {
     qDebug() << "Erreur lors du chargement du XML.";
     qDebug() << exception;moni
-}*/
+}
 
 //    if (!file.open(QIODevice::WriteOnly)) // ouverture du fichier de sauvegarde
 //        return EXIT_FAILURE; // en écriture
@@ -110,3 +134,9 @@ catch (int &exception)
 //    //v[3] = 1;
 //    qDebug() << "test : " << v[3];
 //}
+=======
+    if (!file.open(QIODevice::WriteOnly)) // ouverture du fichier de sauvegarde
+        return EXIT_FAILURE; // en écriture
+    QTextStream out(&file);
+    xml.save(out, 4);
+*/
