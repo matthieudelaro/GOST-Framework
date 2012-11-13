@@ -26,16 +26,26 @@ public:
     explicit MainWindow(QWidget *parent = 0);
 
     /*!
-     *      \brief loadXMLFile récupère un document XML et génère m_game avec celui ci
-     *      \param xml est un document qui contient le XML
+     *      \brief loadGameFromXml va charger le document Xml dans la classe game.
+     *      \param xml est un document qui contient le Xml.
      */
     void loadGameFromXml(QDomDocument &xml);
-    int loadXMLFromPath(QString path);
+
+    /*!
+     *      \brief loadXmlFromPath va tenter de charger le document Xml en fonction du path demandé
+     *      \param path est le chemin du document Xml à charger
+     *      \return Un message d'erreur si la fonction de chargement a échouée
+     */
+    int loadXmlFromPath(QString path);
+
+    /*!
+     *      \brief destructeur de la classe
+     */
     ~MainWindow();
 
 public slots:
     /*!
-     *      \brief resize redimentionne la fenetre en fonction du contenu de m_scene
+     *      \brief resize redimensionne la fenêtre en fonction du contenu de m_scene.
      *      \param w est la largeur de m_scene
      *      \param h est la hauteur de m_scene
      */
@@ -56,17 +66,25 @@ public slots:
      */
     void callChoiceXmlFile();
 
+    /*!
+     *      \brief saveSelectedPathFromXml sauvegarde le chemin du fichier xml choisis
+     *      \param path est le chemin du xml choisi
+     */
     void saveSelectedPathFromXml(QString path);
 
+
+    /*!
+     *      \brief callLoadGameFromXml va appeler la fonction loadGameFromXml
+     */
     void callLoadGameFromXml();
 
 private:
-    XmlFileChoice *m_xmlChoiceWindow;
-    Ui::MainWindow *ui;
-    MyGraphicsScene *m_scene;
-    Game m_game;
-    QString m_loadedPathFromXML;
-    QDomDocument m_XMLFileChosed;
+    XmlFileChoice *m_xmlChoiceWindow;///< Fenetre de choix du fichier Xml
+    Ui::MainWindow *ui;///< Fenetre principale, conenant le GUI
+    MyGraphicsScene *m_scene;///< Scene qui est associée à la zone graphique
+    Game m_game;///< Game qui contient tout le jeu
+    QString m_loadedPath;///< Chemin du Xml chargé
+    QDomDocument m_XMLFileChosed;///< Document qui récupère le document Xml choisi
 };
 
 #endif // MAINWINDOW_H

@@ -34,7 +34,7 @@ void MainWindow::loadGameFromXml(QDomDocument &xml)
     m_game.load(xml);
 }
 
-int MainWindow::loadXMLFromPath(QString path)
+int MainWindow::loadXmlFromPath(QString path)
 {
     QFile file(path);
     if (!file.open(QIODevice::ReadOnly))
@@ -45,6 +45,8 @@ int MainWindow::loadXMLFromPath(QString path)
         return EXIT_FAILURE;
     }
     file.close();
+
+    return 0; //tutti bueno
 }
 
 MainWindow::~MainWindow()
@@ -88,8 +90,8 @@ void MainWindow::callChoiceXmlFile()
 
 void MainWindow::saveSelectedPathFromXml(QString path)
 {
-    m_loadedPathFromXML = path;
-    loadXMLFromPath(m_loadedPathFromXML);
+    m_loadedPath = path;
+    loadXmlFromPath(m_loadedPath);
     qDebug() << path;
 }
 
