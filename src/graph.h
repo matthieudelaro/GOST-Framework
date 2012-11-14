@@ -24,6 +24,11 @@ namespace Graph
         //inline Node* getNext(unsigned int direction) const {return m_links[direction];}
         //inline void setNext()
 
+//        void clear(Graph::Node* g)
+//        {
+//            for(unsigned int )
+//        }
+
         unsigned int info;
     private :
         Node* m_links[nbLinks];
