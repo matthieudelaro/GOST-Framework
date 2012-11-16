@@ -1,6 +1,8 @@
 #ifndef GRAPH_H
 #define GRAPH_H
 
+#include <cstddef> //pour avoir NULL
+
 namespace Graph
 {
     class Node
@@ -33,6 +35,8 @@ namespace Graph
     private :
         Node* m_links[nbLinks];
     };
+
+    void clear(Graph::Node* g);
 
     /*class NodeIndex : public Node
     {
