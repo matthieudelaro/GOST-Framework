@@ -34,7 +34,6 @@ Game::Game()
 {
     m_board = NULL;
     m_pieces = NULL;
-    //m_index = NULL;
     m_nbNodes = 0;
 }
 

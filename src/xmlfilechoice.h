@@ -5,6 +5,7 @@
 #include <QTableWidget>
 #include <QString>
 #include <QStringList>
+#include <QFileInfo>
 
 namespace Ui {class XmlFileChoice;}
 
@@ -15,11 +16,13 @@ class XmlFileChoice : public QDialog
 public:
     explicit XmlFileChoice(QWidget *parent = 0);
     QStringList findXMLFiles(QString dir);
-    void addFilesToTableWidget(QStringList &files);
+    void addFilesToTableWidget(QStringList &m_files);
     ~XmlFileChoice();
 
 public slots:
     void openFileOfItem(int, int);
+    void openFileOfItemAndQuit(int row, int);
+    void chooseFile();
     void callReturn();
 
 signals:
@@ -27,10 +30,11 @@ signals:
 
 private:
     Ui::XmlFileChoice *ui;
-    QTableWidget *autoChoiceTableView;
-    QString selectDir;
-    QStringList files;
-    QString selectedPath;
+    QTableWidget *m_autoChoiceTableView;
+    QString m_selectDir;
+    QStringList m_files;
+    QString m_selectedPath;
+    QFileInfo m_selectedFile;
 };
 
 #endif // XMLFILECHOICE_H

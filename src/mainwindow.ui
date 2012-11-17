@@ -77,7 +77,7 @@
     <property name="title">
      <string>Partie</string>
     </property>
-    <addaction name="actionChoixPartie"/>
+    <addaction name="actionChoixJeu"/>
     <addaction name="actionNouvellePartie"/>
     <addaction name="separator"/>
     <addaction name="actionQuitter"/>
@@ -93,9 +93,9 @@
    </attribute>
   </widget>
   <widget class="QStatusBar" name="statusBar"/>
-  <action name="actionChoixPartie">
+  <action name="actionChoixJeu">
    <property name="text">
-    <string>Choisir une partie</string>
+    <string>Choisir un jeu</string>
    </property>
   </action>
   <action name="actionNouvellePartie">

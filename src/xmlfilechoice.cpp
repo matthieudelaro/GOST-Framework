@@ -2,45 +2,71 @@
 #include "ui_xmlfilechoice.h"
 #include <QDebug>
 #include <QDirIterator>
+#include <QFileDialog>
 
 XmlFileChoice::XmlFileChoice(QWidget *parent) : QDialog(parent), ui(new Ui::XmlFileChoice)
 {
     ui->setupUi(this);
 
-    autoChoiceTableView = new QTableWidget(0,1);
-    autoChoiceTableView->setSelectionBehavior(QAbstractItemView::SelectRows);
+    m_autoChoiceTableView = new QTableWidget(0,1);
+    m_autoChoiceTableView->setSelectionBehavior(QAbstractItemView::SelectRows);
 
-    autoChoiceTableView->horizontalHeader()->setResizeMode(0, QHeaderView::Stretch);
-    autoChoiceTableView->verticalHeader()->hide();
-    autoChoiceTableView->horizontalHeader()->hide();
-    autoChoiceTableView->setShowGrid(false);
-    autoChoiceTableView->setSelectionMode(QAbstractItemView::SingleSelection);
+    m_autoChoiceTableView->horizontalHeader()->setResizeMode(0, QHeaderView::Stretch);
+    m_autoChoiceTableView->verticalHeader()->hide();
+    m_autoChoiceTableView->horizontalHeader()->hide();
+    m_autoChoiceTableView->setShowGrid(false);
+    m_autoChoiceTableView->setSelectionMode(QAbstractItemView::SingleSelection);
 
-    ui->autoChoiceLayout->addWidget(autoChoiceTableView);
+    ui->autoChoiceLayout->addWidget(m_autoChoiceTableView);
 
-    QObject::connect(autoChoiceTableView, SIGNAL(cellClicked(int,int)),this, SLOT(openFileOfItem(int,int)));
+    ui->labelChoice->setAlignment(Qt::AlignHCenter);
+
+    QObject::connect(m_autoChoiceTableView, SIGNAL(cellClicked(int,int)),this, SLOT(openFileOfItem(int,int)));
+    QObject::connect(m_autoChoiceTableView, SIGNAL(cellDoubleClicked(int,int)),this, SLOT(openFileOfItemAndQuit(int,int)));
     QObject::connect(ui->buttonBox,SIGNAL(accepted()),this,SLOT(callReturn()));
+    QObject::connect(ui->buttonChoice,SIGNAL(clicked()),this,SLOT(chooseFile()));
 
-    selectDir = "../res/games";
-    files = findXMLFiles(selectDir);
-    addFilesToTableWidget(files);
+    m_selectDir = "../res/games";
+    m_files = findXMLFiles(m_selectDir);
+    addFilesToTableWidget(m_files);
 }
 
 XmlFileChoice::~XmlFileChoice()
 {
     delete ui;
-    delete autoChoiceTableView;
+    delete m_autoChoiceTableView;
 }
 
 
 void XmlFileChoice::openFileOfItem(int row, int)
 {
-    selectedPath = files[row];
+    m_selectedPath = m_files[row];
+    m_selectedFile.setFile(m_files[row]);
+}
+
+void XmlFileChoice::openFileOfItemAndQuit(int row, int)
+{
+    m_selectedPath = m_files[row];
+    m_selectedFile.setFile(m_files[row]);
+    callReturn();
+}
+
+void XmlFileChoice::chooseFile()
+{
+    QString fichierTmp = QFileDialog::getOpenFileName();
+
+    //on sauvegarde le dernier resultat choisi plutôt que de remplacer le path par ""
+    if(fichierTmp != "")
+    {
+        m_selectedFile.setFile(fichierTmp);
+        m_selectedPath = fichierTmp;
+    }
+    ui->labelChoice->setText(m_selectedFile.fileName());
 }
 
 void XmlFileChoice::callReturn()
 {
-    emit returnSelectedPath(selectedPath);
+    emit returnSelectedPath(m_selectedFile.absoluteFilePath());
 }
 
 QStringList XmlFileChoice::findXMLFiles(QString dir)
@@ -59,8 +85,8 @@ void XmlFileChoice::addFilesToTableWidget(QStringList &files)
     {
         QTableWidgetItem *fileNameItem = new QTableWidgetItem(files[i]);
 
-        int row = autoChoiceTableView->rowCount();
-        autoChoiceTableView->insertRow(row);
-        autoChoiceTableView->setItem(row, 0, fileNameItem);
+        int row = m_autoChoiceTableView->rowCount();
+        m_autoChoiceTableView->insertRow(row);
+        m_autoChoiceTableView->setItem(row, 0, fileNameItem);
     }
 }
