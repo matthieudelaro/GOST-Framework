@@ -13,22 +13,32 @@ namespace List
     };
 
     template <typename T>
-    void clear(Node<T> *l)
+    void clear(Node<T>* &l)
     {
         if(l)
         {
             clear(l->next);
             delete l;
+            l = NULL;
         }
     }
 
     template <typename T>
-    void push_front(const T &info, Node<T> *l)
+    void push_front(const T &info, Node<T>* &l)
     {
         Node<T> *buffer = l;
         l = new Node<T>;
         l->info = info;
         l->next = buffer;
+    }
+
+    template <typename T>
+    unsigned int size(Node<T>* l)
+    {
+        if(l)
+            return 1 + size(l->next);
+        else
+            return 0;
     }
 
     template<typename Key, typename Info>

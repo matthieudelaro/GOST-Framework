@@ -1,6 +1,6 @@
 #include "graph.h"
 
-void Graph::clear(Graph::Node* g)
+void Graph::clear(Graph::Node* &g)
 {
     if(g)// <=> si ce Node != NULL
     {
@@ -23,5 +23,6 @@ void Graph::clear(Graph::Node* g)
 
         //puis on supprime g
         delete g;
+        g = NULL;
     }
 }

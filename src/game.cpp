@@ -99,7 +99,7 @@ bool Game::load(QDomDocument &xml)
                 List::Node<Triple<int, Matrix<Graph::Node*>, Graph::Node*> > *it = pieces;
                 while(it)
                 {
-                    it->info.second.resize(nbLines, nbMaxColumns);
+                    it->info.second.resize(nbLines, nbMaxColumns, NULL);
                     it = it->next;
                 }
                 //Matrix<Graph::Node*> tabBoard(nbLines, nbMaxColumns);
@@ -176,10 +176,10 @@ bool Game::load(QDomDocument &xml)
                             //*((*(m_boardMatrix(line, column)))[0]) = m_boardMatrix(line-1, column);
                             if(line > 0)
                             {
-                                //Graph::Node* temp0 = m_boardMatrix(line, column);
-                                //int temp12= temp0->info;
-                                //Graph::Node* temp1 = (*(m_boardMatrix(line, column)))[0];
-                                //Graph::Node* temp2 = m_boardMatrix(line-1, column);
+//                                Graph::Node* temp0 = m_boardMatrix(line, column);
+//                                int temp12= temp0->info;
+//                                Graph::Node* temp1 = (*(m_boardMatrix(line, column)))[0];
+//                                Graph::Node* temp2 = m_boardMatrix(line-1, column);
                                 (*(m_boardMatrix(line, column)))[0] = m_boardMatrix(line-1, column);
 
                             }
@@ -199,15 +199,15 @@ bool Game::load(QDomDocument &xml)
                         it = pieces;
                         while(it)
                         {
-                            if(it->info.second(line, column))
+                            if(it->info.second(line, column))// si la case (line, column) existe
                             {
-                                if(line > 0)
+                                if(line > 0)//si line-1 existe
                                     (*(it->info.second(line, column)))[0] = it->info.second(line-1, column);
-                                if(line + 1 < it->info.second.getHeight())
+                                if(line + 1 < it->info.second.getHeight())//si line+1 existe
                                     (*(it->info.second(line, column)))[1] = it->info.second(line+1, column);
-                                if(column > 0)
+                                if(column > 0)//si columne-1 existe
                                     (*(it->info.second(line, column)))[2] = it->info.second(line, column-1);
-                                if(column + 1 < it->info.second.getWidth())
+                                if(column + 1 < it->info.second.getWidth())//si column+1 existe
                                     (*(it->info.second(line, column)))[3] = it->info.second(line, column+2);
                             }
                             it = it->next;
@@ -225,6 +225,7 @@ bool Game::load(QDomDocument &xml)
 
                 //on libère pieces
                 clear(pieces);
+                qDebug() << "Il y a " << List::size(m_pieces);
             }
             else
             {

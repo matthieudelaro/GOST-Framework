@@ -36,7 +36,7 @@ namespace Graph
         Node* m_links[nbLinks];
     };
 
-    void clear(Graph::Node* g);
+    void clear(Node *&g);
 
     /*class NodeIndex : public Node
     {
