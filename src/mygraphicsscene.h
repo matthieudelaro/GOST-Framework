@@ -5,7 +5,7 @@
 #include <QGraphicsPixmapItem>
 #include <QGraphicsSceneMouseEvent>
 #include <QPixmap>
-#include "matrix.h"
+#include "game.h"
 #include "graph.h"
 
 /*!
@@ -18,15 +18,15 @@ class MyGraphicsScene : public QGraphicsScene
 
 public:
     MyGraphicsScene();
-    void associateMatrix(Matrix<Graph::Node *> *m);//on associe la matrice chargée dans le xml à l'interface graphique
+    void associateGame(Game *g);//on associe la matrice chargée dans le xml à l'interface graphique
     void displayMatrix(); //affiche la matrice nouvellement chargée
+    void addPieces();
 
 /*!
     \brief La fonction callResize va appeler le redimmensionage de ui->graphicsView en fonction du contenu de la matrice.
 */
     void callResize();
     ~MyGraphicsScene();
-
 
 protected:
     void mousePressEvent(QGraphicsSceneMouseEvent *mouseEvent);
@@ -37,10 +37,12 @@ signals:
     void sendResize(int w, int h);
 
 private:
-    QGraphicsPixmapItem ***m_itemTest;
+    QGraphicsPixmapItem ***m_itemBoard;
+    QGraphicsPixmapItem **m_itemPieces;
     int m_HSize,m_WSize,m_BSize; //taille de hauteur, largeur et de base
     Matrix<Graph::Node*> *m_matrix;
-    QPixmap m_vide,m_base;
+    Game *m_game;
+    QPixmap m_vide,m_base, m_rouge, m_bleu;
 };
 
 #endif // MYGRAPHICSSCENE_H

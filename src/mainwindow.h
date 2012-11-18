@@ -78,6 +78,11 @@ public slots:
      */
     void callLoadGameFromXml();
 
+    /*!
+     *      \brief callAddPieces affiche les pieces sur le plateau
+     */
+    void callAddPieces();
+
 private:
     XmlFileChoice *m_xmlChoiceWindow;///< Fenetre de choix du fichier Xml
     Ui::MainWindow *ui;///< Fenetre principale, conenant le GUI

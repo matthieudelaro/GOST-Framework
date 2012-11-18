@@ -36,8 +36,8 @@
             </line>
             <line>
                 <column type="free"/>
-                <column type="free"/>
-                <column type="free"/>
+                <column type="piece" number="2"/>
+                <column type="piece" number="2"/>
             </line>
         </initialShape>
         <finalShape>

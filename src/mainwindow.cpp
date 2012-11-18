@@ -24,6 +24,7 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWi
     QObject::connect(ui->associateButton,SIGNAL(clicked()),this,SLOT(callAssociateMatrix()));
     QObject::connect(ui->actionQuitter,SIGNAL(triggered()),qApp,SLOT(quit()));
     QObject::connect(ui->actionChoixJeu,SIGNAL(triggered()),this,SLOT(callChoiceXmlFile()));
+    QObject::connect(ui->addPieceButton,SIGNAL(clicked()),this,SLOT(callAddPieces()));
 
     //on empèche de pouvoir afficher la matrice sans avoir chargé le jeu
     ui->displayButton->setDisabled(true);
@@ -37,11 +38,12 @@ void MainWindow::loadGameFromXml(QDomDocument &xml)
     qDebug() << "Initial State :";
     for(unsigned int index = 0; index < m_game.getNbNodes(); ++index)
     {
-        Graph::Node *node = m_game.getInitialState()[index];
+        qDebug() << index ;
+        /*Graph::Node *node = m_game.getInitialState()[index];
         if(node)
             qDebug() << node->info;
         else
-            qDebug() << "aucune piece";
+            qDebug() << "aucune piece";*/
     }
 }
 
@@ -81,7 +83,7 @@ void MainWindow::resize(int w, int h)
 
 void MainWindow::callAssociateMatrix()
 {
-    m_scene->associateMatrix(m_game.getBoardMatrix());
+    m_scene->associateGame(&m_game);
 
     //on empèche de refaire une association mais on autorise l'affichage
     ui->associateButton->setDisabled(true);
@@ -114,5 +116,10 @@ void MainWindow::saveSelectedPathFromXml(QString path)
 void MainWindow::callLoadGameFromXml()
 {
     loadGameFromXml(m_XMLFileChosed);
+}
+
+void MainWindow::callAddPieces()
+{
+    m_scene->addPieces();
 }
 
