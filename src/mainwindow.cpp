@@ -32,6 +32,17 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWi
 void MainWindow::loadGameFromXml(QDomDocument &xml)
 {
     m_game.load(xml);
+
+    //méthode d'affichage du numéro des pièces dans l'index (donc ça n'affiche pas les void, seulement les free et les pièces)
+    qDebug() << "Initial State :";
+    for(unsigned int index = 0; index < m_game.getNbNodes(); ++index)
+    {
+        Graph::Node *node = m_game.getInitialState()[index];
+        if(node)
+            qDebug() << node->info;
+        else
+            qDebug() << "aucune piece";
+    }
 }
 
 int MainWindow::loadXmlFromPath(QString path)

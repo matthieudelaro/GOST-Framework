@@ -94,20 +94,23 @@ bool Game::load(QDomDocument &xml)
                     }
                 }
 
-                //m_index = new Graph::Node* [m_nbNodes];
-                m_index.resize(m_nbNodes);
+                //Avec toutes les informations que l'on vient de récolter avec ce premier passage,
+                //on initialise m_index, m_initialState, m_finalState, m_boardMatrix, et les matrices
+                //temporaires de chaque pièce.
+                m_index.resize(m_nbNodes, NULL);
+                m_initialState.resize(m_nbNodes, NULL);
+                m_finalState.resize(m_nbNodes, NULL);
+                m_boardMatrix.resize(nbLines, nbMaxColumns, NULL);
                 List::Node<Triple<int, Matrix<Graph::Node*>, Graph::Node*> > *it = pieces;
                 while(it)
                 {
                     it->info.second.resize(nbLines, nbMaxColumns, NULL);
                     it = it->next;
                 }
-                //Matrix<Graph::Node*> tabBoard(nbLines, nbMaxColumns);
-                m_boardMatrix.resize(nbLines, nbMaxColumns, NULL);
 
                 //Etape 2 :
                 //Parcours du XML
-                //Remplissage des tab 2D
+                //Remplissage des matrices
                 unsigned int index = 0;
                 for(unsigned int line = 0; line < nbLines; ++line)
                 {
@@ -118,7 +121,9 @@ bool Game::load(QDomDocument &xml)
                         it = pieces;
 
                         QDomElement element = columns.item(column).toElement();
-                        if(element.attribute("type") == "void")
+                        //finalement il est inutile d'initialiser à NULL, vu que c'est déjà fait
+                        //à la fin de l'étape 1.
+                        /*if(element.attribute("type") == "void")
                         {
                             m_boardMatrix(line, column) = NULL;
                             while(it)
@@ -127,25 +132,26 @@ bool Game::load(QDomDocument &xml)
                                 it = it->next;
                             }
                         }
-                        else
+                        else*/
+                        if(element.attribute("type") != "void")
                         {
                             m_boardMatrix(line, column) = new Graph::Node(index);
-
                             if(!m_boardMatrix(line, column))
                                 throw BadAllocation("Impossible to allocate a new Node for m_boardMatrix.");
 
                             if(m_board == NULL)
                                 m_board = m_boardMatrix(line, column);
                             m_index[index] = m_boardMatrix(line, column);
-                            index++;
                             if(element.attribute("type") == "piece")
                             {
                                 while(it)
                                 {
                                     if(element.attribute("number").toInt() == it->info.first)
                                     {
-                                        //on créé un noeud dont la valeur correspond au numéro de la pièce
+                                        //on crée un noeud dont la valeur correspond au numéro de la pièce
                                         it->info.second(line, column) = new Graph::Node(it->info.first);
+
+                                        m_initialState[index] = it->info.second(line, column);
 
                                         //si c'est la première fois qu'on tombe sur un noeud de cette pièce
                                         if(it->info.third == NULL)
@@ -157,7 +163,8 @@ bool Game::load(QDomDocument &xml)
                                     }
                                     it = it->next;
                                 }
-                            }
+                            }                            
+                            index++;
                         }
                     }
                 }
@@ -247,10 +254,10 @@ bool Game::load(QDomDocument &xml)
     return true;
 }
 
-const Graph::Node *& Game::getNodePiece(unsigned int index, const Vector<Graph::Node *> &etat) const
-{
-    qDebug() << "Game::getNodePiece à implémenter !";
-}
+//const Graph::Node *& Game::getNodePiece(unsigned int index, const Vector<Graph::Node *> &etat) const
+//{
+//    qDebug() << "Game::getNodePiece à implémenter !";
+//}
 
 Game::~Game()
 {
@@ -261,11 +268,11 @@ Game::~Game()
     //    delete [] m_index;
 }
 
-unsigned int Game::getNumberPiece(unsigned int index, const Vector<Graph::Node *> &etat) const
-{
-    qDebug() << "Game::getNumberPiece à tester !";
-    return etat[index]->info;
-}
+//unsigned int Game::getNumberPiece(unsigned int index, const Vector<Graph::Node *> &etat) const
+//{
+//    qDebug() << "Game::getNumberPiece à tester !";
+//    return etat[index]->info;
+//}
 
 
 /*void Lecture_DOM::lire()

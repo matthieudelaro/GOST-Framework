@@ -16,8 +16,8 @@ public:
     Game();
     bool load(QDomDocument &xml);
     inline unsigned int getNbNodes() const {return m_nbNodes;}
-    const Graph::Node*& getNodePiece(unsigned int index, const Vector<Graph::Node*> &etat) const;//finalement je crois que cette fonction n'a rien à faire ici
-    unsigned int getNumberPiece(unsigned int index, const Vector<Graph::Node*> &etat) const;//finalement je crois que cette fonction n'a rien à faire ici
+    //const Graph::Node*& getNodePiece(unsigned int index, const Vector<Graph::Node*> &etat) const;//finalement je crois que cette fonction n'a rien à faire ici
+    //unsigned int getNumberPiece(unsigned int index, const Vector<Graph::Node*> &etat) const;//finalement je crois que cette fonction n'a rien à faire ici
     inline Matrix<Graph::Node*>* getBoardMatrix() {return &m_boardMatrix;}
 
     /*! \brief Effectue la liaison entre un index et un noeud du plateau.
@@ -34,6 +34,18 @@ public:
      *  \return Un pointeur vers le noeud de la pièce qui occupe boardNode.
      */
     inline const Graph::Node* getPieceNode(const Graph::Node* &boardNode, const Vector<Graph::Node*> &state) const { return state[boardNode->info];}
+
+    /*! \brief Effectue la liaison entre une position sur le plateau, et le noeud de la pièce qui l'occupe.
+     *
+     *  \param line Ordonnée de la position.
+     *  \param column Abscisse de la position.
+     *  \param state L'état du jeu auquel on souhaite obtenir le noeud de la pièce.
+     *  \return Un pointeur vers le noeud de la pièce qui occupe boardNode.
+     */
+    inline const Graph::Node* getPieceNode(unsigned int line, unsigned int column, const Vector<Graph::Node*> &state) const
+    {
+        return state[m_boardMatrix.getIndex(line, column)];
+    }
 
     /*
     /*! \brief Effectue la liaison entre un index, et le noeud de la pièce qui l'occupe.
