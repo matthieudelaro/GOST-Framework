@@ -38,12 +38,11 @@ void MainWindow::loadGameFromXml(QDomDocument &xml)
     qDebug() << "Initial State :";
     for(unsigned int index = 0; index < m_game.getNbNodes(); ++index)
     {
-        qDebug() << index ;
-        /*Graph::Node *node = m_game.getInitialState()[index];
+       Graph::Node *node = m_game.getInitialState()[index];
         if(node)
             qDebug() << node->info;
         else
-            qDebug() << "aucune piece";*/
+            qDebug() << "aucune piece";
     }
 }
 

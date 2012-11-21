@@ -2,9 +2,11 @@
 #define MYGRAPHICSSCENE_H
 
 #include <QGraphicsScene>
-#include <QGraphicsPixmapItem>
+#include <QGraphicsRectItem>
 #include <QGraphicsSceneMouseEvent>
 #include <QPixmap>
+#include <QColor>
+#include <QPainter>
 #include "game.h"
 #include "graph.h"
 
@@ -18,14 +20,30 @@ class MyGraphicsScene : public QGraphicsScene
 
 public:
     MyGraphicsScene();
-    void associateGame(Game *g);//on associe la matrice chargée dans le xml à l'interface graphique
-    void displayMatrix(); //affiche la matrice nouvellement chargée
-    void addPieces();
 
 /*!
-    \brief La fonction callResize va appeler le redimmensionage de ui->graphicsView en fonction du contenu de la matrice.
+ *  \brief associe la matrice garchée dans le xml à l'interface graphique
+ *  \param g est la matrice chargée
+ */
+    void associateGame(Game *g);
+
+/*!
+ * \brief affiche la matrice chargée
+ */
+    void displayMatrix();
+
+    void addPieces();
+
+
+    void createBrushs();
+
+
+/*!
+ *  \brief La fonction callResize va appeler le redimmensionage de ui->graphicsView en fonction du contenu de la matrice.
 */
     void callResize();
+
+
     ~MyGraphicsScene();
 
 protected:
@@ -37,12 +55,13 @@ signals:
     void sendResize(int w, int h);
 
 private:
-    QGraphicsPixmapItem ***m_itemBoard;
-    QGraphicsPixmapItem **m_itemPieces;
-    int m_HSize,m_WSize,m_BSize; //taille de hauteur, largeur et de base
-    Matrix<Graph::Node*> *m_matrix;
+    QGraphicsRectItem ***m_itemBoard; ///< Les cases du plateau
+    QGraphicsRectItem **m_itemPieces; ///< Les pièces de jeu
+    int m_HSize,m_WSize,m_BSize; ///< taille de hauteur, largeur et de base
     Game *m_game;
     QPixmap m_vide,m_base, m_rouge, m_bleu;
+    QBrush **m_brushs; ///< Différents qpainter du jeu
+    QColor *m_colorList;
 };
 
 #endif // MYGRAPHICSSCENE_H
