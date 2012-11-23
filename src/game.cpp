@@ -33,6 +33,7 @@
 Game::Game()
 {
     m_board = NULL;
+    m_jocker = NULL;
     m_pieces = NULL;
     m_nbNodes = 0;
 }
@@ -53,7 +54,8 @@ bool Game::load(QDomDocument &xml)
             QDomNodeList tempListcolumns = xml.elementsByTagName("column");
             //QDomNodeList listLines = xml.elementsByTagName("line");
             QDomNodeList listLines = initialShape.childNodes();
-            if(!tempListcolumns.isEmpty() && !listLines.isEmpty())
+            QDomNodeList listFinalLines = finalShape.childNodes();
+            if(!tempListcolumns.isEmpty() && !listLines.isEmpty() && !listFinalLines.isEmpty())
             {
                 //Pour chaque pièce : son numéro, un tableau 2D de Graph::Node*, un Graph::Node* pour le début de la pièce
                 List::Node<Triple<int, Matrix<Graph::Node*>, Graph::Node*> > *pieces = NULL;
@@ -68,17 +70,38 @@ bool Game::load(QDomDocument &xml)
                 m_nbNodes = 0;
                 m_board = NULL;
 
+                if(((unsigned int)listFinalLines.count()) != nbLines)
+                {
+                    qDebug() << "Il n'y a pas autant de lines dans l'état final que dans l'état initial.";
+                    return false;
+                }
+
                 for(unsigned int line = 0; line < nbLines; ++line)
                 {
                     QDomNodeList columns = listLines.item(line).childNodes();
+                    QDomNodeList finalColumns = listFinalLines.item(line).childNodes();
+
                     unsigned int nbColumns = ((unsigned int)columns.count());
+                    if(((unsigned int)finalColumns.count()) != nbColumns)
+                    {
+                        qDebug() << "Il n'y a pas autant de columns dans l'état final que dans l'état initial pour la line " << line;
+                        return false;
+                    }
+
                     if(nbColumns > nbMaxColumns)
                         nbMaxColumns = nbColumns;
                     for(unsigned int column = 0; column < nbColumns; ++column)
                     {
                         QDomElement element = columns.item(column).toElement();
+                        QDomElement finalElement = columns.item(column).toElement();
                         if(element.attribute("type") != "void")
                         {
+                            if(finalElement.attribute("type") == "void")
+                            {
+                                qDebug() << "Il n'y a pas autant de columns dans l'état final que dans l'état initial pour la line " << line;
+                                return false;
+                            }
+
                             m_nbNodes++;
                             if(element.attribute("type") == "piece")
                             {

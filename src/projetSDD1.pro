@@ -27,7 +27,8 @@ HEADERS  += mainwindow.h \
     tools.h \
     vector.h \
     mygraphicsscene.h \
-    xmlfilechoice.h
+    xmlfilechoice.h \
+    state.h
 
 FORMS    += mainwindow.ui \
     xmlfilechoice.ui

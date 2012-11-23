@@ -9,6 +9,8 @@
 #include "collection.h"
 #include "matrix.h"
 
+/*! \brief Gère le contenu du jeu : le plateau, les pièces et les règles.
+ */
 class Game
 {
 public:
@@ -71,6 +73,7 @@ public:
 
 private:
     Graph::Node *m_board;
+    Graph::Node *m_jocker; ///< Représente la pièce jocker pour l'état final.
     Matrix<Graph::Node*> m_boardMatrix;
     List::Node<Graph::Node*> *m_pieces;
     Vector<Graph::Node*> m_index;
