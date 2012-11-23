@@ -19,6 +19,16 @@
      <property name="currentIndex">
       <number>0</number>
      </property>
+     <widget class="QWidget" name="autoChoiceTab">
+      <attribute name="title">
+       <string>Détection automatique </string>
+      </attribute>
+      <layout class="QVBoxLayout" name="verticalLayout_2">
+       <item>
+        <layout class="QVBoxLayout" name="autoChoiceLayout"/>
+       </item>
+      </layout>
+     </widget>
      <widget class="QWidget" name="directChoiceTab">
       <attribute name="title">
        <string>Choisir sur le disque</string>
@@ -37,16 +47,6 @@
           <string>QFileDialog::GetOpenFileName();</string>
          </property>
         </widget>
-       </item>
-      </layout>
-     </widget>
-     <widget class="QWidget" name="autoChoiceTab">
-      <attribute name="title">
-       <string>Détection automatique </string>
-      </attribute>
-      <layout class="QVBoxLayout" name="verticalLayout_2">
-       <item>
-        <layout class="QVBoxLayout" name="autoChoiceLayout"/>
        </item>
       </layout>
      </widget>
