@@ -8,6 +8,7 @@
 #include "mygraphicsscene.h"
 #include "xmlfilechoice.h"
 #include "game.h"
+#include "endwindow.h"
 
     /*!
      *      \brief La classe MainWindow gère le GUI du projet.
@@ -83,6 +84,11 @@ public slots:
      */
     void callAddPieces();
 
+    /*!
+     *  \brief determine la direction et la pièce appelée
+     */
+    void findPositionAndPiece(QPointF init, QPointF final);
+
 private:
     XmlFileChoice *m_xmlChoiceWindow;///< Fenetre de choix du fichier Xml
     Ui::MainWindow *ui;///< Fenetre principale, conenant le GUI
@@ -90,6 +96,7 @@ private:
     Game m_game;///< Game qui contient tout le jeu
     QString m_loadedPath;///< Chemin du Xml chargé
     QDomDocument m_XMLFileChosed;///< Document qui récupère le document Xml choisi
+    EndWindow *finalStateWindows;
 };
 
 #endif // MAINWINDOW_H

@@ -163,7 +163,7 @@ bool Game::load(QDomDocument &xml)
                                     }
                                     it = it->next;
                                 }
-                            }                            
+                            }
                             index++;
                         }
                     }

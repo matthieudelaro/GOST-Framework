@@ -5,7 +5,7 @@
 
 int myMax(int x,int y){return(x>y)?x:y;}
 
-MyGraphicsScene::MyGraphicsScene()
+MyGraphicsScene::MyGraphicsScene(int baseRectSize)
 {
     m_game = NULL;
     m_itemBoard = NULL;
@@ -14,6 +14,7 @@ MyGraphicsScene::MyGraphicsScene()
     m_HSize = 0;
     m_WSize = 0;
     m_BSize = 0;
+    m_baseRectSize = baseRectSize;
 
     m_colorList =  new QColor[4];
     m_colorList[0] = QColor::fromRgb(204,204,204);
@@ -43,23 +44,23 @@ void MyGraphicsScene::displayMatrix()
         m_itemBoard[i] = new QGraphicsRectItem*[m_HSize];
         for(int j = 0; j < m_WSize; j ++)
         {
-            m_itemBoard[i][j] =  new QGraphicsRectItem(0,0,500,500);
+            m_itemBoard[i][j] =  new QGraphicsRectItem(0,0,m_baseRectSize,m_baseRectSize);
             if(m_game->getBoardMatrix()->operator ()(i,j) == NULL)
                 m_itemBoard[i][j]->setBrush(*m_brushs[0]);
             else
                 m_itemBoard[i][j]->setBrush(*m_brushs[1]);
             m_itemBoard[i][j]->setScale(1./(m_BSize)); //OK pour la redimension
             this->addItem(m_itemBoard[i][j]);
-            m_itemBoard[i][j]->setPos(j*(500/m_BSize),i*(500/m_BSize)); //problèmes de position, plus la pièce est petite et plus elle se décale vers la gauche
+            m_itemBoard[i][j]->setPos(j*(m_baseRectSize/m_BSize),i*(m_baseRectSize/m_BSize)); //problèmes de position, plus la pièce est petite et plus elle se décale vers la gauche
         }
     }
 }
 
-void MyGraphicsScene::addPieces()
+void MyGraphicsScene::addPiecesInitialState()
 {
     m_itemPieces = new QGraphicsRectItem*[m_game->getNbNodes()];
     int inc = 0; //sert à faire de l'affichage, pour compter le nombre de "blancs"
-    for( int i = 0; i < m_game->getNbNodes(); i++)
+    for(int i = 0; i < m_game->getNbNodes(); i++)
     {
         Graph::Node *node = m_game->getInitialState()[i];
 
@@ -68,12 +69,35 @@ void MyGraphicsScene::addPieces()
 
         if(node)
         {
-            m_itemPieces[i] = new QGraphicsRectItem(0,0,500,500);
+            m_itemPieces[i] = new QGraphicsRectItem(0,0,m_baseRectSize,m_baseRectSize);
+            m_itemPieces[i]->setBrush(*m_brushs[node->info + 1]);
+            m_itemPieces[i]->setScale(1./(m_BSize)); //OK pour la redimension
+            this->addItem(m_itemPieces[i]);
+            m_itemPieces[i]->setPos((m_baseRectSize/m_BSize)*((i+inc)%m_game->getBoardMatrix()->getWidth()),(m_baseRectSize/m_BSize)*((i+inc)/m_game->getBoardMatrix()->getWidth()));
+        }
+    }
+}
+
+void MyGraphicsScene::addPiecesFinalState()
+{
+    qDebug() << "final final final";
+    m_itemPieces = new QGraphicsRectItem*[m_game->getNbNodes()];
+    int inc = 0; //sert à faire de l'affichage, pour compter le nombre de "blancs"
+    for( int i = 0; i < m_game->getNbNodes(); i++)
+    {
+        Graph::Node *node = m_game->getFinalState()[i];
+
+        if(m_game->getBoardMatrix()->operator [](i) == NULL)
+            inc ++;
+
+        if(node)
+        {
+            m_itemPieces[i] = new QGraphicsRectItem(0,0,m_baseRectSize,m_baseRectSize);
             m_itemPieces[i]->setBrush(*m_brushs[node->info + 1]);
 
             m_itemPieces[i]->setScale(1./(m_BSize)); //OK pour la redimension
             this->addItem(m_itemPieces[i]);
-            m_itemPieces[i]->setPos((500/m_BSize)*((i+inc)%m_game->getBoardMatrix()->getWidth()),(500/m_BSize)*((i+inc)/m_game->getBoardMatrix()->getWidth()));
+            m_itemPieces[i]->setPos((m_baseRectSize/m_BSize)*((i+inc)%m_game->getBoardMatrix()->getWidth()),(m_baseRectSize/m_BSize)*((i+inc)/m_game->getBoardMatrix()->getWidth()));
         }
     }
 }
@@ -91,7 +115,7 @@ void MyGraphicsScene::createBrushs()
 
 void MyGraphicsScene::callResize()
 {
-    emit sendResize(m_WSize*(500/m_BSize)+3,m_HSize*(500/m_BSize)+3);
+    emit sendResize(m_WSize*(m_baseRectSize/m_BSize)+3,m_HSize*(m_baseRectSize/m_BSize)+3);
 }
 
 MyGraphicsScene::~MyGraphicsScene()
@@ -120,23 +144,19 @@ void MyGraphicsScene::mousePressEvent(QGraphicsSceneMouseEvent *mouseEvent)
 {
     //comme test permet juste de récupérer la position de la sourie au clic (ou en continu) et de trouver la case du tableau correspondante
     QPointF pos = mouseEvent->lastScenePos();
-    QPointF tab;
-    tab.setX((int)(pos.x()/(500*(1./m_BSize))));
-    tab.setY((int)(pos.y()/(500*(1./m_BSize))));
-    qDebug() << pos << tab;
+    initialPos.setX((int)(pos.x()/(m_baseRectSize*(1./m_BSize))));
+    initialPos.setY((int)(pos.y()/(m_baseRectSize*(1./m_BSize))));
 }
 
 void MyGraphicsScene::mouseMoveEvent(QGraphicsSceneMouseEvent *mouseEvent)
 {
-    QPointF pos = mouseEvent->lastScenePos();
-    QPointF tab;
-    tab.setX((int)(pos.x()/(500*(1./m_BSize))));
-    tab.setY((int)(pos.y()/(500*(1./m_BSize))));
-    qDebug() << pos << tab;
 }
 
 void MyGraphicsScene::mouseReleaseEvent(QGraphicsSceneMouseEvent *mouseEvent)
 {
-    //pour l'instant quedal
+    QPointF pos = mouseEvent->lastScenePos();
+    finalPos.setX((int)(pos.x()/(m_baseRectSize*(1./m_BSize))));
+    finalPos.setY((int)(pos.y()/(m_baseRectSize*(1./m_BSize))));
+    emit sendPositions(initialPos,finalPos);
 }
 

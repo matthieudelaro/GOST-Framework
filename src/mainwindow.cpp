@@ -15,8 +15,7 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWi
 
     this->setCentralWidget(ui->centralWidget);
 
-    //Appel de la fonction resize qui redimmensionne la GUI en fonction de la graphicsView
-    QObject::connect(m_scene,SIGNAL(sendResize(int,int)),this,SLOT(resize(int,int)));
+    finalStateWindows = new EndWindow;
 
     //Connection des bouttons aux slots associés
     QObject::connect(ui->displayButton,SIGNAL(clicked()),this,SLOT(callDisplay()));
@@ -25,6 +24,13 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWi
     QObject::connect(ui->actionQuitter,SIGNAL(triggered()),qApp,SLOT(quit()));
     QObject::connect(ui->actionChoixJeu,SIGNAL(triggered()),this,SLOT(callChoiceXmlFile()));
     QObject::connect(ui->addPieceButton,SIGNAL(clicked()),this,SLOT(callAddPieces()));
+    QObject::connect(ui->actionAfficher_Fin,SIGNAL(triggered()),finalStateWindows,SLOT(show()));
+
+    //Appel de la fonction resize qui redimensionne la GUI en fonction de la graphicsView
+    QObject::connect(m_scene,SIGNAL(sendResize(int,int)),this,SLOT(resize(int,int)));
+
+    //appelle de la fonction qui vérifie si le déplacement est bon et récupérer la pièce correspondante
+    QObject::connect(m_scene,SIGNAL(sendPositions(QPointF,QPointF)),this,SLOT(findPositionAndPiece(QPointF,QPointF)));
 
     //on empèche de pouvoir afficher la matrice sans avoir chargé le jeu
     ui->displayButton->setDisabled(true);
@@ -72,6 +78,8 @@ MainWindow::~MainWindow()
     delete m_scene;
     if(m_xmlChoiceWindow)
         delete m_xmlChoiceWindow;
+
+    delete finalStateWindows;
 }
 
 void MainWindow::resize(int w, int h)
@@ -83,6 +91,7 @@ void MainWindow::resize(int w, int h)
 void MainWindow::callAssociateMatrix()
 {
     m_scene->associateGame(&m_game);
+    finalStateWindows->display(m_game);
 
     //on empèche de refaire une association mais on autorise l'affichage
     ui->associateButton->setDisabled(true);
@@ -119,6 +128,11 @@ void MainWindow::callLoadGameFromXml()
 
 void MainWindow::callAddPieces()
 {
-    m_scene->addPieces();
+    m_scene->addPiecesInitialState();
+}
+
+void MainWindow::findPositionAndPiece(QPointF init, QPointF final)
+{
+    qDebug() << init << " to " << final;
 }
 
