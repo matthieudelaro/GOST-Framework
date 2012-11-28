@@ -2,6 +2,7 @@
 #define GRAPH_H
 
 #include <cstddef> //pour avoir NULL
+#include "list.h"
 
 namespace Graph
 {
@@ -20,16 +21,15 @@ namespace Graph
                 m_links[i] = NULL;
         }
 
-        static const unsigned int nbLinks = 4;
-        //inline Node** operator[](unsigned int direction) {return &(m_links[direction]);}
-        inline Node*& operator[](unsigned int direction) {return m_links[direction];}
-        //inline Node* getNext(unsigned int direction) const {return m_links[direction];}
-        //inline void setNext()
+        ~Node()
+        {
 
-//        void clear(Graph::Node* g)
-//        {
-//            for(unsigned int )
-//        }
+        }
+
+        static const unsigned int nbLinks = 4;
+        inline Node*& operator[](unsigned int direction) {return m_links[direction];}
+        inline Node* getConstLink(unsigned int direction) const {return m_links[direction];}
+        inline Node*& getLink(unsigned int direction) {return m_links[direction];}
 
         unsigned int info;
     private :
@@ -38,15 +38,27 @@ namespace Graph
 
     void clear(Node *&g);
 
-    /*class NodeIndex : public Node
-    {
-    public :
-        NodeIndex(unsigned int index) : Node(), m_index(index) {}
-        unsigned int m_index;
-    };*/
+    /*! \brief Cette fonction renvoie une copie du Graph.
+     */
+    Node* copy(Node *original);
+
+    /*! \brief Cette fonction récursive est utilisée par Node* copy(Node *original). Elle n'est pas dédiée à l'utilisateur
+     *  \see Node* copy(Node *original);
+     */
+    void copy(Graph::Node* original, Graph::Node* &final, List::Node<Graph::Node*>* &blacklist);
+
+    /*! \brief Cette fonction renvoie une liste contenant les informations des noeuds du graphe.
+     */
+    List::Node<Graph::Node*>* toList(Node *graph);
+
+    /*! \brief Cette fonction récursive est utilisée par toList(Graph::Node* graph). Elle n'est pas dédiée à l'utilisateur
+     *  \see List::Node<unsigned int>* toList(Graph::Node* graph);
+     */
+    void toList(Graph::Node* graph, List::Node<Graph::Node*> *&list);
 
     inline unsigned int oppositeDirection(unsigned int direction) {return Node::nbLinks - direction;}
 
+    void tests();
 }
 
 #endif // GRAPH_H

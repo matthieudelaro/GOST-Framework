@@ -30,6 +30,16 @@
 //    qDebug() << str.section( " ", 1, 1 ).toFloat();*/
 //}
 
+Game::Game(const Game &original)
+{
+    throw "Appel du constructeur de copie de Game !";
+}
+
+Game &Game::Game::operator =(const Game &original)
+{
+    throw "Appel de l'opérateur d'affectation de Game !";
+}
+
 Game::Game()
 {
     m_board = NULL;
@@ -285,10 +295,17 @@ bool Game::load(QDomDocument &xml)
 Game::~Game()
 {
     //Supprimer le m_board
-    //Supprimer les pièces
+    Graph::clear(m_board);
 
-    //if(m_index != NULL)
-    //    delete [] m_index;
+    //Supprimer les pièces
+    Graph::clear(m_jocker);
+    List::Node<Graph::Node*>* it = m_pieces;
+    while(it)
+    {
+        delete it->info;
+        it = it->next;
+    }
+    List::clear(m_pieces);
 }
 
 //unsigned int Game::getNumberPiece(unsigned int index, const Vector<Graph::Node *> &etat) const

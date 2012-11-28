@@ -11,6 +11,15 @@ template <typename T>
 class Vector
 {
 public:
+    Vector& operator=(const Vector& original)
+    {
+        m_tab = NULL;
+        resize(original.getLength());
+        for(unsigned int i = 0; i < m_length; ++i)
+            m_tab[i] = original[i];
+        return *this;
+    }
+
     /*! \brief Ce constructeur initialise la taille du tableau à la valeur de length.
      *
      *  \param lenght Définit la taille du tableau. Sa valeur par défaut est 0.
@@ -53,7 +62,7 @@ public:
      *  \param index L'index dont on veut connaître la valeur.
      *  \return La valeur contenue à l'index.
      */
-    inline T operator[](unsigned int index) const { return m_tab[index];}
+    inline const T& operator[](unsigned int index) const { return m_tab[index];}
 
     /*! \return La longueur du tableau.
      */
@@ -150,9 +159,27 @@ public:
 
     /*! \brief Appelle clear().
      */
-    ~Vector()
+    virtual ~Vector()
     {
         clear();
+    }
+
+    static void tests()
+    {
+        qDebug() << "\ntestsVector :";
+        Vector<int> v;
+        v.resize(3);
+        v[0] = 5;
+        v[1] = 6;
+        v[2] = 7;
+        qDebug() << "v : " << v.toString();
+
+        Vector<int> w(v);
+        qDebug() << "w(v) : " << w.toString();
+
+        Vector<int> x;
+        x = w;
+        qDebug() << "x = w : " << x.toString();
     }
 
 private:

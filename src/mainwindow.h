@@ -8,6 +8,7 @@
 #include "mygraphicsscene.h"
 #include "xmlfilechoice.h"
 #include "game.h"
+#include <QMessageBox>
 
     /*!
      *      \brief La classe MainWindow gère le GUI du projet.

@@ -59,7 +59,7 @@ void MyGraphicsScene::addPieces()
 {
     m_itemPieces = new QGraphicsRectItem*[m_game->getNbNodes()];
     int inc = 0; //sert à faire de l'affichage, pour compter le nombre de "blancs"
-    for( int i = 0; i < m_game->getNbNodes(); i++)
+    for( unsigned int i = 0; i < m_game->getNbNodes(); i++)
     {
         Graph::Node *node = m_game->getInitialState()[i];
 
@@ -91,6 +91,13 @@ void MyGraphicsScene::createBrushs()
 
 void MyGraphicsScene::callResize()
 {
+    //penser à protéger pour que ça ne bugge pas si il n'y a pas de fichier chargé
+    //
+    //
+    //
+    //
+    //
+    //
     emit sendResize(m_WSize*(500/m_BSize)+3,m_HSize*(500/m_BSize)+3);
 }
 

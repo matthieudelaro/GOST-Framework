@@ -7,6 +7,18 @@ template <typename T>
 class Matrix : public Vector<T>
 {
 public:
+    Matrix(const Matrix &original) : Vector<T>::Vector(original), m_height(original.getHeight()), m_width(original.getWidth())
+    {
+    }
+
+    Matrix& operator=(const Matrix& original)
+    {
+        m_height = original.getHeight();
+        m_width = original.getWidth();
+        Vector<T>::operator=(original);
+        return *this;
+    }
+
     Matrix(unsigned int height = 0, unsigned int width = 0) : Vector<T>()
     {
         resize(height, width);
@@ -46,8 +58,32 @@ public:
         m_width = 0;
     }
 
+
+    static void tests()
+    {
+        qDebug() << "\ntestsMatrix :";
+        Matrix<int> v;
+        v.resize(2, 2);
+        v(0, 0) = 5;
+        v(0, 1) = 6;
+        v(1, 0) = 7;
+        v(1, 1) = 8;
+        qDebug() << "v : " << v.toString();
+
+        Matrix<int> w(v);
+        qDebug() << "w(v) : " << w.toString();
+
+        w.Vector::resize(2);
+
+        Matrix<int> x;
+        x = w;
+        qDebug() << "x = w : " << x.toString();
+    }
+
+
 private:
     unsigned int m_height, m_width;
 };
+
 
 #endif // MATRIX_H

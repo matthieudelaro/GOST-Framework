@@ -4,6 +4,7 @@
 #include <exception>
 #include <QtCore>
 #include <QDomDocument>
+#include <QDebug>
 
 class XMLFormatException : public std::exception
 {

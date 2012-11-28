@@ -18,7 +18,7 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWi
     //Appel de la fonction resize qui redimmensionne la GUI en fonction de la graphicsView
     QObject::connect(m_scene,SIGNAL(sendResize(int,int)),this,SLOT(resize(int,int)));
 
-    //Connection des bouttons aux slots associés
+    //Connection des boutons aux slots associés
     QObject::connect(ui->displayButton,SIGNAL(clicked()),this,SLOT(callDisplay()));
     QObject::connect(ui->loadGameButton,SIGNAL(clicked()),this,SLOT(callLoadGameFromXml()));
     QObject::connect(ui->associateButton,SIGNAL(clicked()),this,SLOT(callAssociateMatrix()));
@@ -32,17 +32,24 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWi
 
 void MainWindow::loadGameFromXml(QDomDocument &xml)
 {
-    m_game.load(xml);
-
-    //méthode d'affichage du numéro des pièces dans l'index (donc ça n'affiche pas les void, seulement les free et les pièces)
-    qDebug() << "Initial State :";
-    for(unsigned int index = 0; index < m_game.getNbNodes(); ++index)
+    if(m_game.load(xml))
     {
-       Graph::Node *node = m_game.getInitialState()[index];
-        if(node)
-            qDebug() << node->info;
-        else
-            qDebug() << "aucune piece";
+        //méthode d'affichage du numéro des pièces dans l'index (donc ça n'affiche pas les void, seulement les free et les pièces)
+        /*qDebug() << "Initial State :";
+        for(unsigned int index = 0; index < m_game.getNbNodes(); ++index)
+        {
+            Graph::Node *node = m_game.getInitialState()[index];
+            if(node)
+                qDebug() << node->info;
+            else
+                qDebug() << "aucune piece";
+        }
+
+        qDebug() << "Il y a " << List::size(m_game.getPieces()) << " pièces.";*/
+    }
+    else
+    {
+        QMessageBox::critical(this, "Ouverture du jeu", "Le fichier ne respecte pas le format attendu");
     }
 }
 
@@ -72,6 +79,7 @@ MainWindow::~MainWindow()
     delete m_scene;
     if(m_xmlChoiceWindow)
         delete m_xmlChoiceWindow;
+
 }
 
 void MainWindow::resize(int w, int h)

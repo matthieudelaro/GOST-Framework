@@ -14,7 +14,9 @@
 class Game
 {
 public:
-    //Game(const Game &original); Il faut absolument instancier ce constructeur de copie
+    Game(const Game &original);
+    Game& operator=(const Game& original);
+
     Game();
     bool load(QDomDocument &xml);
     inline unsigned int getNbNodes() const {return m_nbNodes;}
@@ -49,16 +51,6 @@ public:
         return state[m_boardMatrix.getIndex(line, column)];
     }
 
-    /*
-    /*! \brief Effectue la liaison entre un index, et le noeud de la pièce qui l'occupe.
-     *
-     *  \param index L'index dont on veut obtenir la pièce
-     *  \param state L'état du jeu auquel on souhaite obtenir le noeud de la pièce.
-     *  \return Un pointeur vers le noeud de la pièce correspondant à l'index.
-
-    inline const Graph::Node* getPieceNode(unsigned int index, const Vector<Graph::Node*> &state) const { return state[index];}
-    */
-
     /*!
      *  \return L'état initial du jeu.
      */
@@ -69,17 +61,27 @@ public:
      */
     inline const Vector<Graph::Node*>& getFinalState() const {return m_finalState;}
 
-    ~Game();
+    /*!
+     *  \return La liste des pièces du jeu
+     */
+    inline const List::Node<Graph::Node*>* getPieces() const {return m_pieces;}
+
+    /*!
+     *  \return Le nombre de pièces du jeu.
+     */
+    inline unsigned int getNbPieces() const {return List::size(m_pieces);}
+
+    virtual ~Game();
 
 private:
-    Graph::Node *m_board;
+    Graph::Node *m_board; ///< Représente le tableau de jeu. Utile pour l'accès récursif.
     Graph::Node *m_jocker; ///< Représente la pièce jocker pour l'état final.
-    Matrix<Graph::Node*> m_boardMatrix;
-    List::Node<Graph::Node*> *m_pieces;
-    Vector<Graph::Node*> m_index;
-    Vector<Graph::Node*> m_initialState;
-    Vector<Graph::Node*> m_finalState;
-    unsigned int m_nbNodes;
+    Matrix<Graph::Node*> m_boardMatrix; ///< Représente le tableau de jeu. Utile pour l'accès en ligne/colonne.
+    List::Node<Graph::Node*> *m_pieces; ///< Représente les pièces du jeu.
+    Vector<Graph::Node*> m_index; ///< Permet de faire la liaison entre un état et les pièces.
+    Vector<Graph::Node*> m_initialState; ///< Représente l'état initial du jeu.
+    Vector<Graph::Node*> m_finalState; ///< Représente l'état final du jeu.
+    unsigned int m_nbNodes; ///< Représente le nombre de cases existantes sur le plateau.
 };
 
 #endif // GAME_H
