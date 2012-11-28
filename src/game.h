@@ -9,7 +9,7 @@
 #include "collection.h"
 #include "matrix.h"
 
-typedef Vector<Graph::Node*> State;
+typedef Vector<Graph::Node*> State;///< Représente un état du jeu. Chaque case correspond à une case existante du plateau, et contient un pointeur vers le morceau de pièce qui la chevauche.
 
 /*! \brief Gère le contenu du jeu : le plateau, les pièces et les règles.
  */
@@ -21,9 +21,13 @@ public:
 
     Game();
     bool load(QDomDocument &xml);
+
+    /*! \return Le nombre de cases existantes sur le plateau. Tout State doit avoir cette longueur.
+     */
     inline unsigned int getNbNodes() const {return m_nbNodes;}
-    //const Graph::Node*& getNodePiece(unsigned int index, const Vector<Graph::Node*> &etat) const;//finalement je crois que cette fonction n'a rien à faire ici
-    //unsigned int getNumberPiece(unsigned int index, const Vector<Graph::Node*> &etat) const;//finalement je crois que cette fonction n'a rien à faire ici
+
+    /*! \return La Matrix du plateau.
+     */
     inline Matrix<Graph::Node*>* getBoardMatrix() {return &m_boardMatrix;}
 
     /*! \brief Effectue la liaison entre un index et un noeud du plateau.
@@ -39,7 +43,7 @@ public:
      *  \param state L'état du jeu auquel on souhaite obtenir le noeud de la pièce.
      *  \return Un pointeur vers le noeud de la pièce qui occupe boardNode.
      */
-    inline const Graph::Node* getPieceNode(const Graph::Node* &boardNode, const Vector<Graph::Node*> &state) const { return state[boardNode->info];}
+    inline const Graph::Node* getPieceNode(const Graph::Node* &boardNode, const State &state) const { return state[boardNode->info];}
 
     /*! \brief Effectue la liaison entre une position sur le plateau, et le noeud de la pièce qui l'occupe.
      *
@@ -48,7 +52,7 @@ public:
      *  \param state L'état du jeu auquel on souhaite obtenir le noeud de la pièce.
      *  \return Un pointeur vers le noeud de la pièce qui occupe boardNode.
      */
-    const Graph::Node* getPieceNode(unsigned int line, unsigned int column, const Vector<Graph::Node*> &state) const
+    const Graph::Node* getPieceNode(unsigned int line, unsigned int column, const State &state) const
     {
         if(m_boardMatrix(line,column) == NULL)
             return NULL;
@@ -58,12 +62,12 @@ public:
     /*!
      *  \return L'état initial du jeu.
      */
-    inline const Vector<Graph::Node*>& getInitialState() const {return m_initialState;}
+    inline const State& getInitialState() const {return m_initialState;}
 
     /*!
      *  \return L'état final du jeu.
      */
-    inline const Vector<Graph::Node*>& getFinalState() const {return m_finalState;}
+    inline const State& getFinalState() const {return m_finalState;}
 
     /*!
      *  \return La liste des pièces du jeu
@@ -75,6 +79,10 @@ public:
      */
     inline unsigned int getNbPieces() const {return List::size(m_pieces);}
 
+    /*! \brief Vide le jeu.
+     */
+    void clear();
+
     virtual ~Game();
 
 private:
@@ -83,8 +91,8 @@ private:
     Matrix<Graph::Node*> m_boardMatrix; ///< Représente le tableau de jeu. Utile pour l'accès en ligne/colonne.
     List::Node<Graph::Node*> *m_pieces; ///< Représente les pièces du jeu.
     Vector<Graph::Node*> m_index; ///< Permet de faire la liaison entre un état et les pièces.
-    Vector<Graph::Node*> m_initialState; ///< Représente l'état initial du jeu.
-    Vector<Graph::Node*> m_finalState; ///< Représente l'état final du jeu.
+    State m_initialState; ///< Représente l'état initial du jeu.
+    State m_finalState; ///< Représente l'état final du jeu.
     unsigned int m_nbNodes; ///< Représente le nombre de cases existantes sur le plateau.
 };
 
