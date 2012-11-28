@@ -65,7 +65,7 @@ private:
     QPixmap m_vide,m_base, m_rouge, m_bleu;
     QBrush **m_brushs; ///< Différents qpainter du jeu
     QColor *m_colorList;
-    QPointF initialPos, finalPos;
+    QPointF *m_initialPos, *m_finalPos;
 };
 
 #endif // MYGRAPHICSSCENE_H

@@ -15,6 +15,8 @@ MyGraphicsScene::MyGraphicsScene(int baseRectSize)
     m_WSize = 0;
     m_BSize = 0;
     m_baseRectSize = baseRectSize;
+    m_initialPos = new QPointF(0,0);
+    m_finalPos = new QPointF(0,0);
 
     m_colorList =  new QColor[5];
     m_colorList[0] = QColor::fromRgb(204,204,204);
@@ -80,7 +82,6 @@ void MyGraphicsScene::addPiecesInitialState()
 
 void MyGraphicsScene::addPiecesFinalState()
 {
-    qDebug() << "final final final";
     m_itemPieces = new QGraphicsRectItem*[m_game->getNbNodes()];
     int inc = 0; //sert à faire de l'affichage, pour compter le nombre de "blancs"
     for( int i = 0; i < m_game->getNbNodes(); i++)
@@ -138,25 +139,39 @@ MyGraphicsScene::~MyGraphicsScene()
         delete m_brushs;
     }
     delete [] m_colorList;
+
+    if(m_itemPieces != NULL)
+        delete [] m_itemPieces;
+
+    delete m_initialPos;
+    delete m_finalPos;
 }
 
 void MyGraphicsScene::mousePressEvent(QGraphicsSceneMouseEvent *mouseEvent)
 {
     //comme test permet juste de récupérer la position de la sourie au clic (ou en continu) et de trouver la case du tableau correspondante
     QPointF pos = mouseEvent->lastScenePos();
-    initialPos.setX((int)(pos.x()/(m_baseRectSize*(1./m_BSize))));
-    initialPos.setY((int)(pos.y()/(m_baseRectSize*(1./m_BSize))));
+    m_initialPos->setX((int)(pos.x()/(m_baseRectSize*(1./m_BSize))));
+    m_initialPos->setY((int)(pos.y()/(m_baseRectSize*(1./m_BSize))));
+
+    qDebug() << *m_initialPos;
+
+    qDebug() << m_game->getPieceNode(m_initialPos->y(),m_initialPos->x(),m_game->getInitialState());
+    if(m_game->getPieceNode(m_initialPos->y(),m_initialPos->x(),m_game->getInitialState()) != NULL)
+        qDebug() << m_game->getPieceNode(m_initialPos->y(),m_initialPos->x(),m_game->getInitialState())->info;
+
 }
 
 void MyGraphicsScene::mouseMoveEvent(QGraphicsSceneMouseEvent *mouseEvent)
 {
+
 }
 
 void MyGraphicsScene::mouseReleaseEvent(QGraphicsSceneMouseEvent *mouseEvent)
 {
     QPointF pos = mouseEvent->lastScenePos();
-    finalPos.setX((int)(pos.x()/(m_baseRectSize*(1./m_BSize))));
-    finalPos.setY((int)(pos.y()/(m_baseRectSize*(1./m_BSize))));
-    emit sendPositions(initialPos,finalPos);
+    m_finalPos->setX((int)(pos.x()/(m_baseRectSize*(1./m_BSize))));
+    m_finalPos->setY((int)(pos.y()/(m_baseRectSize*(1./m_BSize))));
+    //emit sendPositions(initialPos,finalPos);
 }
 

@@ -85,7 +85,6 @@ MainWindow::~MainWindow()
 void MainWindow::resize(int w, int h)
 {
     ui->graphicsView->setFixedSize(w,h);
-    qDebug() << "test" << ui->graphicsView->size();
 }
 
 void MainWindow::callAssociateMatrix()
@@ -133,6 +132,16 @@ void MainWindow::callAddPieces()
 
 void MainWindow::findPositionAndPiece(QPointF init, QPointF final)
 {
-    qDebug() << init << " to " << final;
+    QPointF deplacement = init - final;
+    qDebug() << deplacement;
+
+    if(m_game.getPieceNode(init.x(),init.y(),m_game.getInitialState()) != NULL)
+        qDebug() << m_game.getPieceNode(init.y(),init.x(),m_game.getInitialState())->info;
+
+    if(deplacement.manhattanLength() == 1) //retourne la distance entre les deux points
+    {
+        if(m_game.getPieceNode(init.x(),init.y(),m_game.getInitialState()) != NULL)
+            qDebug() << m_game.getPieceNode(init.y(),init.x(),m_game.getInitialState())->info;
+    }
 }
 

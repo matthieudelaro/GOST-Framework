@@ -17,7 +17,8 @@ SOURCES += main.cpp\
     mygraphicsscene.cpp \
     xmlfilechoice.cpp \
     graph.cpp \
-    endwindow.cpp
+    endwindow.cpp \
+    IA.cpp
 
 HEADERS  += mainwindow.h \
     game.h \
