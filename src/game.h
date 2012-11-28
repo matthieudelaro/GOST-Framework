@@ -9,6 +9,8 @@
 #include "collection.h"
 #include "matrix.h"
 
+typedef Vector<Graph::Node*> State;
+
 /*! \brief Gère le contenu du jeu : le plateau, les pièces et les règles.
  */
 class Game
@@ -46,9 +48,11 @@ public:
      *  \param state L'état du jeu auquel on souhaite obtenir le noeud de la pièce.
      *  \return Un pointeur vers le noeud de la pièce qui occupe boardNode.
      */
-    inline const Graph::Node* getPieceNode(unsigned int line, unsigned int column, const Vector<Graph::Node*> &state) const
+    const Graph::Node* getPieceNode(unsigned int line, unsigned int column, const Vector<Graph::Node*> &state) const
     {
-        return state[m_boardMatrix.getIndex(line, column)];
+        if(m_boardMatrix(line,column) == NULL)
+            return NULL;
+        return state[m_boardMatrix(line, column)->info];
     }
 
     /*!

@@ -17,7 +17,9 @@ SOURCES += main.cpp\
     mygraphicsscene.cpp \
     xmlfilechoice.cpp \
     graph.cpp \
-    list.cpp
+    list.cpp \
+    endwindow.cpp \
+    IA.cpp
 
 HEADERS  += mainwindow.h \
     game.h \
@@ -29,7 +31,10 @@ HEADERS  += mainwindow.h \
     vector.h \
     mygraphicsscene.h \
     xmlfilechoice.h \
-    state.h
+    state.h \
+    endwindow.h \
+    IA.h
 
 FORMS    += mainwindow.ui \
-    xmlfilechoice.ui
+    xmlfilechoice.ui \
+    endwindow.ui
