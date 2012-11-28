@@ -16,12 +16,12 @@ MyGraphicsScene::MyGraphicsScene(int baseRectSize)
     m_BSize = 0;
     m_baseRectSize = baseRectSize;
 
-    m_colorList =  new QColor[4];
+    m_colorList =  new QColor[5];
     m_colorList[0] = QColor::fromRgb(204,204,204);
     m_colorList[1] = QColor::fromRgb(51,51,51);
     m_colorList[2] = QColor::fromRgb(255,0,0);
     m_colorList[3] = QColor::fromRgb(0,0,255);
-   // m_colorList[4] = QColor::fromRgb(0,255,0);
+    m_colorList[4] = QColor::fromRgb(0,255,0);
 }
 
 void MyGraphicsScene::associateGame(Game *g)
@@ -41,7 +41,7 @@ void MyGraphicsScene::displayMatrix()
     m_itemBoard = new QGraphicsRectItem**[m_HSize];
     for(int i = 0; i < m_HSize; i ++)
     {
-        m_itemBoard[i] = new QGraphicsRectItem*[m_HSize];
+        m_itemBoard[i] = new QGraphicsRectItem*[m_WSize];
         for(int j = 0; j < m_WSize; j ++)
         {
             m_itemBoard[i][j] =  new QGraphicsRectItem(0,0,m_baseRectSize,m_baseRectSize);
@@ -107,9 +107,9 @@ void MyGraphicsScene::createBrushs()
     // i = 0 : empty background
     // i = 1 : board background
     // i > 1 : piece's color
-    //
-    m_brushs =  new QBrush*[4];
-    for(int i = 0; i < 4; i ++)
+
+    m_brushs =  new QBrush*[5];
+    for(int i = 0; i < 5; i ++)
         m_brushs[i] = new QBrush(m_colorList[i]);
 }
 
