@@ -7,7 +7,7 @@
 
 namespace IA
 {
-    const Vector<Graph::Node*>* possibleMove(const Vector<Graph::Node*>& currentStat, int pieceId, int direction, Game *game);
+    const State* possibleMove(const State& currentStat, const Graph::Node* initPieceNode, const Graph::Node* finalPieceNode, const Game &game);
 }
 
 

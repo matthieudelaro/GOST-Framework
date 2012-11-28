@@ -18,38 +18,32 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWi
     finalStateWindows = new EndWindow;
 
     //Connection des bouttons aux slots associés
-    QObject::connect(ui->displayButton,SIGNAL(clicked()),this,SLOT(callDisplay()));
     QObject::connect(ui->loadGameButton,SIGNAL(clicked()),this,SLOT(callLoadGameFromXml()));
-    QObject::connect(ui->associateButton,SIGNAL(clicked()),this,SLOT(callAssociateMatrix()));
+
     QObject::connect(ui->actionQuitter,SIGNAL(triggered()),qApp,SLOT(quit()));
     QObject::connect(ui->actionChoixJeu,SIGNAL(triggered()),this,SLOT(callChoiceXmlFile()));
-    QObject::connect(ui->addPieceButton,SIGNAL(clicked()),this,SLOT(callAddPieces()));
+
     QObject::connect(ui->actionAfficher_Fin,SIGNAL(triggered()),finalStateWindows,SLOT(show()));
 
     //Appel de la fonction resize qui redimensionne la GUI en fonction de la graphicsView
     QObject::connect(m_scene,SIGNAL(sendResize(int,int)),this,SLOT(resize(int,int)));
 
     //appelle de la fonction qui vérifie si le déplacement est bon et récupérer la pièce correspondante
-    QObject::connect(m_scene,SIGNAL(sendPositions(QPointF,QPointF)),this,SLOT(findPositionAndPiece(QPointF,QPointF)));
-
-    //on empèche de pouvoir afficher la matrice sans avoir chargé le jeu
-    ui->displayButton->setDisabled(true);
+    QObject::connect(m_scene,SIGNAL(sendPositions(QPointF*,QPointF*)),this,SLOT(findPositionAndPiece(QPointF*,QPointF*)));
 }
 
-void MainWindow::loadGameFromXml(QDomDocument &xml)
+bool MainWindow::loadGameFromXml(QDomDocument &xml)
 {
-    m_game.load(xml);
+    if(!m_game.load(xml))
+        return false;
 
-    //méthode d'affichage du numéro des pièces dans l'index (donc ça n'affiche pas les void, seulement les free et les pièces)
-    qDebug() << "Initial State :";
-    for(unsigned int index = 0; index < m_game.getNbNodes(); ++index)
-    {
-       Graph::Node *node = m_game.getInitialState()[index];
-        if(node)
-            qDebug() << node->info;
-        else
-            qDebug() << "aucune piece";
-    }
+    m_scene->associateGame(&m_game);
+
+    m_scene->displayMatrix();
+    m_scene->callResize();
+    m_scene->addPiecesInitialState();
+
+    finalStateWindows->display(m_game);
 }
 
 int MainWindow::loadXmlFromPath(QString path)
@@ -87,23 +81,6 @@ void MainWindow::resize(int w, int h)
     ui->graphicsView->setFixedSize(w,h);
 }
 
-void MainWindow::callAssociateMatrix()
-{
-    m_scene->associateGame(&m_game);
-    finalStateWindows->display(m_game);
-
-    //on empèche de refaire une association mais on autorise l'affichage
-    ui->associateButton->setDisabled(true);
-    ui->displayButton->setDisabled(false);
-}
-
-void MainWindow::callDisplay()
-{
-    ui->displayButton->setDisabled(true);
-   //faire un test pour vérifier que la matrice à bien été associée
-    m_scene->displayMatrix();
-    m_scene->callResize();
-}
 
 void MainWindow::callChoiceXmlFile()
 {
@@ -125,23 +102,12 @@ void MainWindow::callLoadGameFromXml()
     loadGameFromXml(m_XMLFileChosed);
 }
 
-void MainWindow::callAddPieces()
+void MainWindow::findPositionAndPiece(QPointF *init, QPointF *final)
 {
-    m_scene->addPiecesInitialState();
-}
+    IA::possibleMove(m_game.getInitialState(),
+                     m_game.getPieceNode(init->y(),init->x(),m_game.getInitialState()),
+                     m_game.getPieceNode(final->y(),final->x(),m_game.getInitialState()),
+                     m_game);
 
-void MainWindow::findPositionAndPiece(QPointF init, QPointF final)
-{
-    QPointF deplacement = init - final;
-    qDebug() << deplacement;
-
-    if(m_game.getPieceNode(init.x(),init.y(),m_game.getInitialState()) != NULL)
-        qDebug() << m_game.getPieceNode(init.y(),init.x(),m_game.getInitialState())->info;
-
-    if(deplacement.manhattanLength() == 1) //retourne la distance entre les deux points
-    {
-        if(m_game.getPieceNode(init.x(),init.y(),m_game.getInitialState()) != NULL)
-            qDebug() << m_game.getPieceNode(init.y(),init.x(),m_game.getInitialState())->info;
-    }
 }
 

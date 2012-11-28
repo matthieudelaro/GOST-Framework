@@ -54,7 +54,7 @@ protected:
 
 signals:
     void sendResize(int w, int h);
-    void sendPositions(QPointF init,QPointF final);
+    void sendPositions(QPointF *init,QPointF *final);
 
 private:
     QGraphicsRectItem ***m_itemBoard; ///< Les cases du plateau
@@ -65,7 +65,7 @@ private:
     QPixmap m_vide,m_base, m_rouge, m_bleu;
     QBrush **m_brushs; ///< Différents qpainter du jeu
     QColor *m_colorList;
-    QPointF *m_initialPos, *m_finalPos;
+    QPointF *m_initialPos, *m_finalPos;///< sauvegarde des positions initiales et finales de déplacement
 };
 
 #endif // MYGRAPHICSSCENE_H

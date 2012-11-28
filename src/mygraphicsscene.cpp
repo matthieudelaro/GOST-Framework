@@ -153,13 +153,6 @@ void MyGraphicsScene::mousePressEvent(QGraphicsSceneMouseEvent *mouseEvent)
     QPointF pos = mouseEvent->lastScenePos();
     m_initialPos->setX((int)(pos.x()/(m_baseRectSize*(1./m_BSize))));
     m_initialPos->setY((int)(pos.y()/(m_baseRectSize*(1./m_BSize))));
-
-    qDebug() << *m_initialPos;
-
-    qDebug() << m_game->getPieceNode(m_initialPos->y(),m_initialPos->x(),m_game->getInitialState());
-    if(m_game->getPieceNode(m_initialPos->y(),m_initialPos->x(),m_game->getInitialState()) != NULL)
-        qDebug() << m_game->getPieceNode(m_initialPos->y(),m_initialPos->x(),m_game->getInitialState())->info;
-
 }
 
 void MyGraphicsScene::mouseMoveEvent(QGraphicsSceneMouseEvent *mouseEvent)
@@ -172,6 +165,6 @@ void MyGraphicsScene::mouseReleaseEvent(QGraphicsSceneMouseEvent *mouseEvent)
     QPointF pos = mouseEvent->lastScenePos();
     m_finalPos->setX((int)(pos.x()/(m_baseRectSize*(1./m_BSize))));
     m_finalPos->setY((int)(pos.y()/(m_baseRectSize*(1./m_BSize))));
-    //emit sendPositions(initialPos,finalPos);
+    emit sendPositions(m_initialPos,m_finalPos);
 }
 

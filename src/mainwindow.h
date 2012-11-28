@@ -9,6 +9,7 @@
 #include "xmlfilechoice.h"
 #include "game.h"
 #include "endwindow.h"
+#include "IA.h"
 
     /*!
      *      \brief La classe MainWindow gère le GUI du projet.
@@ -27,10 +28,10 @@ public:
     explicit MainWindow(QWidget *parent = 0);
 
     /*!
-     *      \brief loadGameFromXml va charger le document Xml dans la classe game.
+     *      \brief loadGameFromXml va charger le document Xml dans la classe game et afficher le jeu
      *      \param xml est un document qui contient le Xml.
      */
-    void loadGameFromXml(QDomDocument &xml);
+    bool loadGameFromXml(QDomDocument &xml);
 
     /*!
      *      \brief loadXmlFromPath va tenter de charger le document Xml en fonction du path demandé
@@ -52,15 +53,6 @@ public slots:
      */
     void resize(int w, int h);
 
-    /*!
-     *      \brief callAssociationMatrix associe la matrice de m_game à m_scene
-     */
-    void callAssociateMatrix();
-
-    /*!
-     *      \brief callDisplay fait un rendu graphique de la matrice de m_game à travers m_scene
-     */
-    void callDisplay();
 
     /*!
      *      \brief callChoiceXmlFile appelle la fenêtre de choix de fichier XML
@@ -73,21 +65,15 @@ public slots:
      */
     void saveSelectedPathFromXml(QString path);
 
-
     /*!
      *      \brief callLoadGameFromXml va appeler la fonction loadGameFromXml
      */
     void callLoadGameFromXml();
 
     /*!
-     *      \brief callAddPieces affiche les pieces sur le plateau
-     */
-    void callAddPieces();
-
-    /*!
      *  \brief determine la direction et la pièce appelée
      */
-    void findPositionAndPiece(QPointF init, QPointF final);
+    void findPositionAndPiece(QPointF *init, QPointF *final);
 
 private:
     XmlFileChoice *m_xmlChoiceWindow;///< Fenetre de choix du fichier Xml
