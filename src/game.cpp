@@ -85,6 +85,7 @@ bool Game::load(QDomDocument &xml)
                 if(((unsigned int)listFinalLines.count()) != nbLines)
                 {
                     qDebug() << "Il n'y a pas autant de lines dans l'état final que dans l'état initial.";
+                    clear();
                     return false;
                 }
 
@@ -97,6 +98,7 @@ bool Game::load(QDomDocument &xml)
                     if(((unsigned int)finalColumns.count()) != nbColumns)
                     {
                         qDebug() << "Il n'y a pas autant de columns dans l'état final (" << finalColumns.count() << ") que dans l'état initial (" << nbColumns << ") pour la line " << line;
+                        clear();
                         return false;
                     }
 
@@ -111,12 +113,26 @@ bool Game::load(QDomDocument &xml)
                             if(finalElement.attribute("type") == "void")
                             {
                                 qDebug() << "Il n'y a pas autant de columns dans l'état final que dans l'état initial pour la line " << line;
+                                clear();
+                                return false;
+                            }
+                            else if(finalElement.attribute("type") == "piece" && finalElement.attribute("number").toInt() == 0)
+                            {
+                                qDebug() << "Le numéro de pièce 0 est réservé pour le jocker (finalState, line = " << line <<  ", columne = " << column <<  ")";
+                                clear();
                                 return false;
                             }
 
                             m_nbNodes++;
                             if(element.attribute("type") == "piece")
                             {
+                                if(element.attribute("number").toInt() == 0)
+                                {
+                                    qDebug() << "Le numéro de pièce 0 est réservé pour le jocker.";
+                                    clear();
+                                    return false;
+                                }
+
                                 if(!List::find(element.attribute("number").toInt(), pieces))
                                 {
                                     Triple<int, Matrix<Graph::Node*>, Graph::Node*> piece;
@@ -257,6 +273,62 @@ bool Game::load(QDomDocument &xml)
                         }
                     }
                 }
+
+                //Etape 4 :
+                //on initiale l'état final
+                m_jocker = new Graph::Node(0);
+                index = 0;
+                for(unsigned int line = 0; line < nbLines; ++line)
+                {
+                    QDomNodeList finalColumns = listFinalLines.item(line).childNodes();
+                    unsigned int nbColumns = ((unsigned int)finalColumns.count());
+                    for(unsigned int column = 0; column < nbColumns; ++column)
+                    {
+                        if(m_boardMatrix.getConst(line, column))
+                        {
+                            QDomElement finalElement = finalColumns.item(column).toElement();
+                            if(finalElement.attribute("type") == "piece")
+                            {
+                                List::Node<Triple<int, Matrix<Graph::Node*>, Graph::Node*> > *piece = List::find(finalElement.attribute("number").toInt(), pieces);
+                                if(piece)
+                                {
+                                    m_finalState.get(index) = piece->info.third;
+                                }
+                                else
+                                {
+                                    qDebug() << "Piece dans finalState inexistante dans initialState (pièce numéro " << finalElement.attribute("number").toInt() << ")";
+                                    clear();
+                                    return false;
+                                }
+                                /*List::Node<Graph::Node*> *it = m_pieces;
+                                bool found = false;
+                                while(it && !found)
+                                {
+                                    if(it->info->info == (unsigned int) finalElement.attribute("number").toInt())
+                                        found = true;
+                                    else
+                                        it = it->next;
+                                }
+                                if(found)
+                                {
+                                    m_finalState.get(index) = it->info;
+                                }
+                                else
+                                {
+                                    qDebug() << "Piece dans finalState inexistante dans initialState (pièce numéro " << finalElement.attribute("number").toInt() << ")";
+                                    clear();
+                                    return false;
+                                }*/
+                            }
+                            else if(finalElement.attribute("type") == "jocker")
+                            {
+                                m_finalState.get(index) = m_jocker;
+                            }
+                            index++;
+                        }
+                    }
+                }
+
                 //On initialise m_pieces
                 m_pieces = NULL;
                 it = pieces;
@@ -273,18 +345,21 @@ bool Game::load(QDomDocument &xml)
             else
             {
                 qDebug() << "Nodes initialShape, finalShape, et/ou board manquant(s).";
+                clear();
                 return false;
             }
         }
         else
         {
             qDebug() << "Nodes initialShape, finalShape, et/ou board manquant(s).";
+            clear();
             return false;
         }
     }
     else
     {
         qDebug() << "Nodes initialShape, finalShape, et/ou board manquant(s).";
+        clear();
         return false;
     }
     return true;
