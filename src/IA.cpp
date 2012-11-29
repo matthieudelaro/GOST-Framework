@@ -13,6 +13,8 @@ const State* IA::possibleMove(const State& currentStat, const Graph::Node* initi
         return NULL ;
     }
 
+    qDebug() << "la case existe";
+
     //on regarde si les deux liens sont bien voisins et on récupère la direction
     int direction = -1;
     for(unsigned int i = 0; i < initialBoardNode->nbLinks; i ++)
@@ -26,6 +28,8 @@ const State* IA::possibleMove(const State& currentStat, const Graph::Node* initi
         return NULL;
     }
 
+    qDebug() << "ce sont des voisins";
+
     //on vérifie que l'on ne prend pas une case vide
     if(game.getPieceNode(initialBoardNode, currentStat) == NULL)
     {
@@ -33,21 +37,24 @@ const State* IA::possibleMove(const State& currentStat, const Graph::Node* initi
         return NULL;
     }
 
-    //ATTENTION : TOLIST NE PREND PAS DE CONST
+    qDebug() << "c'est une piece";
+
     List::Node<const Graph::Node*>* pieceToMove = Graph::toConstList(game.getPieceNode(initialBoardNode, currentStat));
+    List::Node<const Graph::Node*>* iterator = pieceToMove;
 
     //on parcours toute les sous-pièces
-    while(pieceToMove != NULL)
+    while(iterator != NULL)
     {
         //on test si la direction est bonne : si on ne sort pas du terrain
-        if(pieceToMove->info->getConstLink(direction) == NULL)
+        //BUG ICI
+        if(game.getPieceNode(iterator->info->getLink(direction),currentStat) == NULL)
         {
             qDebug() << "on sort du terrain";
             return NULL;
         }
 
         //pour cette sous-pièce c'est bon, on passe à la suivante
-        pieceToMove = pieceToMove->next;
+        iterator = iterator->next;
     }
 
     return NULL;

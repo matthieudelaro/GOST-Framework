@@ -105,7 +105,8 @@ void MainWindow::saveSelectedPathFromXml(QString path)
 
 void MainWindow::callIAPossibleMove(QPointF *init, QPointF *final)
 {
-    IA::possibleMove(m_game.getInitialState(),
+    if(final->x() >= 0 && final->y() >= 0)
+        IA::possibleMove(m_game.getInitialState(),
                      m_game.getBoardMatrix()->get(init->y(),init->x()),
                      m_game.getBoardMatrix()->get(final->y(),final->x()),
                      m_game);
