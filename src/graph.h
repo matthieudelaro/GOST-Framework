@@ -49,12 +49,21 @@ namespace Graph
 
     /*! \brief Cette fonction renvoie une liste contenant les informations des noeuds du graphe.
      */
-    List::Node<Graph::Node*>* toList(Node *graph);
+    List::Node<Graph::Node*>* toList(Graph::Node *graph);
+
+    /*! \brief Cette fonction renvoie une liste const contenant les informations des noeuds du graphe.
+     */
+    List::Node<const Graph::Node*>* toConstList(Graph::Node *graph);
 
     /*! \brief Cette fonction récursive est utilisée par toList(Graph::Node* graph). Elle n'est pas dédiée à l'utilisateur
      *  \see List::Node<unsigned int>* toList(Graph::Node* graph);
      */
-    void toList(Graph::Node* graph, List::Node<Graph::Node*> *&list);
+    void toList(Graph::Node *graph, List::Node<Graph::Node*> *&list);
+
+    /*! \brief Cette fonction récursive est utilisée par toConstList(Graph::Node* graph). Elle n'est pas dédiée à l'utilisateur
+     *  \see List::Node<unsigned int>* toList(Graph::Node* graph);
+     */
+    void toConstList(Graph::Node *graph, List::Node<const Graph::Node*> *&list);
 
     inline unsigned int oppositeDirection(unsigned int direction) {return Node::nbLinks - direction;}
 

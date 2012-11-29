@@ -64,6 +64,13 @@ List::Node<Graph::Node*>* Graph::toList(Graph::Node* graph)
     return list;
 }
 
+List::Node<const Graph::Node*>* toConstList(Graph::Node *graph)
+{
+    List::Node<const Graph::Node*> *list = NULL;
+    Graph::toConstList(graph, list);
+    return list;
+}
+
 void Graph::toList(Graph::Node* graph, List::Node<Graph::Node*>* &list)
 {
     if(graph && !List::contains(graph, list))
@@ -72,6 +79,18 @@ void Graph::toList(Graph::Node* graph, List::Node<Graph::Node*>* &list)
         for(unsigned int link = 0; link < Node::nbLinks; ++link)
         {
             toList(graph->getConstLink(link), list);
+        }
+    }
+}
+
+void Graph::toConstList(Graph::Node *graph, List::Node<const Graph::Node*> *&list)
+{
+    if(graph && !List::contains<const Graph::Node*>(graph, list))
+    {
+        List::push_front<const Graph::Node*>(graph, list);
+        for(unsigned int link = 0; link < Graph::Node::nbLinks; ++link)
+        {
+            toConstList(graph->getConstLink(link), list);
         }
     }
 }
