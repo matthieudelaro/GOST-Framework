@@ -136,6 +136,7 @@ bool Game::load(QDomDocument &xml)
                 m_initialState.resize(m_nbNodes, NULL);
                 m_finalState.resize(m_nbNodes, NULL);
                 m_boardMatrix.resize(nbLines, nbMaxColumns, NULL);
+
                 List::Node<Triple<int, Matrix<Graph::Node*>, Graph::Node*> > *it = pieces;
                 while(it)
                 {
