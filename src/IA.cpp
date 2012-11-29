@@ -10,8 +10,6 @@ const Vector<Graph::Node*>* IA::possibleMove(const State& currentStat, const Gra
     if(finalPieceNode != NULL)
         qDebug() << finalPieceNode->info;
 
-
-
     return NULL;
 }
 

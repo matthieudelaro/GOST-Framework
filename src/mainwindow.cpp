@@ -18,8 +18,6 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWi
     finalStateWindows = new EndWindow;
 
     //Connection des bouttons aux slots associés
-    QObject::connect(ui->loadGameButton,SIGNAL(clicked()),this,SLOT(callLoadGameFromXml()));
-
     QObject::connect(ui->actionQuitter,SIGNAL(triggered()),qApp,SLOT(quit()));
     QObject::connect(ui->actionChoixJeu,SIGNAL(triggered()),this,SLOT(callChoiceXmlFile()));
 
@@ -93,12 +91,7 @@ void MainWindow::saveSelectedPathFromXml(QString path)
 {
     m_loadedPath = path;
     m_xmlChoiceWindow->close();
-    qDebug() << m_loadedPath;
     loadXmlFromPath(m_loadedPath);
-}
-
-void MainWindow::callLoadGameFromXml()
-{
     loadGameFromXml(m_XMLFileChosed);
 }
 
@@ -108,6 +101,5 @@ void MainWindow::findPositionAndPiece(QPointF *init, QPointF *final)
                      m_game.getPieceNode(init->y(),init->x(),m_game.getInitialState()),
                      m_game.getPieceNode(final->y(),final->x(),m_game.getInitialState()),
                      m_game);
-
 }
 
