@@ -16,9 +16,9 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWi
     this->setCentralWidget(ui->centralWidget);
 
     ui->actionChoixJeu->setShortcut(QKeySequence("Ctrl+o"));
+    ui->actionAfficher_Fin->setShortcut(QKeySequence("Ctrl+f"));
 
     finalStateWindows = new EndWindow;
-    QObject::connect(ui->loadGameButton,SIGNAL(clicked()),this,SLOT(callLoadGameFromXml()));
 
     QObject::connect(ui->actionQuitter,SIGNAL(triggered()),qApp,SLOT(quit()));
     QObject::connect(ui->actionChoixJeu,SIGNAL(triggered()),this,SLOT(callChoiceXmlFile()));
@@ -29,7 +29,7 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWi
     QObject::connect(m_scene,SIGNAL(sendResize(int,int)),this,SLOT(resize(int,int)));
 
     //appelle de la fonction qui vérifie si le déplacement est bon et récupérer la pièce correspondante
-    QObject::connect(m_scene,SIGNAL(sendPositions(QPointF*,QPointF*)),this,SLOT(findPositionAndPiece(QPointF*,QPointF*)));
+    QObject::connect(m_scene,SIGNAL(sendPositions(QPointF*,QPointF*)),this,SLOT(callIAPossibleMove(QPointF*,QPointF*)));
 }
 
 bool MainWindow::loadGameFromXml(QDomDocument &xml)
@@ -99,21 +99,15 @@ void MainWindow::saveSelectedPathFromXml(QString path)
 {
     m_loadedPath = path;
     m_xmlChoiceWindow->close();
-    qDebug() << m_loadedPath;
     loadXmlFromPath(m_loadedPath);
-}
-
-void MainWindow::callLoadGameFromXml()
-{
     loadGameFromXml(m_XMLFileChosed);
 }
 
-void MainWindow::findPositionAndPiece(QPointF *init, QPointF *final)
+void MainWindow::callIAPossibleMove(QPointF *init, QPointF *final)
 {
     IA::possibleMove(m_game.getInitialState(),
-                     m_game.getPieceNode(init->y(),init->x(),m_game.getInitialState()),
-                     m_game.getPieceNode(final->y(),final->x(),m_game.getInitialState()),
+                     m_game.getBoardMatrix()->get(init->y(),init->x()),
+                     m_game.getBoardMatrix()->get(final->y(),final->x()),
                      m_game);
-
 }
 

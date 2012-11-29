@@ -66,14 +66,9 @@ public slots:
     void saveSelectedPathFromXml(QString path);
 
     /*!
-     *      \brief callLoadGameFromXml va appeler la fonction loadGameFromXml
-     */
-    void callLoadGameFromXml();
-
-    /*!
      *  \brief determine la direction et la pièce appelée
      */
-    void findPositionAndPiece(QPointF *init, QPointF *final);
+    void callIAPossibleMove(QPointF *init, QPointF *final);
 
 private:
     XmlFileChoice *m_xmlChoiceWindow;///< Fenetre de choix du fichier Xml

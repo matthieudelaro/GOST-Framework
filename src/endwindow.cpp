@@ -12,7 +12,7 @@ EndWindow::EndWindow(QWidget *parent) :
     ui->endGraphicsView->setAlignment(Qt::AlignTop | Qt::AlignLeft); //permet d'aligner le (0,0) en haut et à gauche
     ui->endGraphicsView->setAcceptDrops(false);
 
-    QObject::connect(ui->closeButton,SIGNAL(clicked()),this,SLOT(hide()));
+    QObject::connect(ui->closeButton,SIGNAL(clicked()),this,SLOT(close()));
     //Appel de la fonction resize qui redimmensionne la GUI en fonction de la graphicsView
     QObject::connect(m_scene,SIGNAL(sendResize(int,int)),this,SLOT(resize(int,int)));
 
