@@ -73,6 +73,17 @@ namespace List
             return 0;
     }
 
+    template<typename T>
+    Node<T>* find(const T &researched, const Node<T>* l)
+    {
+        if(l == NULL)
+            return NULL;
+        else if(l->info == researched)
+            return l;
+        else
+            return find(researched, l->next);
+    }
+
     template<typename Key, typename Info>
     Node<Pair<Key, Info> >* find(const Key &key, const Node<Pair<Key, Info> >* n)
     {

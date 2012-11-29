@@ -33,7 +33,7 @@ void EndWindow::display(Game &game)
 {
     m_scene->associateGame(&game);
     m_scene->displayMatrix();
-    //m_scene->addPiecesFinalState();
-    m_scene->addPiecesInitialState();
+    m_scene->addPiecesFinalState();
+    //m_scene->addPiecesInitialState();
     m_scene->callResize();
 }

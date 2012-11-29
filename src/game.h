@@ -87,7 +87,7 @@ private:
     List::Node<Graph::Node*> *m_pieces; ///< Représente les pièces du jeu.
     Vector<Graph::Node*> m_index; ///< Permet de faire la liaison entre un état et les pièces.
     State m_initialState; ///< Représente l'état initial du jeu.
-    State m_finalState; ///< Représente l'état final du jeu.
+    State m_finalState; ///< Représente l'état final du jeu. Attention : ce n'est pas un état valide. Il ne faut tenir compte que du numéro des pièces, car il peut arriver qu'un noeud de pièce soit à plusieurs endroits à la fois !
     unsigned int m_nbNodes; ///< Représente le nombre de cases existantes sur le plateau.
 };
 
