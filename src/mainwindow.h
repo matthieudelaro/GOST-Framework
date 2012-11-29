@@ -8,14 +8,14 @@
 #include "mygraphicsscene.h"
 #include "xmlfilechoice.h"
 #include "game.h"
+#include <QMessageBox>
 #include "endwindow.h"
 #include "IA.h"
 
-    /*!
-     *      \brief La classe MainWindow gère le GUI du projet.
-     *      Elle permet de charger un fichier XML, de l'associer et de l'afficher à travers la m_scene.
-     */
-
+/*!
+ *      \brief La classe MainWindow gère le GUI du projet.
+ *      Elle permet de charger un fichier XML, de l'associer et de l'afficher à travers la m_scene.
+ */
 namespace Ui {
 class MainWindow;
 }

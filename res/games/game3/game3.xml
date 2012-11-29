@@ -50,9 +50,11 @@
             </line>
             <line>
                 <column type="piece" number="1"/>
+                <column type="void"/>
                 <column type="piece" number="1"/>
             </line>
             <line>
+                <column type="free"/>
                 <column type="free"/>
             </line>
         </finalShape>

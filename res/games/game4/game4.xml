@@ -64,14 +64,23 @@
         </finalShape>
         <pieces>
             <piece number="1">
-                <color red="255" blue="0" green="0"/>
+                <display>
+                    <color red="255" blue="0" green="0"/>
+                    <text text="1"/>
+                </display>
             </piece>
             <piece number="2">
-                <color red="100" blue="255" green="200"/>
+                <display>
+                    <color red="100" blue="255" green="200"/>
+                    <text text="1"/>
+                </display>
             </piece>
         </pieces>
         <free>
-            <color red="0" blue="255" green="0"/>
+            <display>
+                <color red="0" blue="255" green="0"/>
+                <text text="1"/>
+            </display>
         </free>
     </board>
 </game>

@@ -2,6 +2,7 @@
 #define LIST_H
 
 #include "collection.h"
+#include <QDebug>
 
 namespace List
 {
@@ -15,12 +16,43 @@ namespace List
     template <typename T>
     void clear(Node<T>* &l)
     {
+        Node<T> *it = l, *curr;
+        while(it)
+        {
+            curr = it;
+            it = it->next;
+            delete curr;
+        }
+        l = NULL;
+    }
+
+    template <typename T>
+    void clearDelete(Node<T>* &l)
+    {
+        Node<T> *it = l, *curr;
+        while(it)
+        {
+            curr = it;
+            it = it->next;
+
+            delete curr->info;
+            delete curr;
+        }
+        l = NULL;
+    }
+
+    template <typename T>
+    bool contains(const T& researched, const Node<T>* l)
+    {
         if(l)
         {
-            clear(l->next);
-            delete l;
-            l = NULL;
+            if(l->info == researched)
+                return true;
+            else
+                return contains(researched, l->next);
         }
+        else
+            return false;
     }
 
     template <typename T>
@@ -33,7 +65,7 @@ namespace List
     }
 
     template <typename T>
-    unsigned int size(Node<T>* l)
+    unsigned int size(const Node<T>* l)
     {
         if(l)
             return 1 + size(l->next);
@@ -61,6 +93,35 @@ namespace List
             return n;
         else
             return find(key, n->next);
+    }
+
+    template<typename T>
+    void tests()
+    {
+        qDebug() << "\ntestsList : ";
+        List::Node<T>* l = NULL;
+        List::push_front(1, l);
+        List::push_front(2, l);
+        List::push_front(3, l);
+
+        qDebug() << "\nl :";
+        List::Node<T>* it = l;
+        while(it)
+        {
+            qDebug() << it->info;
+            it = it->next;
+        }
+        qDebug() << "size(l) = " << List::size(l);
+        qDebug() << "clear(l);";
+        List::clear(l);
+        qDebug() << "size(l) = " << List::size(l);
+        qDebug() << "l :";
+        it = l;
+        while(it)
+        {
+            qDebug() << it->info;
+            it = it->next;
+        }
     }
 }
 

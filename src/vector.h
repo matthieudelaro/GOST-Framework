@@ -4,13 +4,20 @@
 #include "tools.h"
 
 /*! \brief Le classe Vector gère un tableau générique à taille dynamique.
- *
- *
  */
 template <typename T>
 class Vector
 {
 public:
+    Vector& operator=(const Vector& original)
+    {
+        m_tab = NULL;
+        resize(original.getLength());
+        for(unsigned int i = 0; i < m_length; ++i)
+            m_tab[i] = original[i];
+        return *this;
+    }
+
     /*! \brief Ce constructeur initialise la taille du tableau à la valeur de length.
      *
      *  \param lenght Définit la taille du tableau. Sa valeur par défaut est 0.
@@ -48,12 +55,16 @@ public:
      */
     inline T& operator[](unsigned int index) { return m_tab[index];}
 
+    inline T& get(unsigned int index) { return m_tab[index];}
+
     /*! \brief Permet d'accéder aux éléments du tableau.
      *
      *  \param index L'index dont on veut connaître la valeur.
      *  \return La valeur contenue à l'index.
      */
-    inline T operator[](unsigned int index) const { return m_tab[index];}
+    inline const T& operator[](unsigned int index) const { return m_tab[index];}
+
+    inline const T& getConst(unsigned int index) const { return m_tab[index];}
 
     /*! \return La longueur du tableau.
      */
@@ -125,9 +136,8 @@ public:
 
     /*! \brief Convertit le Vector en QString.
      *
-     *  Exemple : Pour un Vector<int> contenant 1, 5 et 6, la fonction renvoie (1, 5, 6).
+     *  Exemple : Pour un Vector<int> contenant 1, 2 et 3, la fonction renvoie (1, 2, 3).
      *
-     *  \see Vector<T>::clear()
      *  \return Un QString contenant une représentation textuelle du contenu du Vector.
      */
     QString toString() const
@@ -150,9 +160,27 @@ public:
 
     /*! \brief Appelle clear().
      */
-    ~Vector()
+    virtual ~Vector()
     {
         clear();
+    }
+
+    static void tests()
+    {
+        qDebug() << "\ntestsVector :";
+        Vector<int> v;
+        v.resize(3);
+        v[0] = 5;
+        v[1] = 6;
+        v[2] = 7;
+        qDebug() << "v : " << v.toString();
+
+        Vector<int> w(v);
+        qDebug() << "w(v) : " << w.toString();
+
+        Vector<int> x;
+        x = w;
+        qDebug() << "x = w : " << x.toString();
     }
 
 private:

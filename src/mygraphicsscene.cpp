@@ -62,11 +62,11 @@ void MyGraphicsScene::addPiecesInitialState()
 {
     m_itemPieces = new QGraphicsRectItem*[m_game->getNbNodes()];
     int inc = 0; //sert à faire de l'affichage, pour compter le nombre de "blancs"
-    for(int i = 0; i < m_game->getNbNodes(); i++)
+    for( unsigned int i = 0; i < m_game->getNbNodes(); i++)
     {
         Graph::Node *node = m_game->getInitialState()[i];
 
-        if(m_game->getBoardMatrix()->operator [](i) == NULL)
+        if(m_game->getBoardMatrix()->getConst(i) == NULL)
             inc ++;
 
         if(node)
@@ -84,11 +84,11 @@ void MyGraphicsScene::addPiecesFinalState()
 {
     m_itemPieces = new QGraphicsRectItem*[m_game->getNbNodes()];
     int inc = 0; //sert à faire de l'affichage, pour compter le nombre de "blancs"
-    for( int i = 0; i < m_game->getNbNodes(); i++)
+    for(unsigned int i = 0; i < m_game->getNbNodes(); i++)
     {
         Graph::Node *node = m_game->getFinalState()[i];
 
-        if(m_game->getBoardMatrix()->operator [](i) == NULL)
+        if(m_game->getBoardMatrix()->getConst(i) == NULL)
             inc ++;
 
         if(node)
@@ -116,6 +116,13 @@ void MyGraphicsScene::createBrushs()
 
 void MyGraphicsScene::callResize()
 {
+    //penser à protéger pour que ça ne bugge pas si il n'y a pas de fichier chargé
+    //
+    //
+    //
+    //
+    //
+    //
     emit sendResize(m_WSize*(m_baseRectSize/m_BSize)+3,m_HSize*(m_baseRectSize/m_BSize)+3);
 }
 

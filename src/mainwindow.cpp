@@ -15,9 +15,11 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWi
 
     this->setCentralWidget(ui->centralWidget);
 
+    ui->actionChoixJeu->setShortcut(QKeySequence("Ctrl+o"));
+    ui->actionAfficher_Fin->setShortcut(QKeySequence("Ctrl+f"));
+
     finalStateWindows = new EndWindow;
 
-    //Connection des bouttons aux slots associés
     QObject::connect(ui->actionQuitter,SIGNAL(triggered()),qApp,SLOT(quit()));
     QObject::connect(ui->actionChoixJeu,SIGNAL(triggered()),this,SLOT(callChoiceXmlFile()));
 
@@ -32,16 +34,22 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWi
 
 bool MainWindow::loadGameFromXml(QDomDocument &xml)
 {
-    if(!m_game.load(xml))
+    if(m_game.load(xml))
+    {
+        m_scene->associateGame(&m_game);
+
+        m_scene->displayMatrix();
+        m_scene->callResize();
+        m_scene->addPiecesInitialState();
+
+        finalStateWindows->display(m_game);
+        return true;
+    }
+    else
+    {
+        QMessageBox::critical(this, "Ouverture du jeu", "Le fichier ne respecte pas le format attendu");
         return false;
-
-    m_scene->associateGame(&m_game);
-
-    m_scene->displayMatrix();
-    m_scene->callResize();
-    m_scene->addPiecesInitialState();
-
-    finalStateWindows->display(m_game);
+    }
 }
 
 int MainWindow::loadXmlFromPath(QString path)
@@ -98,8 +106,8 @@ void MainWindow::saveSelectedPathFromXml(QString path)
 void MainWindow::findPositionAndPiece(QPointF *init, QPointF *final)
 {
     IA::possibleMove(m_game.getInitialState(),
-                     m_game.getPieceNode(init->y(),init->x(),m_game.getInitialState()),
-                     m_game.getPieceNode(final->y(),final->x(),m_game.getInitialState()),
+                     m_game.getBoardMatrix()->get(init->y(),init->x()),
+                     m_game.getBoardMatrix()->get(final->y(),final->x()),
                      m_game);
 }
 

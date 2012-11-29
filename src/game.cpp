@@ -30,15 +30,28 @@
 //    qDebug() << str.section( " ", 1, 1 ).toFloat();*/
 //}
 
+Game::Game(const Game &original)
+{
+    throw "Appel du constructeur de copie de Game !";
+}
+
+Game &Game::Game::operator =(const Game &original)
+{
+    throw "Appel de l'opérateur d'affectation de Game !";
+}
+
 Game::Game()
 {
     m_board = NULL;
+    m_jocker = NULL;
     m_pieces = NULL;
     m_nbNodes = 0;
 }
 
 bool Game::load(QDomDocument &xml)
 {
+    clear();//on vide le jeu, au cas où un autre serait en mémoire
+
     //QDomElement root = xml.documentElement();
     QDomNodeList tempListBoard = xml.elementsByTagName("board");
     QDomNodeList tempListInitialShape = xml.elementsByTagName("initialShape");
@@ -53,7 +66,8 @@ bool Game::load(QDomDocument &xml)
             QDomNodeList tempListcolumns = xml.elementsByTagName("column");
             //QDomNodeList listLines = xml.elementsByTagName("line");
             QDomNodeList listLines = initialShape.childNodes();
-            if(!tempListcolumns.isEmpty() && !listLines.isEmpty())
+            QDomNodeList listFinalLines = finalShape.childNodes();
+            if(!tempListcolumns.isEmpty() && !listLines.isEmpty() && !listFinalLines.isEmpty())
             {
                 //Pour chaque pièce : son numéro, un tableau 2D de Graph::Node*, un Graph::Node* pour le début de la pièce
                 List::Node<Triple<int, Matrix<Graph::Node*>, Graph::Node*> > *pieces = NULL;
@@ -68,17 +82,38 @@ bool Game::load(QDomDocument &xml)
                 m_nbNodes = 0;
                 m_board = NULL;
 
+                if(((unsigned int)listFinalLines.count()) != nbLines)
+                {
+                    qDebug() << "Il n'y a pas autant de lines dans l'état final que dans l'état initial.";
+                    return false;
+                }
+
                 for(unsigned int line = 0; line < nbLines; ++line)
                 {
                     QDomNodeList columns = listLines.item(line).childNodes();
+                    QDomNodeList finalColumns = listFinalLines.item(line).childNodes();
+
                     unsigned int nbColumns = ((unsigned int)columns.count());
+                    if(((unsigned int)finalColumns.count()) != nbColumns)
+                    {
+                        qDebug() << "Il n'y a pas autant de columns dans l'état final (" << finalColumns.count() << ") que dans l'état initial (" << nbColumns << ") pour la line " << line;
+                        return false;
+                    }
+
                     if(nbColumns > nbMaxColumns)
                         nbMaxColumns = nbColumns;
                     for(unsigned int column = 0; column < nbColumns; ++column)
                     {
                         QDomElement element = columns.item(column).toElement();
+                        QDomElement finalElement = columns.item(column).toElement();
                         if(element.attribute("type") != "void")
                         {
+                            if(finalElement.attribute("type") == "void")
+                            {
+                                qDebug() << "Il n'y a pas autant de columns dans l'état final que dans l'état initial pour la line " << line;
+                                return false;
+                            }
+
                             m_nbNodes++;
                             if(element.attribute("type") == "piece")
                             {
@@ -231,7 +266,7 @@ bool Game::load(QDomDocument &xml)
                 }
 
                 //on libère pieces
-                clear(pieces);
+                List::clear(pieces);
                 qDebug() << "Il y a " << List::size(m_pieces);
             }
             else
@@ -254,6 +289,29 @@ bool Game::load(QDomDocument &xml)
     return true;
 }
 
+const Graph::Node *Game::getPieceNode(unsigned int line, unsigned int column, const State &state) const
+{
+    if(m_boardMatrix(line,column) == NULL)
+        return NULL;
+    return state[m_boardMatrix(line, column)->info];
+}
+
+void Game::clear()
+{
+    //Supprimer le m_board
+    Graph::clear(m_board);
+
+    //Supprimer les pièces
+    Graph::clear(m_jocker);
+    List::Node<Graph::Node*>* it = m_pieces;
+    while(it)
+    {
+        delete it->info;
+        it = it->next;
+    }
+    List::clear(m_pieces);
+}
+
 //const Graph::Node *& Game::getNodePiece(unsigned int index, const Vector<Graph::Node *> &etat) const
 //{
 //    qDebug() << "Game::getNodePiece à implémenter !";
@@ -261,11 +319,7 @@ bool Game::load(QDomDocument &xml)
 
 Game::~Game()
 {
-    //Supprimer le m_board
-    //Supprimer les pièces
-
-    //if(m_index != NULL)
-    //    delete [] m_index;
+    clear();
 }
 
 //unsigned int Game::getNumberPiece(unsigned int index, const Vector<Graph::Node *> &etat) const
