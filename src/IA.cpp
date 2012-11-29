@@ -33,8 +33,8 @@ const State* IA::possibleMove(const State& currentStat, const Graph::Node* initi
         return NULL;
     }
 
-    //ATENTION : TOLIST NE PREND PAS DE CONST
-    List::Node<Graph::Node*>* pieceToMove = Graph::toConstList(game.getPieceNode(initialBoardNode, currentStat));
+    //ATTENTION : TOLIST NE PREND PAS DE CONST
+    List::Node<const Graph::Node*>* pieceToMove = Graph::toConstList(game.getPieceNode(initialBoardNode, currentStat));
 
     //on parcours toute les sous-pièces
     while(pieceToMove != NULL)
