@@ -4,8 +4,6 @@
 #include "tools.h"
 
 /*! \brief Le classe Vector gère un tableau générique à taille dynamique.
- *
- *
  */
 template <typename T>
 class Vector
