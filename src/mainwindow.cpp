@@ -15,14 +15,9 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWi
 
     this->setCentralWidget(ui->centralWidget);
 
-    finalStateWindows = new EndWindow;
+    ui->actionChoixJeu->setShortcut(QKeySequence("Ctrl+o"));
 
-//<<<<<<< HEAD
-//    //Connection des boutons aux slots associés
-//    QObject::connect(ui->displayButton,SIGNAL(clicked()),this,SLOT(callDisplay()));
-//=======
-//    //Connection des bouttons aux slots associés
-//>>>>>>> a5627df3f7d0caca8e764af09e66931c54ea5801
+    finalStateWindows = new EndWindow;
     QObject::connect(ui->loadGameButton,SIGNAL(clicked()),this,SLOT(callLoadGameFromXml()));
 
     QObject::connect(ui->actionQuitter,SIGNAL(triggered()),qApp,SLOT(quit()));
@@ -39,22 +34,8 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWi
 
 bool MainWindow::loadGameFromXml(QDomDocument &xml)
 {
-//<<<<<<< HEAD
     if(m_game.load(xml))
     {
-        //méthode d'affichage du numéro des pièces dans l'index (donc ça n'affiche pas les void, seulement les free et les pièces)
-        /*qDebug() << "Initial State :";
-        for(unsigned int index = 0; index < m_game.getNbNodes(); ++index)
-        {
-            Graph::Node *node = m_game.getInitialState()[index];
-            if(node)
-                qDebug() << node->info;
-            else
-                qDebug() << "aucune piece";
-        }
-
-        qDebug() << "Il y a " << List::size(m_game.getPieces()) << " pièces.";*/
-
         m_scene->associateGame(&m_game);
 
         m_scene->displayMatrix();
@@ -69,18 +50,6 @@ bool MainWindow::loadGameFromXml(QDomDocument &xml)
         QMessageBox::critical(this, "Ouverture du jeu", "Le fichier ne respecte pas le format attendu");
         return false;
     }
-//=======
-//    if(!m_game.load(xml))
-//        return false;
-
-//    m_scene->associateGame(&m_game);
-
-//    m_scene->displayMatrix();
-//    m_scene->callResize();
-//    m_scene->addPiecesInitialState();
-
-//    finalStateWindows->display(m_game);
-//>>>>>>> a5627df3f7d0caca8e764af09e66931c54ea5801
 }
 
 int MainWindow::loadXmlFromPath(QString path)

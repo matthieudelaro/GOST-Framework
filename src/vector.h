@@ -57,12 +57,16 @@ public:
      */
     inline T& operator[](unsigned int index) { return m_tab[index];}
 
+    inline T& get(unsigned int index) { return m_tab[index];}
+
     /*! \brief Permet d'accéder aux éléments du tableau.
      *
      *  \param index L'index dont on veut connaître la valeur.
      *  \return La valeur contenue à l'index.
      */
     inline const T& operator[](unsigned int index) const { return m_tab[index];}
+
+    inline const T& getConst(unsigned int index) const { return m_tab[index];}
 
     /*! \return La longueur du tableau.
      */
@@ -134,9 +138,8 @@ public:
 
     /*! \brief Convertit le Vector en QString.
      *
-     *  Exemple : Pour un Vector<int> contenant 1, 5 et 6, la fonction renvoie (1, 5, 6).
+     *  Exemple : Pour un Vector<int> contenant 1, 2 et 3, la fonction renvoie (1, 2, 3).
      *
-     *  \see Vector<T>::clear()
      *  \return Un QString contenant une représentation textuelle du contenu du Vector.
      */
     QString toString() const

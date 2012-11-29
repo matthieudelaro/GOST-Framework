@@ -20,7 +20,6 @@ int main(int argc, char *argv[])
     QApplication a(argc, argv);
 
     //testsMatthieu();
-    //return 0;
 
     MainWindow w;
 

@@ -52,12 +52,7 @@ public:
      *  \param state L'état du jeu auquel on souhaite obtenir le noeud de la pièce.
      *  \return Un pointeur vers le noeud de la pièce qui occupe boardNode.
      */
-    const Graph::Node* getPieceNode(unsigned int line, unsigned int column, const State &state) const
-    {
-        if(m_boardMatrix(line,column) == NULL)
-            return NULL;
-        return state[m_boardMatrix(line, column)->info];
-    }
+    const Graph::Node* getPieceNode(unsigned int line, unsigned int column, const State &state) const;
 
     /*!
      *  \return L'état initial du jeu.

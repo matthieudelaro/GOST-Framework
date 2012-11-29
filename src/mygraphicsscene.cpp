@@ -66,7 +66,7 @@ void MyGraphicsScene::addPiecesInitialState()
     {
         Graph::Node *node = m_game->getInitialState()[i];
 
-        if(m_game->getBoardMatrix()->operator [](i) == NULL)
+        if(m_game->getBoardMatrix()->getConst(i) == NULL)
             inc ++;
 
         if(node)
@@ -88,7 +88,7 @@ void MyGraphicsScene::addPiecesFinalState()
     {
         Graph::Node *node = m_game->getFinalState()[i];
 
-        if(m_game->getBoardMatrix()->operator [](i) == NULL)
+        if(m_game->getBoardMatrix()->getConst(i) == NULL)
             inc ++;
 
         if(node)

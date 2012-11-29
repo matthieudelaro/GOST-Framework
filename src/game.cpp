@@ -289,6 +289,13 @@ bool Game::load(QDomDocument &xml)
     return true;
 }
 
+const Graph::Node *Game::getPieceNode(unsigned int line, unsigned int column, const State &state) const
+{
+    if(m_boardMatrix(line,column) == NULL)
+        return NULL;
+    return state[m_boardMatrix(line, column)->info];
+}
+
 void Game::clear()
 {
     //Supprimer le m_board
