@@ -12,7 +12,6 @@ State* IA::possibleMove(const State& currentState, const Graph::Node* initialBoa
         return NULL ;
     }
 
-
     //vérification que les deux noeuds sont ajacents
     //on regarde si les deux liens sont bien voisins et on récupère la direction
     int direction = -1;
