@@ -5,6 +5,7 @@
 MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
+    m_currentState = NULL;
 
     m_xmlChoiceWindow = NULL;
 
@@ -36,6 +37,7 @@ bool MainWindow::loadGameFromXml(QDomDocument &xml)
 {
     if(m_game.load(xml))
     {
+        m_currentState = & m_game.getInitialState();
         m_scene->associateGame(&m_game);
 
         m_scene->displayMatrix();
@@ -105,9 +107,19 @@ void MainWindow::saveSelectedPathFromXml(QString path)
 
 void MainWindow::callIAPossibleMove(QPointF *init, QPointF *final)
 {
-    IA::possibleMove(m_game.getInitialState(),
-                     m_game.getBoardMatrix()->get(init->y(),init->x()),
-                     m_game.getBoardMatrix()->get(final->y(),final->x()),
-                     m_game);
+    if(m_game.getBoardMatrix()->inRange(init->y(),init->x()) && m_game.getBoardMatrix()->inRange(final->y(),final->x()))
+    {
+        State *newState = IA::possibleMove(*m_currentState,
+                                           m_game.getBoardMatrix()->get(init->y(),init->x()),
+                                           m_game.getBoardMatrix()->get(final->y(),final->x()),
+                                           m_game);
+        if(newState)
+        {
+            qDebug() << "deplacement autorisé !";
+            m_currentState = newState;
+            m_scene->setState(m_currentState);
+            finalStateWindows->display(m_game);
+        }
+    }
 }
 

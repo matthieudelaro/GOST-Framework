@@ -9,7 +9,7 @@
 #include "collection.h"
 #include "matrix.h"
 
-typedef Vector<Graph::Node*> State;///< Représente un état du jeu. Chaque case correspond à une case existante du plateau, et contient un pointeur vers le morceau de pièce qui la chevauche.
+typedef Vector<const Graph::Node*> State;///< Représente un état du jeu. Chaque case correspond à une case existante du plateau, et contient un pointeur vers le morceau de pièce qui la chevauche.
 
 /*! \brief Gère le contenu du jeu : le plateau, les pièces et les règles.
  */
@@ -36,6 +36,23 @@ public:
      *  \return Un pointeur vers le noeud correspondant.
      */
     inline const Graph::Node* getBoardNode(unsigned int index) const { return m_index[index];}
+
+    /*! \brief Effectue la liaison entre un noeud d'une pièce et un noeud du plateau.
+     *
+     *  \param pieceNode Le noeud de la pièce.
+     *  \param state L'état du jeu auquel on souhaite obtenir le noeud du plateau.
+     *  \return Un pointeur vers le noeud correspondant.
+     */
+    const Graph::Node* getBoardNode(const Graph::Node* &pieceNode, const State &state) const;
+
+    /*! \brief Effectue la liaison entre un noeud d'une pièce et l'index correspondant.
+     *
+     *  \param pieceNode Le noeud de la pièce.
+     *  \param index Référence dans laquelle sera stocké l'index en cas de succès. En cas d'échec, la valeur d'index est indéfinie.
+     *  \param state L'état du jeu auquel on souhaite obtenir l'index.
+     *  \return Return true si on a trouvé la pièce dans l'index, et false si on ne l'a pas trouvé.
+     */
+    bool getNodePieceIndex(const Graph::Node* &pieceNode, unsigned int &index, const State &state) const;
 
     /*! \brief Effectue la liaison entre un noeud du plateau, et le noeud de la pièce qui l'occupe.
      *

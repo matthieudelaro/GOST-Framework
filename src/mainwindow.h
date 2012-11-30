@@ -78,6 +78,7 @@ private:
     QString m_loadedPath;///< Chemin du Xml chargé
     QDomDocument m_XMLFileChosed;///< Document qui récupère le document Xml choisi
     EndWindow *finalStateWindows;
+    const State *m_currentState;
 };
 
 #endif // MAINWINDOW_H

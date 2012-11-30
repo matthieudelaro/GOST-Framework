@@ -268,7 +268,7 @@ bool Game::load(QDomDocument &xml)
                                 if(column > 0)//si columne-1 existe
                                     (*(it->info.second(line, column)))[2] = it->info.second(line, column-1);
                                 if(column + 1 < it->info.second.getWidth())//si column+1 existe
-                                    (*(it->info.second(line, column)))[3] = it->info.second(line, column+2);
+                                    (*(it->info.second(line, column)))[3] = it->info.second(line, column+1);
                             }
                             it = it->next;
                         }
@@ -276,7 +276,7 @@ bool Game::load(QDomDocument &xml)
                 }
 
                 //Etape 4 :
-                //on initiale l'état final
+                //on initialise l'état final
                 m_jocker = new Graph::Node(0);
                 index = 0;
                 for(unsigned int line = 0; line < nbLines; ++line)
@@ -364,6 +364,26 @@ bool Game::load(QDomDocument &xml)
         return false;
     }
     return true;
+}
+
+const Graph::Node *Game::getBoardNode(const Graph::Node *&pieceNode, const State &state) const
+{
+    for(unsigned int i = 0; i < state.getLength(); ++i)
+        if(state[i] == pieceNode)
+            return m_index[i];
+
+    //si on n'a pas trouvé
+    return NULL;
+}
+
+bool Game::getNodePieceIndex(const Graph::Node* &pieceNode, unsigned int &index, const State &state) const
+{
+    for(index = 0; index < state.getLength(); ++index)
+        if(state[index] == pieceNode)
+            return true;
+
+    //si on n'a pas trouvé la pièce
+    return false;
 }
 
 const Graph::Node *Game::getPieceNode(unsigned int line, unsigned int column, const State &state) const

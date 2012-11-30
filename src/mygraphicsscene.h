@@ -23,8 +23,8 @@ public:
     MyGraphicsScene(int baseRectSize = 500);
 
 /*!
- *  \brief associe la matrice garchée dans le xml à l'interface graphique
- *  \param g est la matrice chargée
+ *  \brief Associe la matrice chargée dans le xml à l'interface graphique.
+ *  \param g La matrice chargée
  */
     void associateGame(Game *g);
 
@@ -36,6 +36,7 @@ public:
     void addPiecesInitialState();
 
     void addPiecesFinalState();
+    void setState(const State *state);
 
     void createBrushs();
 

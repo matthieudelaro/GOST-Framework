@@ -64,7 +64,36 @@ void MyGraphicsScene::addPiecesInitialState()
     int inc = 0; //sert à faire de l'affichage, pour compter le nombre de "blancs"
     for( unsigned int i = 0; i < m_game->getNbNodes(); i++)
     {
-        Graph::Node *node = m_game->getInitialState()[i];
+        const Graph::Node *node = m_game->getInitialState()[i];
+
+        if(m_game->getBoardMatrix()->getConst(i) == NULL)
+            inc ++;
+
+        if(node)
+        {
+            m_itemPieces[i] = new QGraphicsRectItem(0,0,m_baseRectSize,m_baseRectSize);
+            m_itemPieces[i]->setBrush(*m_brushs[node->info + 1]);
+            m_itemPieces[i]->setScale(1./(m_BSize)); //OK pour la redimension
+            this->addItem(m_itemPieces[i]);
+            m_itemPieces[i]->setPos((m_baseRectSize/m_BSize)*((i+inc)%m_game->getBoardMatrix()->getWidth()),(m_baseRectSize/m_BSize)*((i+inc)/m_game->getBoardMatrix()->getWidth()));
+        }
+    }
+}
+
+
+
+void MyGraphicsScene::setState(const State *state)
+{
+    if(m_itemPieces)//penser à libérer la mémoire déjà allouée
+    {
+
+    }
+
+    m_itemPieces = new QGraphicsRectItem*[m_game->getNbNodes()];
+    int inc = 0; //sert à faire de l'affichage, pour compter le nombre de "blancs"
+    for( unsigned int i = 0; i < m_game->getNbNodes(); i++)
+    {
+        const Graph::Node *node = state->getConst(i);
 
         if(m_game->getBoardMatrix()->getConst(i) == NULL)
             inc ++;
@@ -86,7 +115,7 @@ void MyGraphicsScene::addPiecesFinalState()
     int inc = 0; //sert à faire de l'affichage, pour compter le nombre de "blancs"
     for(unsigned int i = 0; i < m_game->getNbNodes(); i++)
     {
-        Graph::Node *node = m_game->getFinalState()[i];
+        const Graph::Node *node = m_game->getFinalState()[i];
 
         if(m_game->getBoardMatrix()->getConst(i) == NULL)
             inc ++;

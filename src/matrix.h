@@ -94,6 +94,16 @@ public:
      */
     inline unsigned int convertToIndex(unsigned int line, unsigned int column) const { return line*m_width + column; }
 
+    /*! \brief Vérifie que la case (line, column) existe.
+     *  \see inRange(unsigned int index)
+     */
+    inline bool inRange(unsigned int line, unsigned int column) const { return line < m_height && column < m_width; }
+
+    /*! \brief Vérifie que la case (index) existe.
+     *  \see inRange(unsigned int line, unsigned int column)
+     */
+    inline bool inRange(unsigned int index) const { return index < m_vector.getLength(); }
+
     /*! \brief Redimensionne la Matrix.
      *
      *  \param height Définit la hauteur de la Matrix.
@@ -163,6 +173,17 @@ public:
         v(1, 0) = 7;
         v(1, 1) = 8;
         qDebug() << "v : " << v.toString();
+        qDebug() << "v.inRange(-1) : " << v.inRange(-1);
+        qDebug() << "v.inRange(0) : " << v.inRange(0);
+        qDebug() << "v.inRange(1) : " << v.inRange(1);
+        qDebug() << "v.inRange(2) : " << v.inRange(2);
+        qDebug() << "v.inRange(3) : " << v.inRange(3);
+        qDebug() << "v.inRange(4) : " << v.inRange(4);
+        qDebug() << "v.inRange(5) : " << v.inRange(5);
+        qDebug() << "v.inRange(1, 1) : " << v.inRange(1, 1);
+        qDebug() << "v.inRange(1, 2) : " << v.inRange(1, 2);
+        qDebug() << "v.inRange(3, 0) : " << v.inRange(3, 0);
+        qDebug() << "v.inRange(0, 3) : " << v.inRange(0, 3);
 
         Matrix<int> w(v);
         qDebug() << "w(v) : " << w.toString();
