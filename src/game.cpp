@@ -342,6 +342,23 @@ bool Game::load(QDomDocument &xml)
                 //on libère pieces
                 List::clear(pieces);
                 qDebug() << "Il y a " << List::size(m_pieces);
+
+                qDebug() << "Affichage pièces";
+                for(unsigned int line = 0; line < m_boardMatrix.getHeight(); ++line)
+                {
+                    for(unsigned int column = 0; column < m_boardMatrix.getWidth(); ++column)
+                    {
+                        if(getPieceNode(line, column, m_initialState))
+                        {
+                            qDebug() << line << column << getPieceNode(line, column, m_initialState)->info;
+                        }
+                        else
+                        {
+                            qDebug() << line << column << "NULL";
+                        }
+                    }
+                }
+                qDebug() << "Fin affichage pièces";
             }
             else
             {
@@ -388,9 +405,15 @@ bool Game::getNodePieceIndex(const Graph::Node* &pieceNode, unsigned int &index,
 
 const Graph::Node *Game::getPieceNode(unsigned int line, unsigned int column, const State &state) const
 {
+    /*for(unsigned int i = 0; i < m_initialState.getLength(); ++i)
+        if(m_initialState.getConst(i) != state.getConst(i))
+            {}//qDebug()<<"Ce n'est pas l'etat initial";
+*/
     if(m_boardMatrix(line,column) == NULL)
         return NULL;
-    return state[m_boardMatrix(line, column)->info];
+    else
+        return state[m_boardMatrix(line, column)->info];
+    //return m_initialState.getConst(m_boardMatrix(line, column)->info);
 }
 
 void Game::clear()

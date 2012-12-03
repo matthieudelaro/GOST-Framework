@@ -37,6 +37,14 @@ public:
      */
     inline const Graph::Node* getBoardNode(unsigned int index) const { return m_index[index];}
 
+    /*! \brief Effectue la liaison entre des coordonnées 2D et un noeud du plateau.
+     *
+     *  \param line La ligne dont on veut obtenir le noeud correspondant.
+     *  \param line La colonne dont on veut obtenir le noeud correspondant.
+     *  \return Un pointeur vers le noeud correspondant.
+     */
+    inline const Graph::Node* getBoardNode(unsigned int line, unsigned int column) const { return m_boardMatrix.getConst(line, column);}
+
     /*! \brief Effectue la liaison entre un noeud d'une pièce et un noeud du plateau.
      *
      *  \param pieceNode Le noeud de la pièce.
@@ -75,6 +83,11 @@ public:
      *  \return L'état initial du jeu.
      */
     inline const State& getInitialState() const {return m_initialState;}
+
+    /*!
+     *  \return L'état initial du jeu.
+     */
+    inline State* getInitialStateCopy() const {return new State(m_initialState);}
 
     /*!
      *  \return L'état final du jeu.

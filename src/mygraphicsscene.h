@@ -38,12 +38,16 @@ public:
     void addPiecesFinalState();
     void setState(const State *state);
 
+    QColor createRainBow(unsigned int x);
+
     void createBrushs();
 
 /*!
  *  \brief La fonction callResize va appeler le redimmensionage de ui->graphicsView en fonction du contenu de la matrice.
 */
     void callResize();
+
+    void clear();
 
 
     ~MyGraphicsScene();
@@ -58,14 +62,14 @@ signals:
     void sendPositions(QPointF *init,QPointF *final);
 
 private:
-    QGraphicsRectItem ***m_itemBoard; ///< Les cases du plateau
-    QGraphicsRectItem **m_itemPieces; ///< Les pièces de jeu
-    int m_HSize,m_WSize,m_BSize; ///< taille de hauteur, largeur et de base
+    const State *m_currentState;
+    QGraphicsRectItem ***m_items;
+    QGraphicsSimpleTextItem ***m_texteItems; //affiche du texte dans les cases
+    int m_HSize,m_WSize,m_BSize,m_caseHSize,m_caseWSize; ///< taille de hauteur, largeur et de base
     int m_baseRectSize;
     Game *m_game;
     QPixmap m_vide,m_base, m_rouge, m_bleu;
     QBrush **m_brushs; ///< Différents qpainter du jeu
-    QColor *m_colorList;
     QPointF *m_initialPos, *m_finalPos;///< sauvegarde des positions initiales et finales de déplacement
 };
 

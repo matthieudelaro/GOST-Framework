@@ -19,71 +19,71 @@
             <!--When there is both an image and a color, the color is used if an error occurs while loading the image.-->
         </background>
         <initialShape type="defined">
+           <line>
+                <column type="free"/>
+                <column type="free"/>
+                <column type="free"/>
+                <column type="void"/>
+                <column type="void"/>
+                <column type="void"/>
+                <column type="free"/>
+                <column type="free"/>
+                <column type="free"/>
+            </line>
             <line>
+                <column type="free"/>
+                <column type="free"/>
+                <column type="free"/>
+                <column type="free"/>
+                <column type="void"/>
+                <column type="free"/>
+                <column type="free"/>
+                <column type="free"/>
+                <column type="free"/>
+            </line>
+            <line>
+                <column type="free"/>
+                <column type="free"/>
+                <column type="free"/>
+                <column type="free"/>
+                <column type="piece" number="3"/>
+                <column type="piece" number="3"/>
+                <column type="piece" number="3"/>
+                <column type="piece" number="3"/>
+                <column type="piece" number="3"/>
+            </line>
+            <line>
+                <column type="void"/>
+                <column type="void"/>
+                <column type="void"/>
+                <column type="void"/>
+                <column type="free"/>
+                <column type="free"/>
+                <column type="free"/>
+                <column type="free"/>
+                <column type="free"/>
+            </line>
+            <line>
+                <column type="void"/>
+                <column type="void"/>
+                <column type="void"/>
+                <column type="void"/>
+                <column type="void"/>
+                <column type="piece" number="2"/>
+                <column type="piece" number="2"/>
+                <column type="piece" number="2"/>
+                <column type="piece" number="2"/>
+            </line>
+            <line>
+                <column type="void"/>
+                <column type="void"/>
+                <column type="void"/>
+                <column type="void"/>
+                <column type="void"/>
+                <column type="void"/>
                 <column type="piece" number="1"/>
                 <column type="piece" number="1"/>
                 <column type="piece" number="1"/>
-                <column type="void"/>
-                <column type="void"/>
-                <column type="void"/>
-                <column type="free"/>
-                <column type="free"/>
-                <column type="free"/>
-            </line>
-            <line>
-                <column type="piece" number="2"/>
-                <column type="piece" number="2"/>
-                <column type="piece" number="2"/>
-                <column type="piece" number="2"/>
-                <column type="void"/>
-                <column type="free"/>
-                <column type="free"/>
-                <column type="free"/>
-                <column type="free"/>
-            </line>
-            <line>
-                <column type="piece" number="3"/>
-                <column type="piece" number="3"/>
-                <column type="piece" number="3"/>
-                <column type="piece" number="3"/>
-                <column type="piece" number="3"/>
-                <column type="free"/>
-                <column type="free"/>
-                <column type="free"/>
-                <column type="free"/>
-            </line>
-            <line>
-                <column type="void"/>
-                <column type="void"/>
-                <column type="void"/>
-                <column type="void"/>
-                <column type="free"/>
-                <column type="free"/>
-                <column type="free"/>
-                <column type="free"/>
-                <column type="free"/>
-            </line>
-            <line>
-                <column type="void"/>
-                <column type="void"/>
-                <column type="void"/>
-                <column type="void"/>
-                <column type="void"/>
-                <column type="free"/>
-                <column type="free"/>
-                <column type="free"/>
-                <column type="free"/>
-            </line>
-            <line>
-                <column type="void"/>
-                <column type="void"/>
-                <column type="void"/>
-                <column type="void"/>
-                <column type="void"/>
-                <column type="void"/>
-                <column type="free"/>
-                <column type="free"/>
-                <column type="free"/>
             </line>
         </initialShape>
         <finalShape>
@@ -170,24 +170,3 @@
         </free>
     </board>
 </game>
-<!--commentaire
-
-        <initialShape type="defined">
-            <line>
-                <column type="piece" number="1"/>
-                <column type="void"/>
-                <column type="free"/>
-            </line>
-            <line>
-                <column type="piece" number="1"/>
-                <column type="piece" number="1"/>
-            </line>
-            <line>
-                <column type="free"/>
-                <column type="free"/>
-            </line>
-            <line>
-                <column type="free"/>
-            </line>
-        </initialShape>
--->

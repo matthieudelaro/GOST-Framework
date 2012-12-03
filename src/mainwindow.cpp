@@ -9,42 +9,69 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWi
 
     m_xmlChoiceWindow = NULL;
 
-    m_scene = new MyGraphicsScene();
-    ui->graphicsView->setScene(m_scene);
+    m_scene = NULL;
+
     ui->graphicsView->setAlignment(Qt::AlignTop | Qt::AlignLeft); //permet d'aligner le (0,0) en haut et à gauche
     ui->graphicsView->setMouseTracking(true);
 
     this->setCentralWidget(ui->centralWidget);
 
-    ui->actionChoixJeu->setShortcut(QKeySequence("Ctrl+o"));
     ui->actionAfficher_Fin->setShortcut(QKeySequence("Ctrl+f"));
 
-    finalStateWindows = new EndWindow;
+    QList<QKeySequence> raccourcisChoixJeu;
+    raccourcisChoixJeu.push_back(QKeySequence("Ctrl+o"));//o comme ouvrir
+    raccourcisChoixJeu.push_back(QKeySequence("Ctrl+c"));//c comme choisir. Plus accessible pour la main gauche
+    ui->actionChoixJeu->setShortcuts(raccourcisChoixJeu);
+
+    finalStateWindows = NULL;
+
 
     QObject::connect(ui->actionQuitter,SIGNAL(triggered()),qApp,SLOT(quit()));
     QObject::connect(ui->actionChoixJeu,SIGNAL(triggered()),this,SLOT(callChoiceXmlFile()));
 
-    QObject::connect(ui->actionAfficher_Fin,SIGNAL(triggered()),finalStateWindows,SLOT(show()));
 
-    //Appel de la fonction resize qui redimensionne la GUI en fonction de la graphicsView
-    QObject::connect(m_scene,SIGNAL(sendResize(int,int)),this,SLOT(resize(int,int)));
 
-    //appelle de la fonction qui vérifie si le déplacement est bon et récupérer la pièce correspondante
-    QObject::connect(m_scene,SIGNAL(sendPositions(QPointF*,QPointF*)),this,SLOT(callIAPossibleMove(QPointF*,QPointF*)));
+
 }
 
 bool MainWindow::loadGameFromXml(QDomDocument &xml)
 {
     if(m_game.load(xml))
     {
-        m_currentState = & m_game.getInitialState();
+        if(m_scene)
+        {
+            delete m_scene;
+            m_scene = NULL;
+        }
+        if(finalStateWindows)
+        {
+            delete finalStateWindows;
+            finalStateWindows = NULL;
+        }
+
+        m_scene = new MyGraphicsScene();
+        ui->graphicsView->setScene(m_scene);
+
+        //Appel de la fonction resize qui redimensionne la GUI en fonction de la graphicsView
+        QObject::connect(m_scene,SIGNAL(sendResize(int,int)),this,SLOT(resize(int,int)));
+
+        //appelle de la fonction qui vérifie si le déplacement est bon et récupérer la pièce correspondante
+        QObject::connect(m_scene,SIGNAL(sendPositions(QPointF*,QPointF*)),this,SLOT(callIAPossibleMove(QPointF*,QPointF*)));
+
+        m_currentState = m_game.getInitialStateCopy();
         m_scene->associateGame(&m_game);
 
-        m_scene->displayMatrix();
+        //m_scene->displayMatrix();
         m_scene->callResize();
-        m_scene->addPiecesInitialState();
+        m_scene->setState(m_currentState);
+
+        finalStateWindows = new EndWindow;
+
+        QObject::connect(ui->actionAfficher_Fin,SIGNAL(triggered()),finalStateWindows,SLOT(show()));
 
         finalStateWindows->display(m_game);
+
+
         return true;
     }
     else
@@ -81,7 +108,8 @@ MainWindow::~MainWindow()
     if(m_xmlChoiceWindow)
         delete m_xmlChoiceWindow;
 
-    delete finalStateWindows;
+    if(finalStateWindows)
+        delete finalStateWindows;
 }
 
 void MainWindow::resize(int w, int h)
@@ -107,6 +135,7 @@ void MainWindow::saveSelectedPathFromXml(QString path)
 
 void MainWindow::callIAPossibleMove(QPointF *init, QPointF *final)
 {
+
     if(m_game.getBoardMatrix()->inRange(init->y(),init->x()) && m_game.getBoardMatrix()->inRange(final->y(),final->x()))
     {
         State *newState = IA::possibleMove(*m_currentState,
@@ -116,9 +145,11 @@ void MainWindow::callIAPossibleMove(QPointF *init, QPointF *final)
         if(newState)
         {
             qDebug() << "deplacement autorisé !";
+            delete m_currentState;
             m_currentState = newState;
             m_scene->setState(m_currentState);
-            finalStateWindows->display(m_game);
+            if(IA::isEnd(*newState,m_game.getFinalState(),&m_game))
+                QMessageBox::information(NULL,"Fin du jeu","Bien joué");
         }
     }
 }

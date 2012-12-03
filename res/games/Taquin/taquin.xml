@@ -21,45 +21,35 @@
         <initialShape type="defined">
             <line>
                 <column type="piece" number="1"/>
-                <column type="free"/>
+                <column type="piece" number="2"/>
+                <column type="piece" number="3"/>
+            </line>
+            <line>
+                <column type="piece" number="4"/>
+                <column type="piece" number="5"/>
                 <column type="free"/>
             </line>
             <line>
-                <column type="piece" number="1"/>
-                <column type="piece" number="1"/>
-                <column type="free"/>
-            </line>
-            <line>
-                <column type="free"/>
-                <column type="free"/>
-                <column type="piece" number="2"/>
-            </line>
-            <line>
-                <column type="free"/>
-                <column type="piece" number="2"/>
-                <column type="piece" number="2"/>
+                <column type="piece" number="7"/>
+                <column type="piece" number="8"/>
+                <column type="piece" number="6"/>
             </line>
         </initialShape>
         <finalShape>
             <line>
-                <column type="jocker"/>
+                <column type="piece" number="1"/>
                 <column type="piece" number="2"/>
-                <column type="jocker"/>
+                <column type="piece" number="3"/>
             </line>
             <line>
-                <column type="jocker"/>
-                <column type="jocker"/>
-                <column type="jocker"/>
+                <column type="piece" number="4"/>
+                <column type="piece" number="5"/>
+                <column type="piece" number="6"/>
             </line>
             <line>
-                <column type="jocker"/>
-                <column type="void"/>
-                <column type="jocker"/>
-            </line>
-            <line>
-                <column type="jocker"/>
-                <column type="jocker"/>
-                <column type="jocker"/>
+                <column type="piece" number="7"/>
+                <column type="piece" number="8"/>
+                <column type="free"/>
             </line>
         </finalShape>
         <pieces>

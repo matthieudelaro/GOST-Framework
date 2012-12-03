@@ -109,3 +109,35 @@ State* IA::possibleMove(const State& currentState, const Graph::Node* initialBoa
     return afterMove;
 }
 
+
+bool IA::isEnd(const State& currentState, const State& endState, Game *game)
+{
+    qDebug() << "debut test fin";
+    for(unsigned int line = 0; line < game->getBoardMatrix()->getHeight() ; ++line)
+    {
+        for(unsigned int column = 0; column < game->getBoardMatrix()->getWidth() ; ++column)
+        {
+            qDebug() << line << column;
+            if(game->getPieceNode(line,column,endState))
+            {
+                qDebug() << "il existe une pièce à l'arrivée";
+                if(game->getPieceNode(line,column,endState)->info ==  0)
+                {
+                    qDebug() << "on a un jocker : on passe";
+                }
+                else if(!game->getPieceNode(line,column,currentState))
+                {
+                    qDebug() << "on n'a pas de pièce maintenant";
+                    return false;
+                }
+                else
+                {//si la case d'arrivée n'est pas un jocker on vérifie les compatibilités
+                    qDebug() << game->getPieceNode(line,column,endState)->info << "? = " << game->getPieceNode(line,column,currentState)->info;
+                    if(game->getPieceNode(line,column,endState)->info != game->getPieceNode(line,column,currentState)->info)
+                        return false;
+                }
+            }
+        }
+    }
+    return true;
+}

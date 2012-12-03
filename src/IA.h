@@ -8,6 +8,7 @@
 namespace IA
 {
     State* possibleMove(const State& currentState, const Graph::Node* initialBoardNode, const Graph::Node* finalBoardNode, const Game &game);
+    bool isEnd(const State& currentState, const State& endState, Game *game);
 }
 
 

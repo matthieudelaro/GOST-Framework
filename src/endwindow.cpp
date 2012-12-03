@@ -7,7 +7,7 @@ EndWindow::EndWindow(QWidget *parent) :
 {
     ui->setupUi(this);
 
-    m_scene = new MyGraphicsScene(200);
+    m_scene = new MyGraphicsScene(250);
     ui->endGraphicsView->setScene(m_scene);
     ui->endGraphicsView->setAlignment(Qt::AlignTop | Qt::AlignLeft); //permet d'aligner le (0,0) en haut et à gauche
     ui->endGraphicsView->setAcceptDrops(false);
@@ -34,6 +34,5 @@ void EndWindow::display(Game &game)
     m_scene->associateGame(&game);
     m_scene->displayMatrix();
     m_scene->addPiecesFinalState();
-    //m_scene->addPiecesInitialState();
     m_scene->callResize();
 }

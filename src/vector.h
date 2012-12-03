@@ -127,9 +127,11 @@ public:
     {
         if(m_tab)
         {
+            //on supprime chaque case
             for(unsigned int i = 0; i < m_length; ++i)
-                delete m_tab[i];
-            delete [] m_tab;
+                if(m_tab[i])//si elle n'est pas à NULL
+                    delete m_tab[i];
+            delete [] m_tab;//puis on supprime le tableau
             m_tab = NULL;
         }
     }

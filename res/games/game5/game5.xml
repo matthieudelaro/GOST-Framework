@@ -26,13 +26,8 @@
             </line>
             <line>
                 <column type="piece" number="1"/>
-                <column type="piece" number="1"/>
-                <column type="free"/>
-            </line>
-            <line>
                 <column type="free"/>
                 <column type="free"/>
-                <column type="piece" number="2"/>
             </line>
             <line>
                 <column type="free"/>
@@ -49,11 +44,6 @@
             <line>
                 <column type="jocker"/>
                 <column type="jocker"/>
-                <column type="jocker"/>
-            </line>
-            <line>
-                <column type="jocker"/>
-                <column type="void"/>
                 <column type="jocker"/>
             </line>
             <line>
