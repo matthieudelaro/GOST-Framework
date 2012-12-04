@@ -151,16 +151,28 @@ List::Node<State *>* getPossibleMove(const State& currentState, const Graph::Nod
         if(next != NULL)
         {
             State *test = IA::possibleMove(currentState,piece,next,game);
-            if(test != NULL)
-            {
+            if(test)
                 List::push_front(test, possibleMoves);
-            }
         }
     }
     return possibleMoves;
 }
 
- List::Node<State *>* getPossibleMove(const State& currentState, const Game &game)
+List::Node<State *>* getPossibleMove(const State& currentState, const Game &game)
 {
-    //a implémenter
+    const List::Node<Graph::Node *>* piecesToCheck = game.getPieces();
+
+    List::Node<State *>* possibleMoves  = NULL;
+
+    while(piecesToCheck)
+    {// comment faire des tests dessus ?
+        List::Node<State *> *moveToTest = IA::getPossibleMove(currentState,piecesToCheck->info,game);
+
+        if(moveToTest)
+            List::push_front(possibleMoves, moveToTest);
+
+        piecesToCheck = piecesToCheck->next;
+    }
+    return possibleMoves;
 }
+

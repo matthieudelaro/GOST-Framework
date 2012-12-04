@@ -28,10 +28,6 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWi
 
     QObject::connect(ui->actionQuitter,SIGNAL(triggered()),qApp,SLOT(quit()));
     QObject::connect(ui->actionChoixJeu,SIGNAL(triggered()),this,SLOT(callChoiceXmlFile()));
-
-
-
-
 }
 
 bool MainWindow::loadGameFromXml(QDomDocument &xml)
@@ -71,6 +67,7 @@ bool MainWindow::loadGameFromXml(QDomDocument &xml)
 
         finalStateWindows->display(m_game);
 
+        showDifferentsPossibleStates();
 
         return true;
     }
@@ -135,7 +132,6 @@ void MainWindow::saveSelectedPathFromXml(QString path)
 
 void MainWindow::callIAPossibleMove(QPointF *init, QPointF *final)
 {
-
     if(m_game.getBoardMatrix()->inRange(init->y(),init->x()) && m_game.getBoardMatrix()->inRange(final->y(),final->x()))
     {
         State *newState = IA::possibleMove(*m_currentState,
@@ -152,5 +148,18 @@ void MainWindow::callIAPossibleMove(QPointF *init, QPointF *final)
                 QMessageBox::information(NULL,"Fin du jeu",QString::fromUtf8("Bien joué"));
         }
     }
+}
+
+void MainWindow::showDifferentsPossibleStates()
+{
+    /*List::Node<State *>* possibleStates = IA::getPossibleMove(*m_currentState,m_game);
+    while(possibleStates)
+    {
+        QMessageBox::information(NULL,"","on recommence");
+        m_scene->setState(m_currentState);
+        QMessageBox::information(NULL,"","on avance");
+        m_scene->setState(possibleStates->info);
+        possibleStates = possibleStates->next;
+    }*/
 }
 

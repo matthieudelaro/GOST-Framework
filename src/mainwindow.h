@@ -10,6 +10,7 @@
 #include "game.h"
 #include <QMessageBox>
 #include "endwindow.h"
+#include "list.h"
 #include "IA.h"
 
 /*!
@@ -69,6 +70,11 @@ public slots:
      *  \brief determine la direction et la pièce appelée
      */
     void callIAPossibleMove(QPointF *init, QPointF *final);
+
+    /*!
+     *  \brief montre les différents états possibles
+     */
+    void showDifferentsPossibleStates();
 
 private:
     XmlFileChoice *m_xmlChoiceWindow;///< Fenetre de choix du fichier Xml
