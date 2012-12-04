@@ -9,7 +9,6 @@ inline int myMax(int x,int y){return(x>y)?x:y;}
 MyGraphicsScene::MyGraphicsScene(int baseRectSize)
 {
     m_game = NULL;
-    m_brushs = NULL;
     m_HSize = 0;
     m_WSize = 0;
     m_BSize = 0;
@@ -18,8 +17,6 @@ MyGraphicsScene::MyGraphicsScene(int baseRectSize)
     m_baseRectSize = baseRectSize;
     m_initialPos = new QPointF(0,0);
     m_finalPos = new QPointF(0,0);
-    m_items = NULL;
-    m_texteItems = NULL;
 }
 
 void MyGraphicsScene::associateGame(Game *g)
@@ -40,32 +37,29 @@ void MyGraphicsScene::associateGame(Game *g)
     m_caseHSize = m_baseRectSize/m_BSize;
     m_caseWSize = m_baseRectSize/m_BSize;
 
-    m_items = new QGraphicsRectItem**[m_game->getBoardMatrix()->getHeight()];
-    m_texteItems = new QGraphicsSimpleTextItem**[m_game->getBoardMatrix()->getHeight()];
+    m_items.resize(m_game->getBoardMatrix()->getHeight(), m_game->getBoardMatrix()->getWidth());
+    m_texteItems.resize(m_game->getBoardMatrix()->getHeight(), m_game->getBoardMatrix()->getWidth());
 
     for(unsigned int line = 0; line < m_game->getBoardMatrix()->getHeight(); ++line)
     {
-        m_items[line] = new QGraphicsRectItem*[m_game->getBoardMatrix()->getWidth()];
-        m_texteItems[line] = new QGraphicsSimpleTextItem*[m_game->getBoardMatrix()->getWidth()];
-
         for(unsigned int column = 0; column < m_game->getBoardMatrix()->getWidth(); ++column)
         {
-            m_items[line][column] = new QGraphicsRectItem(0, 0, m_caseWSize, m_caseHSize);
+            m_items(line, column) = new QGraphicsRectItem(0, 0, m_caseWSize, m_caseHSize);
 
-            m_texteItems[line][column] = new QGraphicsSimpleTextItem(m_items[line][column]);
-            m_texteItems[line][column]->setPos(m_caseHSize/2,m_caseWSize/2); //mettre le texte au centre mais pas très beau
-            m_texteItems[line][column]->setScale((double)(m_baseRectSize)/400.0);
+            m_texteItems(line, column) = new QGraphicsSimpleTextItem(m_items(line, column));
+            m_texteItems(line, column)->setPos(m_caseHSize/2,m_caseWSize/2); //mettre le texte au centre mais pas très beau
+            m_texteItems(line, column)->setScale((double)(m_baseRectSize)/400.0);
 
             if(m_game->getBoardNode(line, column))
             {
-                m_items[line][column]->setBrush(*m_brushs[1]);
+                m_items(line, column)->setBrush(*m_brushs[1]);
             }
             else
             {
-                m_items[line][column]->setBrush(*m_brushs[0]);
+                m_items(line, column)->setBrush(*m_brushs[0]);
             }
-            m_items[line][column]->setPos(column*m_caseWSize, line*m_caseHSize);
-            this->addItem(m_items[line][column]);
+            m_items(line, column)->setPos(column*m_caseWSize, line*m_caseHSize);
+            this->addItem(m_items(line, column));
         }
     }
     callResize();
@@ -113,20 +107,16 @@ void MyGraphicsScene::setState(const State *state)
                 if(m_game->getPieceNode(line,column,*state))
                 {
                     qDebug() <<m_game->getNbPieces() << m_game->getPieceNode(line,column,*state)->info + 1;
-                    m_items[line][column]->setBrush(*m_brushs[m_game->getPieceNode(line,column,*state)->info + 1]);
-                    //qDebug()<< qint8(m_game->getPieceNode(line,column,*state)->info + 1);
-                    m_texteItems[line][column]->setText(QString::number(m_game->getPieceNode(line,column,*state)->info));
-
-                    // m_items(line, column)->setBrush(*m_brushs[1]);
+                    m_items(line, column)->setBrush(*m_brushs[m_game->getPieceNode(line,column,*state)->info + 1]);
+                    m_texteItems(line, column)->setText(QString::number(m_game->getPieceNode(line,column,*state)->info));
                 }
                 else
                 {
-                    m_texteItems[line][column]->setText("");
+                    m_texteItems(line, column)->setText("");
                     if(m_game->getBoardNode(line,column))
-                        m_items[line][column]->setBrush(*m_brushs[1]);
+                        m_items(line, column)->setBrush(*m_brushs[1]);
                     else
-                        m_items[line][column]->setBrush(*m_brushs[0]);
-                    //m_items(line, column)->setBrush(*m_brushs[0]);
+                        m_items(line, column)->setBrush(*m_brushs[0]);
                 }
             }
         }
@@ -139,7 +129,7 @@ QColor MyGraphicsScene::createRainBow(unsigned int x)
     int r = 255;
     int g = 255;
     int b = 255;
-    if(x >= 0 && x < 255)
+    if(x < 255)
     {
         r = 255;
         g = x;
@@ -194,7 +184,7 @@ void MyGraphicsScene::createBrushs()
     {
         unsigned int nbPieces = m_game->getNbPieces();
 
-        m_brushs =  new QBrush*[nbPieces+2];
+        m_brushs.resize(nbPieces+2);
         m_brushs[0] = new QBrush(QColor(200,200,200));
         m_brushs[1] = new QBrush(QColor(110,110,110));
         for(unsigned int i = 2; i < nbPieces + 2; i ++)
@@ -258,8 +248,8 @@ MyGraphicsScene::~MyGraphicsScene()
 //        delete m_itemBoard;
 //    }*/
 
-    if(m_brushs)
-        delete [] m_brushs;
+    //if(m_brushs)
+    //    delete [] m_brushs;
 
     /*
     QT fait les delete automatiquement

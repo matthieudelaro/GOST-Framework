@@ -63,13 +63,13 @@ signals:
 
 private:
     const State *m_currentState;
-    QGraphicsRectItem ***m_items;
-    QGraphicsSimpleTextItem ***m_texteItems; //affiche du texte dans les cases
+    Matrix<QGraphicsRectItem* > m_items;
+    Matrix<QGraphicsSimpleTextItem* > m_texteItems; //affiche du texte dans les cases
     int m_HSize,m_WSize,m_BSize,m_caseHSize,m_caseWSize; ///< taille de hauteur, largeur et de base
     int m_baseRectSize;
     Game *m_game;
     QPixmap m_vide,m_base, m_rouge, m_bleu;
-    QBrush **m_brushs; ///< Différents qpainter du jeu
+    Vector<QBrush *> m_brushs; ///< Différents qpainter du jeu
     QPointF *m_initialPos, *m_finalPos;///< sauvegarde des positions initiales et finales de déplacement
 };
 

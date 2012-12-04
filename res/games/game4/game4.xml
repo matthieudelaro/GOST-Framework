@@ -31,7 +31,7 @@
             </line>
             <line>
                 <column type="free"/>
-                <column type="free"/>
+                <column type="void"/>
                 <column type="piece" number="2"/>
             </line>
             <line>
