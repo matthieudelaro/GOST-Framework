@@ -149,7 +149,7 @@ void MainWindow::callIAPossibleMove(QPointF *init, QPointF *final)
             m_currentState = newState;
             m_scene->setState(m_currentState);
             if(IA::isEnd(*newState,m_game.getFinalState(),&m_game))
-                QMessageBox::information(NULL,"Fin du jeu","Bien joué");
+                QMessageBox::information(NULL,"Fin du jeu",QString::fromUtf8("Bien joué"));
         }
     }
 }

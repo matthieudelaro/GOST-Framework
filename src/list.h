@@ -65,6 +65,16 @@ namespace List
     }
 
     template <typename T>
+    void push_front(Node<T>* &l1, Node<T>* &l2)
+    {
+        Node<T> *it = l1;
+        while(it->next != NULL)
+            it = it->next;
+
+        it->next = l2;
+    }
+
+    template <typename T>
     unsigned int size(const Node<T>* l)
     {
         if(l)
@@ -115,6 +125,13 @@ namespace List
         List::push_front(2, l);
         List::push_front(3, l);
 
+        List::Node<T>* l2 = NULL;
+        List::push_front(4, l2);
+        List::push_front(5, l2);
+        List::push_front(6, l2);
+
+        List::push_front(l,l2);
+
         qDebug() << "\nl :";
         List::Node<T>* it = l;
         while(it)
@@ -122,6 +139,7 @@ namespace List
             qDebug() << it->info;
             it = it->next;
         }
+/*
         qDebug() << "size(l) = " << List::size(l);
         qDebug() << "clear(l);";
         List::clear(l);
@@ -132,7 +150,7 @@ namespace List
         {
             qDebug() << it->info;
             it = it->next;
-        }
+        }*/
     }
 }
 

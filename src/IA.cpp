@@ -141,3 +141,26 @@ bool IA::isEnd(const State& currentState, const State& endState, Game *game)
     }
     return true;
 }
+
+List::Node<State *>* getPossibleMove(const State& currentState, const Graph::Node* piece, const Game &game)
+{
+    List::Node<State *>* possibleMoves = NULL;
+    for(unsigned int i = 0; i < 4; i ++)
+    {
+        Graph::Node *next = game.getBoardNode(piece,currentState)->getConstLink(i);
+        if(next != NULL)
+        {
+            State *test = IA::possibleMove(currentState,piece,next,game);
+            if(test != NULL)
+            {
+                List::push_front(test, possibleMoves);
+            }
+        }
+    }
+    return possibleMoves;
+}
+
+ List::Node<State *>* getPossibleMove(const State& currentState, const Game &game)
+{
+    //a implémenter
+}
