@@ -70,6 +70,11 @@ public slots:
      */
     void callIAPossibleMove(QPointF *init, QPointF *final);
 
+    /*!
+     *  \brief Annule le dernier coup joué par l'utilisateur.
+     */
+    void cancel();
+
 private:
     XmlFileChoice *m_xmlChoiceWindow;///< Fenetre de choix du fichier Xml
     Ui::MainWindow *ui;///< Fenetre principale, conenant le GUI

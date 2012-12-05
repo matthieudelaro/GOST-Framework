@@ -59,8 +59,15 @@
     </property>
     <addaction name="actionAfficher_Fin"/>
    </widget>
+   <widget class="QMenu" name="menuAction">
+    <property name="title">
+     <string>Action</string>
+    </property>
+    <addaction name="actionAnnuler"/>
+   </widget>
    <addaction name="menuPartie"/>
    <addaction name="menuAide"/>
+   <addaction name="menuAction"/>
   </widget>
   <widget class="QToolBar" name="mainToolBar">
    <attribute name="toolBarArea">
@@ -89,6 +96,17 @@
   <action name="actionAfficher_Fin">
    <property name="text">
     <string>Afficher Fin</string>
+   </property>
+  </action>
+  <action name="actionAnnuler">
+   <property name="text">
+    <string>Annuler</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+Z</string>
+   </property>
+   <property name="autoRepeat">
+    <bool>false</bool>
    </property>
   </action>
  </widget>

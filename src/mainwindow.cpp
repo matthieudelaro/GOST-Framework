@@ -27,13 +27,9 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWi
 
     finalStateWindows = NULL;
 
-
     QObject::connect(ui->actionQuitter,SIGNAL(triggered()),qApp,SLOT(quit()));
     QObject::connect(ui->actionChoixJeu,SIGNAL(triggered()),this,SLOT(callChoiceXmlFile()));
-
-
-
-
+    QObject::connect(ui->actionAnnuler,SIGNAL(triggered()),this,SLOT(cancel()));
 }
 
 bool MainWindow::loadGameFromXml(QDomDocument &xml)
@@ -155,21 +151,30 @@ void MainWindow::callIAPossibleMove(QPointF *init, QPointF *final)
         {
             if(m_history && (*newState) == (*(m_history->info)))//si on fait marche arrière
             {
-                m_currentState = newState;
-                List::pop_front(m_history);
-                if(m_movesNumber > 0)//protection contre l'overflow !
-                    m_movesNumber--;
+                cancel();
             }
             else
             {
                 List::push_front(m_currentState, m_history);
                 m_currentState = newState;
                 m_movesNumber++;
+                m_scene->setState(m_currentState);
             }
-            m_scene->setState(m_currentState);
             if(IA::isEnd(*newState,m_game.getFinalState(),&m_game))
                 QMessageBox::information(NULL,"Fin du jeu",QString::fromUtf8("Bien joué"));
         }
     }
+}
+
+void MainWindow::cancel()
+{
+    if(m_history)//si il y a des coups précédents
+    {
+        m_currentState = m_history->info;
+        List::pop_front(m_history);
+        if(m_movesNumber > 0)//protection contre l'overflow !
+            m_movesNumber--;
+    }
+    m_scene->setState(m_currentState);
 }
 
