@@ -65,6 +65,25 @@ namespace List
     }
 
     template <typename T>
+    void pop_front(Node<T>* &l)
+    {
+        if(l)
+        {
+            if(l->next)
+            {
+                Node<T> *buffer = l;
+                l = l->next;
+                delete buffer;
+            }
+            else
+            {
+                delete l;
+                l = NULL;
+            }
+        }
+    }
+
+    template <typename T>
     void push_front(Node<T>* &l1, Node<T>* &l2)
     {
         Node<T> *it = l1;
@@ -123,6 +142,7 @@ namespace List
         List::Node<T>* l = NULL;
         List::push_front(1, l);
         List::push_front(2, l);
+        List::pop_front(l);
         List::push_front(3, l);
 
         List::Node<T>* l2 = NULL;

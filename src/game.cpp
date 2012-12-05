@@ -341,24 +341,23 @@ bool Game::load(QDomDocument &xml)
 
                 //on libère pieces
                 List::clear(pieces);
-                qDebug() << "Il y a " << List::size(m_pieces);
 
-                qDebug() << "Affichage pièces";
-                for(unsigned int line = 0; line < m_boardMatrix.getHeight(); ++line)
-                {
-                    for(unsigned int column = 0; column < m_boardMatrix.getWidth(); ++column)
-                    {
-                        if(getPieceNode(line, column, m_initialState))
-                        {
-                            qDebug() << line << column << getPieceNode(line, column, m_initialState)->info;
-                        }
-                        else
-                        {
-                            qDebug() << line << column << "NULL";
-                        }
-                    }
-                }
-                qDebug() << "Fin affichage pièces";
+//                qDebug() << "Affichage pièces";
+//                for(unsigned int line = 0; line < m_boardMatrix.getHeight(); ++line)
+//                {
+//                    for(unsigned int column = 0; column < m_boardMatrix.getWidth(); ++column)
+//                    {
+//                        if(getPieceNode(line, column, m_initialState))
+//                        {
+//                            qDebug() << line << column << getPieceNode(line, column, m_initialState)->info;
+//                        }
+//                        else
+//                        {
+//                            qDebug() << line << column << "NULL";
+//                        }
+//                    }
+//                }
+//                qDebug() << "Fin affichage pièces";
             }
             else
             {

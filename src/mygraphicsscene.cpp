@@ -21,13 +21,10 @@ MyGraphicsScene::MyGraphicsScene(int baseRectSize)
 
 void MyGraphicsScene::associateGame(Game *g)
 {
-    //clear();
-
     //on associe notre attribut au pointeur de la classe game
     m_game = g;
     createBrushs();
 
-    //en utilisant des pointeurs à la place de la matrice ça marche
     //on initialise le plateau
     m_HSize = m_game->getBoardMatrix()->getHeight();
     m_WSize = m_game->getBoardMatrix()->getWidth();
@@ -65,32 +62,6 @@ void MyGraphicsScene::associateGame(Game *g)
     callResize();
 }
 
-void MyGraphicsScene::displayMatrix()
-{
-    /*m_HSize = m_game->getBoardMatrix()->getHeight();
-    m_WSize = m_game->getBoardMatrix()->getWidth();
-    m_BSize = myMax(m_HSize,m_WSize);
-
-    createBrushs();
-
-    m_itemBoard = new QGraphicsRectItem**[m_HSize];
-    for(int i = 0; i < m_HSize; i ++)
-    {
-        m_itemBoard[i] = new QGraphicsRectItem*[m_WSize];
-        for(int j = 0; j < m_WSize; j ++)
-        {
-            m_itemBoard[i][j] =  new QGraphicsRectItem(0,0,m_baseRectSize,m_baseRectSize);
-            if(m_game->getBoardMatrix()->operator ()(i,j) == NULL)
-                m_itemBoard[i][j]->setBrush(*m_brushs[0]);
-            else
-                m_itemBoard[i][j]->setBrush(*m_brushs[1]);
-            m_itemBoard[i][j]->setScale(1./(m_BSize)); //OK pour la redimension
-            this->addItem(m_itemBoard[i][j]);
-            m_itemBoard[i][j]->setPos(j*(m_baseRectSize/m_BSize),i*(m_baseRectSize/m_BSize)); //problèmes de position, plus la pièce est petite et plus elle se décale vers la gauche
-        }
-    }*/
-}
-
 void MyGraphicsScene::addPiecesInitialState()
 {
     setState(&(m_game->getInitialState()));
@@ -106,7 +77,6 @@ void MyGraphicsScene::setState(const State *state)
             {
                 if(m_game->getPieceNode(line,column,*state))
                 {
-                    qDebug() <<m_game->getNbPieces() << m_game->getPieceNode(line,column,*state)->info + 1;
                     m_items(line, column)->setBrush(*m_brushs[m_game->getPieceNode(line,column,*state)->info + 1]);
                     m_texteItems(line, column)->setText(QString::number(m_game->getPieceNode(line,column,*state)->info));
                 }
@@ -198,89 +168,8 @@ void MyGraphicsScene::callResize()
         emit sendResize(m_WSize*(m_baseRectSize/m_BSize)+3,m_HSize*(m_baseRectSize/m_BSize)+3);
 }
 
-void MyGraphicsScene::clear()
-{
-    /*if(m_game)
-    {
-        if(m_texteItems)
-        {
-            for(unsigned int line = 0; line < m_game->getBoardMatrix()->getHeight(); ++line)
-            {
-                for(unsigned int column = 0; column < m_game->getBoardMatrix()->getWidth(); ++column)
-                {
-                    delete m_texteItems[line][column];
-                }
-                delete [] m_texteItems[line];
-            }
-            delete [] m_texteItems;
-        }
-
-        if(m_items)
-        {
-            for(unsigned int line = 0; line < m_game->getBoardMatrix()->getHeight(); ++line)
-            {
-                for(unsigned int column = 0; column < m_game->getBoardMatrix()->getWidth(); ++column)
-                {
-                    this->removeItem(m_items[line][column]);
-                    delete m_items[line][column];
-                }
-                delete [] m_items[line];
-            }
-            delete [] m_items;
-        }
-        this->
-        m_game = NULL;
-    }*/
-}
-
 MyGraphicsScene::~MyGraphicsScene()
 {
-    /*
-    //détruit automatiquement par QGraphicScene
-//    if(m_itemBoard != NULL)
-//    {
-//        for(int i = 0; i < m_HSize; i ++)
-//        {
-//            for(int j = 0; j < m_WSize; j ++)
-//                delete m_itemBoard[i][j];
-//            delete m_itemBoard[i];
-//        }
-//        delete m_itemBoard;
-//    }*/
-
-    //if(m_brushs)
-    //    delete [] m_brushs;
-
-    /*
-    QT fait les delete automatiquement
-    if(m_texteItems)
-    {
-        for(unsigned int line = 0; line < m_game->getBoardMatrix()->getHeight(); ++line)
-        {
-            for(unsigned int column = 0; column < m_game->getBoardMatrix()->getWidth(); ++column)
-            {
-                delete m_texteItems[line][column];
-            }
-            delete [] m_texteItems[line];
-        }
-        delete [] m_texteItems;
-    }
-
-    if(m_items)
-    {
-        for(unsigned int line = 0; line < m_game->getBoardMatrix()->getHeight(); ++line)
-        {
-            for(unsigned int column = 0; column < m_game->getBoardMatrix()->getWidth(); ++column)
-            {
-                delete m_items[line][column];
-            }
-            delete [] m_items[line];
-        }
-        delete [] m_items;
-    }*/
-
-
-
     if(m_initialPos)
         delete m_initialPos;
     if(m_finalPos)

@@ -6,6 +6,8 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWi
 {
     ui->setupUi(this);
     m_currentState = NULL;
+    m_history = NULL;
+    m_movesNumber = 0;
 
     m_xmlChoiceWindow = NULL;
 
@@ -43,11 +45,18 @@ bool MainWindow::loadGameFromXml(QDomDocument &xml)
             delete m_scene;
             m_scene = NULL;
         }
+        if(m_currentState)
+        {
+            delete m_currentState;
+            m_currentState = NULL;
+        }
         if(finalStateWindows)
         {
             delete finalStateWindows;
             finalStateWindows = NULL;
         }
+        List::clearDelete(m_history);
+        m_movesNumber = 0;
 
         m_scene = new MyGraphicsScene();
         ui->graphicsView->setScene(m_scene);
@@ -70,7 +79,6 @@ bool MainWindow::loadGameFromXml(QDomDocument &xml)
         QObject::connect(ui->actionAfficher_Fin,SIGNAL(triggered()),finalStateWindows,SLOT(show()));
 
         finalStateWindows->display(m_game);
-
 
         return true;
     }
@@ -110,6 +118,8 @@ MainWindow::~MainWindow()
 
     if(finalStateWindows)
         delete finalStateWindows;
+
+    List::clearDelete(m_history);
 }
 
 void MainWindow::resize(int w, int h)
@@ -135,7 +145,6 @@ void MainWindow::saveSelectedPathFromXml(QString path)
 
 void MainWindow::callIAPossibleMove(QPointF *init, QPointF *final)
 {
-
     if(m_game.getBoardMatrix()->inRange(init->y(),init->x()) && m_game.getBoardMatrix()->inRange(final->y(),final->x()))
     {
         State *newState = IA::possibleMove(*m_currentState,
@@ -144,9 +153,19 @@ void MainWindow::callIAPossibleMove(QPointF *init, QPointF *final)
                                            m_game);
         if(newState)
         {
-            qDebug() << "deplacement autorisé !";
-            delete m_currentState;
-            m_currentState = newState;
+            if(m_history && (*newState) == (*(m_history->info)))//si on fait marche arrière
+            {
+                m_currentState = newState;
+                List::pop_front(m_history);
+                if(m_movesNumber > 0)//protection contre l'overflow !
+                    m_movesNumber--;
+            }
+            else
+            {
+                List::push_front(m_currentState, m_history);
+                m_currentState = newState;
+                m_movesNumber++;
+            }
             m_scene->setState(m_currentState);
             if(IA::isEnd(*newState,m_game.getFinalState(),&m_game))
                 QMessageBox::information(NULL,"Fin du jeu",QString::fromUtf8("Bien joué"));

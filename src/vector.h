@@ -183,11 +183,31 @@ public:
         Vector<int> x;
         x = w;
         qDebug() << "x = w : " << x.toString();
+
+//        Vector<int> a(5, 5);
+//        qDebug() << (a == v);
+//        a.resize(3, 5);
+//        qDebug() << (a == v);
+//        a[0] = 5;
+//        a[1] = 6;
+//        a[2] = 7;
+//        qDebug() << (a == v);
     }
 
 private:
     T *m_tab; ///< tableau dynamique stockant les valeurs
     unsigned int m_length; ///< longueur du tableau
 };
+
+template <typename T>
+bool operator==(const Vector<T>& v, const Vector<T>& w)
+{
+    if(v.getLength() != w.getLength())
+        return false;//on renvoie false si ils n'ont pas la même longuer
+    for(unsigned int i = 0; i < v.getLength(); ++i)
+        if(v.getConst(i) != w.getConst(i))
+            return false;//on renvoie false si toutes les cases ne sont pas identiques 2 à 2
+    return true;//si tout va bien, on renvoie true
+}
 
 #endif // VECTOR_H

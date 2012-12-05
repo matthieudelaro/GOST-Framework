@@ -12,9 +12,8 @@
 #include "graph.h"
 
 /*!
-    \brief La classe MyGraphicsScene gère l'affichage graphique du jeu.
-*/
-
+ *  \brief La classe MyGraphicsScene gère l'affichage graphique du jeu.
+ */
 class MyGraphicsScene : public QGraphicsScene
 {
     Q_OBJECT
@@ -22,16 +21,7 @@ class MyGraphicsScene : public QGraphicsScene
 public:
     MyGraphicsScene(int baseRectSize = 500);
 
-/*!
- *  \brief Associe la matrice chargée dans le xml à l'interface graphique.
- *  \param g La matrice chargée
- */
     void associateGame(Game *g);
-
-/*!
- * \brief affiche la matrice chargée
- */
-    void displayMatrix();
 
     void addPiecesInitialState();
 
@@ -42,13 +32,10 @@ public:
 
     void createBrushs();
 
-/*!
- *  \brief La fonction callResize va appeler le redimmensionage de ui->graphicsView en fonction du contenu de la matrice.
-*/
+    /*!
+     *  \brief La fonction callResize va appeler le redimmensionage de ui->graphicsView en fonction du contenu de la matrice.
+     */
     void callResize();
-
-    void clear();
-
 
     ~MyGraphicsScene();
 
@@ -68,7 +55,6 @@ private:
     int m_HSize,m_WSize,m_BSize,m_caseHSize,m_caseWSize; ///< taille de hauteur, largeur et de base
     int m_baseRectSize;
     Game *m_game;
-    QPixmap m_vide,m_base, m_rouge, m_bleu;
     Vector<QBrush *> m_brushs; ///< Différents qpainter du jeu
     QPointF *m_initialPos, *m_finalPos;///< sauvegarde des positions initiales et finales de déplacement
 };

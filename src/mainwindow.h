@@ -79,6 +79,8 @@ private:
     QDomDocument m_XMLFileChosed;///< Document qui récupère le document Xml choisi
     EndWindow *finalStateWindows;
     State *m_currentState;
+    List::Node<State *> *m_history;
+    unsigned int m_movesNumber;
 };
 
 #endif // MAINWINDOW_H
