@@ -90,7 +90,7 @@ private:
     QDomDocument m_XMLFileChosed;///< Document qui récupère le document Xml choisi
     EndWindow *finalStateWindows;
     State *m_currentState;
-    List::Node<State *> *m_history;
+    List::Node<State *> *m_history;///< Liste contenant l'historique des mouvements de l'utilisateur.
     unsigned int m_movesNumber;
 };
 

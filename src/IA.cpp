@@ -3,17 +3,22 @@
 
 State* IA::possibleMove(const State& currentState, const Graph::Node* initialBoardNode, const Graph::Node* finalBoardNode, const Game &game)
 {
+    qDebug() << "######################################################";
+    qDebug() << "start" << initialBoardNode << "end " << finalBoardNode;
     //on vérifie que les 2 noeuds existent
     if(initialBoardNode == NULL || finalBoardNode == NULL)
     {
         return NULL ;
     }
 
+    qDebug() << "les deux cases existent";
+
     //vérification que les deux noeuds sont ajacents
     //on regarde si les deux liens sont bien voisins et on récupère la direction
     int direction = -1;
     for(unsigned int i = 0; i < initialBoardNode->nbLinks; i ++)
     {
+        qDebug() << i << initialBoardNode->getConstLink(i);
         if(initialBoardNode->getConstLink(i) == finalBoardNode)
             direction = i;
     }
@@ -21,12 +26,14 @@ State* IA::possibleMove(const State& currentState, const Graph::Node* initialBoa
     {
         return NULL;
     }
+    qDebug() << "les deux cases sont voisines";
 
     //on vérifie que l'on ne prend pas une case vide (qu'on l'on n'essaye pas de déplacer une case vide)
     if(game.getPieceNode(initialBoardNode, currentState) == NULL)
     {
         return NULL;
     }
+    qDebug() << "on ne prend pas une piece vide";
 
     //on parcoure tous les noeuds de la pièce pour vérifier que chaque noeud peut être déplacé
     //on en profite pour prendre en note les déplacements à effectuer si déplacement est autorisé
@@ -84,6 +91,7 @@ State* IA::possibleMove(const State& currentState, const Graph::Node* initialBoa
         afterMove->get(itMoves->info->first) = NULL;
         itMoves = itMoves->next;
     }
+
     //puis on place correctement les noeuds de la pièce qu'on déplace
     itMoves = moves;
     while(itMoves)
@@ -92,18 +100,10 @@ State* IA::possibleMove(const State& currentState, const Graph::Node* initialBoa
         itMoves = itMoves->next;
     }
 
-//    qDebug() << "AFTERMOVE :";
-//    for(unsigned int i = 0; i < afterMove->getLength(); ++i)
-//        if(afterMove->getConst(i))
-//            qDebug() << afterMove->getConst(i)->info;
-//        else
-//            qDebug() << "rien";
-
     List::clearDelete(moves);
     List::clear(nodesToMove);
     return afterMove;
 }
-
 
 bool IA::isEnd(const State& currentState, const State& endState, Game *game)
 {
@@ -137,31 +137,35 @@ bool IA::isEnd(const State& currentState, const State& endState, Game *game)
     return true;
 }
 
-List::Node<State *>* IA::getPossibleMove(const State& currentState, const Graph::Node* piece, const Game &game)
+List::Node<const State *>* IA::getPossibleMove(const State& currentState, const Graph::Node* piece, const Game &game)
 {
-    List::Node<State *>* possibleMoves = NULL;
-    for(unsigned int i = 0; i < 4; i ++)
+    qDebug() << "getpossible move on piece : " << game.getBoardNode(piece,currentState) << piece->info;
+
+    List::Node<const State *>* possibleMoves = NULL;
+    for(unsigned int i = 0; i < Graph::Node::nbLinks ; i ++)
     {
-        Graph::Node *next = game.getBoardNode(piece,currentState)->getConstLink(i);
-        if(next != NULL)
-        {
-            State *test = IA::possibleMove(currentState,piece,next,game);
-            if(test)
-                List::push_front(test, possibleMoves);
-        }
+        //pour tous les suivants possibles de piece
+        const Graph::Node* boardNodeToTest = game.getBoardNode(piece,currentState);
+        //si on a bien un noeud
+
+        const State* possibleState = IA::possibleMove(currentState, boardNodeToTest, boardNodeToTest->getConstLink(i), game);
+        if(possibleState)
+            List::push_front(possibleState, possibleMoves);
+
     }
     return possibleMoves;
 }
 
-List::Node<State *>* IA::getPossibleMove(const State& currentState, const Game &game)
+List::Node<const State *>* IA::getPossibleMove(const State& currentState, const Game &game)
 {
     const List::Node<Graph::Node *>* piecesToCheck = game.getPieces();
 
-    List::Node<State *>* possibleMoves  = NULL;
+    List::Node<const State *>* possibleMoves  = NULL;
 
     while(piecesToCheck)
-    {// comment faire des tests dessus ?
-        List::Node<State *> *moveToTest = IA::getPossibleMove(currentState,piecesToCheck->info,game);
+    {
+
+        List::Node<const State *> *moveToTest = IA::getPossibleMove(currentState,piecesToCheck->info,game);
 
         if(moveToTest)
             List::push_front(possibleMoves, moveToTest);

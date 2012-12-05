@@ -86,11 +86,18 @@ namespace List
     template <typename T>
     void push_front(Node<T>* &l1, Node<T>* &l2)
     {
-        Node<T> *it = l1;
-        while(it->next != NULL)
-            it = it->next;
+        if(l1 == NULL)
+        {
+            l1 = l2;
+        }
+        else
+        {
+            Node<T> *it = l1;
+            while(it->next != NULL)
+                it = it->next;
 
-        it->next = l2;
+            it->next = l2;
+        }
     }
 
     template <typename T>

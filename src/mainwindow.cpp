@@ -76,7 +76,9 @@ bool MainWindow::loadGameFromXml(QDomDocument &xml)
 
         finalStateWindows->display(m_game);
 
-        showDifferentsPossibleStates();
+        //fonction de debug
+        //showDifferentsPossibleStates();
+
         return true;
     }
     else
@@ -181,7 +183,11 @@ void MainWindow::cancel()
 
 void MainWindow::showDifferentsPossibleStates()
 {
-    /*List::Node<State *>* possibleStates = IA::getPossibleMove(*m_currentState,m_game);
+    qDebug() << "showPossibleState";
+    const Graph::Node* pieceToTest = m_game.getPieces()->info;
+    List::Node<const State *>* possibleStates = IA::getPossibleMove(*m_currentState,m_game);
+
+    qDebug() << possibleStates;
     while(possibleStates)
     {
         QMessageBox::information(NULL,"","on recommence");
@@ -189,6 +195,6 @@ void MainWindow::showDifferentsPossibleStates()
         QMessageBox::information(NULL,"","on avance");
         m_scene->setState(possibleStates->info);
         possibleStates = possibleStates->next;
-    }*/
+    }
 }
 
