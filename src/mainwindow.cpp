@@ -76,6 +76,7 @@ bool MainWindow::loadGameFromXml(QDomDocument &xml)
 
         finalStateWindows->display(m_game);
 
+        showDifferentsPossibleStates();
         return true;
     }
     else
@@ -176,5 +177,18 @@ void MainWindow::cancel()
             m_movesNumber--;
     }
     m_scene->setState(m_currentState);
+}
+
+void MainWindow::showDifferentsPossibleStates()
+{
+    /*List::Node<State *>* possibleStates = IA::getPossibleMove(*m_currentState,m_game);
+    while(possibleStates)
+    {
+        QMessageBox::information(NULL,"","on recommence");
+        m_scene->setState(m_currentState);
+        QMessageBox::information(NULL,"","on avance");
+        m_scene->setState(possibleStates->info);
+        possibleStates = possibleStates->next;
+    }*/
 }
 

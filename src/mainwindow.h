@@ -10,6 +10,7 @@
 #include "game.h"
 #include <QMessageBox>
 #include "endwindow.h"
+#include "list.h"
 #include "IA.h"
 
 /*!
@@ -74,6 +75,11 @@ public slots:
      *  \brief Annule le dernier coup joué par l'utilisateur.
      */
     void cancel();
+
+    /*!
+     *  \brief montre les différents états possibles
+     */
+    void showDifferentsPossibleStates();
 
 private:
     XmlFileChoice *m_xmlChoiceWindow;///< Fenetre de choix du fichier Xml
