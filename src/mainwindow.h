@@ -33,14 +33,7 @@ public:
      *      \brief loadGameFromXml va charger le document Xml dans la classe game et afficher le jeu
      *      \param xml est un document qui contient le Xml.
      */
-    bool loadGameFromXml(QDomDocument &xml);
-
-    /*!
-     *      \brief loadXmlFromPath va tenter de charger le document Xml en fonction du path demandé
-     *      \param path est le chemin du document Xml à charger
-     *      \return Un message d'erreur si la fonction de chargement a échouée
-     */
-    int loadXmlFromPath(QString path);
+    bool loadGameFromPath(QString &path, QString *error = NULL);
 
     /*!
      *      \brief destructeur de la classe
@@ -59,7 +52,7 @@ public slots:
     /*!
      *      \brief callChoiceXmlFile appelle la fenêtre de choix de fichier XML
      */
-    void callChoiceXmlFile();
+    void callChoiceGameFile();
 
     /*!
      *      \brief saveSelectedPathFromXml sauvegarde le chemin du fichier xml choisis
@@ -88,7 +81,6 @@ private:
     MyGraphicsScene *m_scene;///< Scene qui est associée à la zone graphique
     Game m_game;///< Game qui contient tout le jeu
     QString m_loadedPath;///< Chemin du Xml chargé
-    QDomDocument m_XMLFileChosed;///< Document qui récupère le document Xml choisi
     EndWindow *m_finalStateWindow;
     HistoricalWindow *m_historicalwindow;
     State *m_currentState;
