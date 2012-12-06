@@ -48,8 +48,16 @@ Game::Game()
     m_nbNodes = 0;
 }
 
-bool Game::load(QDomDocument &xml)
+bool Game::load(QDomDocument &xml, QString *error)
 {
+    //on prépare la sortie d'erreur
+    QString* log;
+    if(error)
+        log = error;
+    else
+        log = new QString();
+
+
     clear();//on vide le jeu, au cas où un autre serait en mémoire
 
     //QDomElement root = xml.documentElement();
@@ -84,7 +92,7 @@ bool Game::load(QDomDocument &xml)
 
                 if(((unsigned int)listFinalLines.count()) != nbLines)
                 {
-                    qDebug() << "Il n'y a pas autant de lines dans l'état final que dans l'état initial.";
+                    *log += "Il n'y a pas autant de lines dans l'état final que dans l'état initial.";
                     clear();
                     return false;
                 }
@@ -97,7 +105,7 @@ bool Game::load(QDomDocument &xml)
                     unsigned int nbColumns = ((unsigned int)columns.count());
                     if(((unsigned int)finalColumns.count()) != nbColumns)
                     {
-                        qDebug() << "Il n'y a pas autant de columns dans l'état final (" << finalColumns.count() << ") que dans l'état initial (" << nbColumns << ") pour la line " << line;
+                        *log += "Il n'y a pas autant de columns dans l'état final (" + QString(finalColumns.count()) + ") que dans l'état initial (" + QString(nbColumns) + ") pour la line " + QString(line) + "\n";
                         clear();
                         return false;
                     }
@@ -112,13 +120,13 @@ bool Game::load(QDomDocument &xml)
                         {
                             if(finalElement.attribute("type") == "void")
                             {
-                                qDebug() << "Il n'y a pas autant de columns dans l'état final que dans l'état initial pour la line " << line;
+                                *log += "Il n'y a pas autant de columns dans l'état final que dans l'état initial pour la line " + QString(line) + "\n";
                                 clear();
                                 return false;
                             }
                             else if(finalElement.attribute("type") == "piece" && finalElement.attribute("number").toInt() == 0)
                             {
-                                qDebug() << "Le numéro de pièce 0 est réservé pour le jocker (finalState, line = " << line <<  ", columne = " << column <<  ")";
+                                *log += "Le numéro de pièce 0 est réservé pour le jocker (finalState, line = " + QString(line) + ", columne = " + QString(column) + ")" + "\n";
                                 clear();
                                 return false;
                             }
@@ -128,7 +136,7 @@ bool Game::load(QDomDocument &xml)
                             {
                                 if(element.attribute("number").toInt() == 0)
                                 {
-                                    qDebug() << "Le numéro de pièce 0 est réservé pour le jocker.";
+                                    *log += "Le numéro de pièce 0 est réservé pour le jocker.";
                                     clear();
                                     return false;
                                 }
@@ -297,7 +305,7 @@ bool Game::load(QDomDocument &xml)
                                 }
                                 else
                                 {
-                                    qDebug() << "Piece dans finalState inexistante dans initialState (pièce numéro " << finalElement.attribute("number").toInt() << ")";
+                                    *log += "Piece dans finalState inexistante dans initialState (pièce numéro " + QString(finalElement.attribute("number").toInt()) + ")\n";
                                     clear();
                                     return false;
                                 }
@@ -316,7 +324,7 @@ bool Game::load(QDomDocument &xml)
                                 }
                                 else
                                 {
-                                    qDebug() << "Piece dans finalState inexistante dans initialState (pièce numéro " << finalElement.attribute("number").toInt() << ")";
+                                    *log += "Piece dans finalState inexistante dans initialState (pièce numéro " << finalElement.attribute("number").toInt() << ")";
                                     clear();
                                     return false;
                                 }*/
@@ -342,44 +350,164 @@ bool Game::load(QDomDocument &xml)
                 //on libère pieces
                 List::clear(pieces);
 
-//                qDebug() << "Affichage pièces";
+//                *log += "Affichage pièces";
 //                for(unsigned int line = 0; line < m_boardMatrix.getHeight(); ++line)
 //                {
 //                    for(unsigned int column = 0; column < m_boardMatrix.getWidth(); ++column)
 //                    {
 //                        if(getPieceNode(line, column, m_initialState))
 //                        {
-//                            qDebug() << line << column << getPieceNode(line, column, m_initialState)->info;
+//                            *log += line << column << getPieceNode(line, column, m_initialState)->info;
 //                        }
 //                        else
 //                        {
-//                            qDebug() << line << column << "NULL";
+//                            *log += line << column << "NULL";
 //                        }
 //                    }
 //                }
-//                qDebug() << "Fin affichage pièces";
+//                *log += "Fin affichage pièces";
             }
             else
             {
-                qDebug() << "Nodes initialShape, finalShape, et/ou board manquant(s).";
+                *log += "Nodes initialShape, finalShape, et/ou board manquant(s).\n";
                 clear();
                 return false;
             }
         }
         else
         {
-            qDebug() << "Nodes initialShape, finalShape, et/ou board manquant(s).";
+            *log += "Nodes initialShape, finalShape, et/ou board manquant(s).\n";
             clear();
             return false;
         }
     }
     else
     {
-        qDebug() << "Nodes initialShape, finalShape, et/ou board manquant(s).";
+        *log += "Nodes initialShape, finalShape, et/ou board manquant(s).\n";
         clear();
         return false;
     }
     return true;
+}
+
+/*
+ *  Cette fonction convertit les fichiers du format Pepper au format xml, puis charge le xml ainsi créé xml.
+ */
+bool Game::load(const QString &file, QString* error)
+{
+    //on prépare la sortie d'erreur
+    QString* log;
+    if(error)
+        log = error;
+    else
+        log = new QString();
+
+
+    *log += "Début de Game::load(QString)";
+    QChar empty = '.', nonexistent = 'X', jocker = '#';
+    QStringList lines = file.split("\n");//on split le fichier en lignes, en concervant les lignes vides
+
+    //on initialise un xml basique
+    QString basicXml;
+    basicXml += "<?xml version='1.0' encoding='UTF-8'?>";
+    basicXml += "<game>";
+    basicXml += "   <board>";
+    basicXml += "       <initialShape type=\"defined\">";
+    basicXml += "       </initialShape>";
+    basicXml += "       <finalShape>";
+    basicXml += "       </finalShape>";
+    basicXml += "   </board>";
+    basicXml += "</game>";
+    QDomDocument xml;
+    xml.setContent(basicXml);
+
+    QDomNodeList tempListInitialShape = xml.elementsByTagName("initialShape");
+    QDomElement initialShape = tempListInitialShape.item(0).toElement();
+
+    QDomNodeList tempListFinalShape = xml.elementsByTagName("finalShape");
+    QDomElement finalShape = tempListFinalShape.item(0).toElement();
+
+    //On lit le fichier :
+    //pour chaque ligne de l'état initial
+    QStringList::const_iterator line;
+    for(line = lines.constBegin(); line != lines.constEnd() && !(*line).isEmpty(); ++line)
+    {
+        QDomElement lineElement = xml.createElement("line");
+        initialShape.appendChild(lineElement);
+
+        //pour chaque élément de la ligne
+        for(int column = 0; column < (*line).length(); ++column)
+        {
+            QDomElement columnElement = xml.createElement("column");
+            if((*line)[column] == empty)
+            {
+                columnElement.setAttribute("type", "free");
+            }
+            else if((*line)[column] == nonexistent)
+            {
+                columnElement.setAttribute("type", "void");
+            }
+            //else if(('A' <= (*line)[column] && (*line)[column] <= 'Z') || //si c'est une lettre majuscule
+            //        ('z' <= (*line)[column] && (*line)[column] <= 'z'))//si c'est une lettre minucule
+            else if((*line)[column].isLetter())
+            {
+                columnElement.setAttribute("type", "piece");
+                columnElement.setAttribute("number", QString("%1").arg(int((*line)[column].toAscii() + 1 - QChar('A').toAscii())));
+            }
+            else
+            {
+                *log += "Caractère inconnu.";
+                return false;
+            }
+            lineElement.appendChild(columnElement);
+        }
+    }
+
+    //pour chaque ligne de l'état final
+    ++line;
+    for(; line != lines.constEnd() && !(*line).isEmpty(); ++line)
+    {
+        QDomElement lineElement = xml.createElement("line");
+        finalShape.appendChild(lineElement);
+
+        //pour chaque élément de la ligne
+        for(int column = 0; column < (*line).length(); ++column)
+        {
+            QDomElement columnElement = xml.createElement("column");
+            if((*line)[column] == empty)
+            {
+                columnElement.setAttribute("type", "free");
+            }
+            else if((*line)[column] == nonexistent)
+            {
+                columnElement.setAttribute("type", "void");
+            }
+            else if((*line)[column] == jocker)
+            {
+                columnElement.setAttribute("type", "jocker");
+            }
+            //else if(('A' <= (*line)[column] && (*line)[column] <= 'Z') || //si c'est une lettre majuscule
+            //        ('z' <= (*line)[column] && (*line)[column] <= 'z'))//si c'est une lettre minucule
+            else if((*line)[column].isLetter())
+            {
+                columnElement.setAttribute("type", "piece");
+                columnElement.setAttribute("number", QString("%1").arg(int((*line)[column].toAscii() + 1 - QChar('A').toAscii())));
+            }
+            else
+            {
+                *log += "Caractère inconnu.";
+                return false;
+            }
+            lineElement.appendChild(columnElement);
+        }
+    }
+    *log += "Résultat :";
+    *log += xml.toString();
+    *log += "Fin de Game::load(QString)";
+
+    if(!error)
+        qDebug() << *log;
+    return load(xml, log);
 }
 
 const Graph::Node *Game::getBoardNode(const Graph::Node *&pieceNode, const State &state) const
