@@ -32,6 +32,13 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWi
 
 bool MainWindow::loadGameFromXml(QDomDocument &xml)
 {
+//    QString file;
+//    file += "ABCX\n";
+//    file += "D...\n";
+//    file += "\n";
+//    file += ".##X\n";
+//    file += ".A#C\n";
+//    if(m_game.load(file))
     if(m_game.load(xml))
     {
         if(m_scene)
@@ -95,10 +102,10 @@ bool MainWindow::loadGameFromXml(QDomDocument &xml)
 
 int MainWindow::loadXmlFromPath(QString path)
 {
-    QDir curr(QDir::currentPath());
+//    QDir curr(QDir::currentPath());
 
-    QString relativePath = curr.relativeFilePath(path);
-    qDebug() << relativePath;
+//    QString relativePath = curr.relativeFilePath(path);
+//    qDebug() << relativePath;
 
     QFile file(path);
     if (!file.open(QIODevice::ReadOnly))
@@ -197,7 +204,6 @@ void MainWindow::cancel()
 void MainWindow::showDifferentsPossibleStates()
 {
     qDebug() << "showPossibleState";
-    const Graph::Node* pieceToTest = m_game.getPieces()->info;
     List::Node<const State *>* possibleStates = IA::getPossibleMove(*m_currentState,m_game);
 
     m_historicalwindow->displayGameHistory(possibleStates,m_game);

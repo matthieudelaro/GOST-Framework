@@ -116,7 +116,7 @@ bool IA::isEnd(const State& currentState, const State& endState, Game *game)
             if(game->getPieceNode(line,column,endState))
             {
                 //qDebug() << "il existe une pièce à l'arrivée";
-                if(game->getPieceNode(line,column,endState)->info ==  0)
+                if(game->getPieceNode(line,column,endState)->info == 0)
                 {
                     //qDebug() << "on a un jocker : on passe";
                 }
@@ -131,6 +131,11 @@ bool IA::isEnd(const State& currentState, const State& endState, Game *game)
                     if(game->getPieceNode(line,column,endState)->info != game->getPieceNode(line,column,currentState)->info)
                         return false;
                 }
+            }
+            if(!game->getPieceNode(line,column,endState) && game->getPieceNode(line,column,currentState))
+            {
+                //qDebug() << "Il y a une pièce alors qu'il ne doit pas y en avoir à la fin.";
+                return false;
             }
         }
     }
