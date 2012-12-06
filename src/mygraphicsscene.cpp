@@ -67,6 +67,11 @@ void MyGraphicsScene::addPiecesInitialState()
     setState(&(m_game->getInitialState()));
 }
 
+void MyGraphicsScene::addPiecesFinalState()
+{
+    setState(&(m_game->getFinalState()));
+}
+
 void MyGraphicsScene::setState(const State *state)
 {
     if(state)
@@ -78,7 +83,10 @@ void MyGraphicsScene::setState(const State *state)
                 if(m_game->getPieceNode(line,column,*state))
                 {
                     m_items(line, column)->setBrush(*m_brushs[m_game->getPieceNode(line,column,*state)->info + 1]);
-                    m_texteItems(line, column)->setText(QString::number(m_game->getPieceNode(line,column,*state)->info));
+                    if(m_game->getPieceNode(line,column,*state)->info == 0)
+                        m_texteItems(line, column)->setText("J");
+                    else
+                        m_texteItems(line, column)->setText(QString::number(m_game->getPieceNode(line,column,*state)->info));
                 }
                 else
                 {
@@ -139,10 +147,7 @@ QColor MyGraphicsScene::createRainBow(unsigned int x)
     return color;
 }
 
-void MyGraphicsScene::addPiecesFinalState()
-{
-    setState(&(m_game->getFinalState()));
-}
+
 
 void MyGraphicsScene::createBrushs()
 {
