@@ -20,7 +20,7 @@ public:
     Game& operator=(const Game& original);
 
     Game();
-    bool load(QDomDocument &xml, QString* error = NULL);
+    bool load(QDomDocument &xml, QString *error = NULL);
     bool load(const QString &file, QString *error = NULL);
 
     /*! \return Le nombre de cases existantes sur le plateau. Tout State doit avoir cette longueur.

@@ -1,6 +1,7 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
 #include <QDebug>
+#include <QTextStream>
 
 MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWindow)
 {
@@ -26,11 +27,11 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWi
     m_finalStateWindow = NULL;
     m_historicalwindow = NULL;
     QObject::connect(ui->actionQuitter,SIGNAL(triggered()),qApp,SLOT(quit()));
-    QObject::connect(ui->actionChoixJeu,SIGNAL(triggered()),this,SLOT(callChoiceXmlFile()));
+    QObject::connect(ui->actionChoixJeu,SIGNAL(triggered()),this,SLOT(callChoiceGameFile()));
     QObject::connect(ui->actionAnnuler,SIGNAL(triggered()),this,SLOT(cancel()));
 }
 
-bool MainWindow::loadGameFromXml(QDomDocument &xml)
+bool MainWindow::loadGameFromPath(QString &path, QString *error)
 {
 //    QString file;
 //    file += "ABCX\n";
@@ -39,85 +40,110 @@ bool MainWindow::loadGameFromXml(QDomDocument &xml)
 //    file += ".##X\n";
 //    file += ".A#C\n";
 //    if(m_game.load(file))
-    if(m_game.load(xml))
+
+    //on prépare la sortie d'erreur
+    QString* log;
+    if(error)
+        log = error;
+    else
+        log = new QString();
+
+    QFile file(path);
+    if(!file.exists())
     {
-        if(m_scene)
+        *log += "Pas de fichier";
+        return false;
+    }
+
+    if (!file.open(QIODevice::ReadOnly))
+    {
+        *log += "Pas de fichier lisible";
+        return false;
+    }
+
+    QDomDocument xmlDomDocument;
+
+    if(xmlDomDocument.setContent(&file))
+    {
+        if(!m_game.load(xmlDomDocument,log))
         {
-            delete m_scene;
-            m_scene = NULL;
+            QMessageBox::information(this,"Erreur de chargement du QDomDocument",*log);
+            file.close();
+            return false;
         }
-        if(m_currentState)
-        {
-            delete m_currentState;
-            m_currentState = NULL;
-        }
-        if(m_finalStateWindow)
-        {
-            delete m_finalStateWindow;
-            m_finalStateWindow = NULL;
-        }
-        if(m_historicalwindow)
-        {
-            delete m_historicalwindow;
-            m_historicalwindow = NULL;
-        }
-
-        List::clearDelete(m_history);
-        m_movesNumber = 0;
-
-        m_scene = new MyGraphicsScene();
-        ui->graphicsView->setScene(m_scene);
-
-        //Appel de la fonction resize qui redimensionne la GUI en fonction de la graphicsView
-        QObject::connect(m_scene,SIGNAL(sendResize(int,int)),this,SLOT(resize(int,int)));
-
-        //appelle de la fonction qui vérifie si le déplacement est bon et récupérer la pièce correspondante
-        QObject::connect(m_scene,SIGNAL(sendPositions(QPointF*,QPointF*)),this,SLOT(callIAPossibleMove(QPointF*,QPointF*)));
-
-        m_currentState = m_game.getInitialStateCopy();
-        m_scene->associateGame(&m_game);
-
-        //m_scene->displayMatrix();
-        m_scene->callResize();
-        m_scene->setState(m_currentState);
-
-        m_finalStateWindow = new EndWindow;
-
-        QObject::connect(ui->actionAfficher_Fin,SIGNAL(triggered()),m_finalStateWindow,SLOT(show()));
-
-        m_finalStateWindow->display(m_game);
-
-
-        m_historicalwindow = new HistoricalWindow;
-        QObject::connect(ui->actionAfficher_l_Historique,SIGNAL(triggered()),m_historicalwindow,SLOT(show()));
-
-        return true;
     }
     else
     {
-        QMessageBox::critical(this, "Ouverture du jeu", "Le fichier ne respecte pas le format attendu");
-        return false;
-    }
-}
-
-int MainWindow::loadXmlFromPath(QString path)
-{
-//    QDir curr(QDir::currentPath());
-
-//    QString relativePath = curr.relativeFilePath(path);
-//    qDebug() << relativePath;
-
-    QFile file(path);
-    if (!file.open(QIODevice::ReadOnly))
-        return EXIT_FAILURE;
-    if (!m_XMLFileChosed.setContent(&file))
-    {
-        file.close(); // établit le document XML à partir des données du fichier (hiérarchie, etc.)
-        return EXIT_FAILURE;
+        QTextStream *texteStream = new QTextStream(&file);
+        QString toLoad = texteStream->readAll();
+        qDebug() << toLoad;
+        if(!m_game.load(toLoad,log))
+        {
+            QMessageBox::information(this,"Erreur de chargement du QString",*log);
+            file.close();
+            return false;
+        }
     }
     file.close();
 
-    return 0; //tutti bueno
+    //si existe pas , ok = false
+    //sinon
+    //  si chargement QDomDocument et chargement game xml, ok = true
+    //  sinon
+    //      si ! chargement game string , ok = false, sinon, ok = true
+
+
+    if(m_scene)
+    {
+        delete m_scene;
+        m_scene = NULL;
+    }
+    if(m_currentState)
+    {
+        delete m_currentState;
+        m_currentState = NULL;
+    }
+    if(m_finalStateWindow)
+    {
+        delete m_finalStateWindow;
+        m_finalStateWindow = NULL;
+    }
+    if(m_historicalwindow)
+    {
+        delete m_historicalwindow;
+        m_historicalwindow = NULL;
+    }
+
+    List::clearDelete(m_history);
+    m_movesNumber = 0;
+
+    m_scene = new MyGraphicsScene();
+    ui->graphicsView->setScene(m_scene);
+
+    //Appel de la fonction resize qui redimensionne la GUI en fonction de la graphicsView
+    QObject::connect(m_scene,SIGNAL(sendResize(int,int)),this,SLOT(resize(int,int)));
+
+    //appelle de la fonction qui vérifie si le déplacement est bon et récupérer la pièce correspondante
+    QObject::connect(m_scene,SIGNAL(sendPositions(QPointF*,QPointF*)),this,SLOT(callIAPossibleMove(QPointF*,QPointF*)));
+
+    m_currentState = m_game.getInitialStateCopy();
+    m_scene->associateGame(&m_game);
+
+    //m_scene->displayMatrix();
+    m_scene->callResize();
+    m_scene->setState(m_currentState);
+
+    m_finalStateWindow = new EndWindow;
+
+    QObject::connect(ui->actionAfficher_Fin,SIGNAL(triggered()),m_finalStateWindow,SLOT(show()));
+
+    m_finalStateWindow->display(m_game);
+
+
+    m_historicalwindow = new HistoricalWindow;
+    QObject::connect(ui->actionAfficher_l_Historique,SIGNAL(triggered()),m_historicalwindow,SLOT(show()));
+
+    return true;
 }
 
 MainWindow::~MainWindow()
@@ -143,7 +169,7 @@ void MainWindow::resize(int w, int h)
 }
 
 
-void MainWindow::callChoiceXmlFile()
+void MainWindow::callChoiceGameFile()
 {
     m_xmlChoiceWindow = new XmlFileChoice;
     QObject::connect(m_xmlChoiceWindow,SIGNAL(returnSelectedPath(QString)),this,SLOT(saveSelectedPathFromXml(QString)));
@@ -154,8 +180,7 @@ void MainWindow::saveSelectedPathFromXml(QString path)
 {
     m_loadedPath = path;
     m_xmlChoiceWindow->close();
-    loadXmlFromPath(m_loadedPath);
-    loadGameFromXml(m_XMLFileChosed);
+    loadGameFromPath(path);
 }
 
 void MainWindow::callIAPossibleMove(QPointF *init, QPointF *final)
