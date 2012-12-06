@@ -37,6 +37,11 @@ public:
      */
     void callResize();
 
+    unsigned int getBaseRectSize() {return m_baseRectSize;}
+    unsigned int getWSize() {return m_WSize;}
+    unsigned int getHSize() {return m_HSize;}
+    unsigned int getBSize() {return m_BSize;}
+
     ~MyGraphicsScene();
 
 protected:

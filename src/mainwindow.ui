@@ -16,22 +16,7 @@
   <widget class="QWidget" name="centralWidget">
    <layout class="QHBoxLayout" name="horizontalLayout">
     <item>
-     <widget class="QWidget" name="widget" native="true">
-      <property name="sizePolicy">
-       <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
-        <horstretch>0</horstretch>
-        <verstretch>0</verstretch>
-       </sizepolicy>
-      </property>
-      <layout class="QVBoxLayout" name="verticalLayout_2">
-       <property name="sizeConstraint">
-        <enum>QLayout::SetNoConstraint</enum>
-       </property>
-       <item>
-        <widget class="QGraphicsView" name="graphicsView"/>
-       </item>
-      </layout>
-     </widget>
+     <widget class="QGraphicsView" name="graphicsView"/>
     </item>
    </layout>
   </widget>
@@ -58,6 +43,7 @@
      <string>Aide</string>
     </property>
     <addaction name="actionAfficher_Fin"/>
+    <addaction name="actionAfficher_l_Historique"/>
    </widget>
    <widget class="QMenu" name="menuAction">
     <property name="title">
@@ -92,10 +78,16 @@
    <property name="text">
     <string>Quitter</string>
    </property>
+   <property name="shortcut">
+    <string>Ctrl+Q</string>
+   </property>
   </action>
   <action name="actionAfficher_Fin">
    <property name="text">
     <string>Afficher Fin</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+F</string>
    </property>
   </action>
   <action name="actionAnnuler">
@@ -107,6 +99,14 @@
    </property>
    <property name="autoRepeat">
     <bool>false</bool>
+   </property>
+  </action>
+  <action name="actionAfficher_l_Historique">
+   <property name="text">
+    <string>Afficher l'Historique</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+H</string>
    </property>
   </action>
  </widget>

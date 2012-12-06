@@ -18,15 +18,13 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWi
 
     this->setCentralWidget(ui->centralWidget);
 
-    ui->actionAfficher_Fin->setShortcut(QKeySequence("Ctrl+f"));
-
     QList<QKeySequence> raccourcisChoixJeu;
     raccourcisChoixJeu.push_back(QKeySequence("Ctrl+o"));//o comme ouvrir
     raccourcisChoixJeu.push_back(QKeySequence("Ctrl+c"));//c comme choisir. Plus accessible pour la main gauche
     ui->actionChoixJeu->setShortcuts(raccourcisChoixJeu);
 
-    finalStateWindows = NULL;
-
+    m_finalStateWindow = NULL;
+    m_historicalwindow = NULL;
     QObject::connect(ui->actionQuitter,SIGNAL(triggered()),qApp,SLOT(quit()));
     QObject::connect(ui->actionChoixJeu,SIGNAL(triggered()),this,SLOT(callChoiceXmlFile()));
     QObject::connect(ui->actionAnnuler,SIGNAL(triggered()),this,SLOT(cancel()));
@@ -46,11 +44,17 @@ bool MainWindow::loadGameFromXml(QDomDocument &xml)
             delete m_currentState;
             m_currentState = NULL;
         }
-        if(finalStateWindows)
+        if(m_finalStateWindow)
         {
-            delete finalStateWindows;
-            finalStateWindows = NULL;
+            delete m_finalStateWindow;
+            m_finalStateWindow = NULL;
         }
+        if(m_historicalwindow)
+        {
+            delete m_historicalwindow;
+            m_historicalwindow = NULL;
+        }
+
         List::clearDelete(m_history);
         m_movesNumber = 0;
 
@@ -70,14 +74,15 @@ bool MainWindow::loadGameFromXml(QDomDocument &xml)
         m_scene->callResize();
         m_scene->setState(m_currentState);
 
-        finalStateWindows = new EndWindow;
+        m_finalStateWindow = new EndWindow;
 
-        QObject::connect(ui->actionAfficher_Fin,SIGNAL(triggered()),finalStateWindows,SLOT(show()));
+        QObject::connect(ui->actionAfficher_Fin,SIGNAL(triggered()),m_finalStateWindow,SLOT(show()));
 
-        finalStateWindows->display(m_game);
+        m_finalStateWindow->display(m_game);
 
-        //fonction de debug
-        //showDifferentsPossibleStates();
+
+        m_historicalwindow = new HistoricalWindow;
+        QObject::connect(ui->actionAfficher_l_Historique,SIGNAL(triggered()),m_historicalwindow,SLOT(show()));
 
         return true;
     }
@@ -112,11 +117,15 @@ MainWindow::~MainWindow()
 {
     delete ui;
     delete m_scene;
+
     if(m_xmlChoiceWindow)
         delete m_xmlChoiceWindow;
 
-    if(finalStateWindows)
-        delete finalStateWindows;
+    if(m_finalStateWindow)
+        delete m_finalStateWindow;
+
+    if(m_historicalwindow)
+        delete m_historicalwindow;
 
     List::clearDelete(m_history);
 }
@@ -162,9 +171,13 @@ void MainWindow::callIAPossibleMove(QPointF *init, QPointF *final)
                 m_currentState = newState;
                 m_movesNumber++;
                 m_scene->setState(m_currentState);
+
             }
+
             if(IA::isEnd(*newState,m_game.getFinalState(),&m_game))
                 QMessageBox::information(NULL,"Fin du jeu",QString::fromUtf8("Bien joué"));
+            else
+                showDifferentsPossibleStates();
         }
     }
 }
@@ -187,7 +200,9 @@ void MainWindow::showDifferentsPossibleStates()
     const Graph::Node* pieceToTest = m_game.getPieces()->info;
     List::Node<const State *>* possibleStates = IA::getPossibleMove(*m_currentState,m_game);
 
-    qDebug() << possibleStates;
+    m_historicalwindow->displayGameHistory(possibleStates,m_game);
+
+    /*qDebug() << possibleStates;
     while(possibleStates)
     {
         QMessageBox::information(NULL,"","on recommence");
@@ -195,6 +210,6 @@ void MainWindow::showDifferentsPossibleStates()
         QMessageBox::information(NULL,"","on avance");
         m_scene->setState(possibleStates->info);
         possibleStates = possibleStates->next;
-    }
+    }*/
 }
 

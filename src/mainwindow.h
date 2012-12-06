@@ -10,6 +10,7 @@
 #include "game.h"
 #include <QMessageBox>
 #include "endwindow.h"
+#include "historicalwindow.h"
 #include "list.h"
 #include "IA.h"
 
@@ -88,7 +89,8 @@ private:
     Game m_game;///< Game qui contient tout le jeu
     QString m_loadedPath;///< Chemin du Xml chargé
     QDomDocument m_XMLFileChosed;///< Document qui récupère le document Xml choisi
-    EndWindow *finalStateWindows;
+    EndWindow *m_finalStateWindow;
+    HistoricalWindow *m_historicalwindow;
     State *m_currentState;
     List::Node<State *> *m_history;///< Liste contenant l'historique des mouvements de l'utilisateur.
     unsigned int m_movesNumber;
