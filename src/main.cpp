@@ -1,7 +1,7 @@
 #include <QtGui/QApplication>
 #include <QFile>
 #include <QTextStream>
-#include <QDir>
+#include <QFile>
 #include <QFileDialog>
 #include "mainwindow.h"
 
@@ -14,7 +14,7 @@ void testsMatthieu()
     //Matrix<int>::tests();
     //Graph::tests();
 
-    QString file;
+   /* QString file;
     file += "ABCX\n";
     file += "....\n";
     file += "\n";
@@ -22,7 +22,17 @@ void testsMatthieu()
     file += ".ABC\n";
 
     Game game;
-    game.load(file);
+    game.load(file);*/
+
+
+    QFile file("../res/games/aneRouge.txt");
+    if(file.open(QIODevice::ReadOnly))
+    {
+        qDebug() << "fichier bien ouvert en lecture seule";
+    }
+    qDebug() << file.size();
+    QTextStream textStream(&file);
+    qDebug() << textStream.readAll();
 }
 
 int main(int argc, char *argv[])

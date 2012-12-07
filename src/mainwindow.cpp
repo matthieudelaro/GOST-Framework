@@ -56,15 +56,18 @@ bool MainWindow::loadGameFromPath(QString &path, QString *error)
         return false;
     }
 
-    if (!file.open(QIODevice::ReadOnly))
+    if(!file.open(QIODevice::ReadOnly | QIODevice::Text))
     {
         *log += "Pas de fichier lisible";
         return false;
     }
 
+    QTextStream in(&file);
+    QString toLoad = in.readAll();
+
     QDomDocument xmlDomDocument;
 
-    if(xmlDomDocument.setContent(&file))
+    if(xmlDomDocument.setContent(toLoad))
     {
         if(!m_game.load(xmlDomDocument,log))
         {
@@ -75,9 +78,6 @@ bool MainWindow::loadGameFromPath(QString &path, QString *error)
     }
     else
     {
-        QTextStream *texteStream = new QTextStream(&file);
-        QString toLoad = texteStream->readAll();
-        qDebug() << toLoad;
         if(!m_game.load(toLoad,log))
         {
             QMessageBox::information(this,"Erreur de chargement du QString",*log);
@@ -115,7 +115,7 @@ bool MainWindow::loadGameFromPath(QString &path, QString *error)
         m_historicalwindow->close();
         delete m_historicalwindow;
         m_historicalwindow = NULL;
-    }    
+    }
     if(m_debugHistoricalwindow)
     {
         m_debugHistoricalwindow->close();
@@ -150,7 +150,9 @@ bool MainWindow::loadGameFromPath(QString &path, QString *error)
 
 
     m_historicalwindow = new HistoricalWindow;
+    m_historicalwindow->setWindowTitle("Historique");
     m_debugHistoricalwindow = new HistoricalWindow;
+    m_debugHistoricalwindow->setWindowTitle("Prochains coups possibles");
     QObject::connect(ui->actionAfficher_l_Historique,SIGNAL(triggered()),m_historicalwindow,SLOT(show()));
     QObject::connect(ui->actionDebug,SIGNAL(triggered()),m_debugHistoricalwindow,SLOT(show()));
 

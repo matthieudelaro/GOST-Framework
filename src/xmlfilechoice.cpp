@@ -53,7 +53,7 @@ void XmlFileChoice::openFileOfItemAndQuit(int row, int)
 
 void XmlFileChoice::chooseFile()
 {
-    QString fichierTmp = QFileDialog::getOpenFileName();
+    QString fichierTmp = QFileDialog::getOpenFileName(NULL,"choix","../res/games");
 
     //on sauvegarde le dernier resultat choisi plutôt que de remplacer le path par ""
     if(fichierTmp != "")
