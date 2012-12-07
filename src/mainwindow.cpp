@@ -148,7 +148,6 @@ bool MainWindow::loadGameFromPath(QString &path, QString *error)
 
     m_finalStateWindow->display(m_game);
 
-
     m_historicalwindow = new HistoricalWindow;
     m_historicalwindow->setWindowTitle("Historique");
     m_debugHistoricalwindow = new HistoricalWindow;

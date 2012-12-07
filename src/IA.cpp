@@ -180,3 +180,52 @@ List::Node<const State *>* IA::getPossibleMove(const State& currentState, const 
     return possibleMoves;
 }
 
+List::Node<const State *>* aStar(const State& initialState, const State& finalState, const Game &game)
+{
+    List::Node<State *> *openNode;
+    List::Node<State *> *closeNode;
+
+//    On commence par le noeud de départ, c'est le noeud courant
+    State *currentState = initialState;
+
+    while(currentState != finalState)
+    {
+
+        List::Node<State *> *neighbours = IA::getPossibleMove(currentState,game);
+
+        List::Node<State *> *neighboursIterator = neighbours;
+
+        while(neighboursIterator)
+        {
+            if(!List::contains(neighboursIterator->info,closeNode));
+            {
+
+                if(List::contains(neighboursIterator->info,openNode));
+                {
+                    //Calcul de la qualité
+
+                    if(/*MeilleurQualité*/)
+                    {
+                        List::push_front(currentState,openNode);
+                        List::pop_front(openNode);
+                    }
+                }
+                else
+                {
+                    List::push_front(neighboursIterator,openNode);
+                }
+            }
+        }
+
+        State *best = /*meilleur noeud de openNode*/;
+
+        if(best == NULL)
+        {
+            //end of the A*
+            //No Solutions
+        }
+
+        List::push_front(best,closeNode);
+        List::delete(best,openNode); //A IMPLEMENTER
+    }
+}

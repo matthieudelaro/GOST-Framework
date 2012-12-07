@@ -12,6 +12,8 @@ namespace IA
     bool isEnd(const State& currentState, const State& endState, Game *game);
     List::Node<const State *>* getPossibleMove(const State& currentState, const Graph::Node* piece, const Game &game);
     List::Node<const State *>* getPossibleMove(const State& currentState, const Game &game);
+
+    List::Node<const State *>* aStar(const State& initialState, const State& finalState, const Game &game);
 }
 
 
