@@ -240,14 +240,8 @@ bool Game::load(QDomDocument &xml, QString *error)
                         if(m_boardMatrix(line, column)) //si il y a quelque chose à cet emplacement
                         {
                             //On lit avec les Node adjacents.
-                            //Cette partie est spécifique à un système à base carrée !
-                            //*((*(m_boardMatrix(line, column)))[0]) = m_boardMatrix(line-1, column);
                             if(line > 0)
                             {
-//                                Graph::Node* temp0 = m_boardMatrix(line, column);
-//                                int temp12= temp0->info;
-//                                Graph::Node* temp1 = (*(m_boardMatrix(line, column)))[0];
-//                                Graph::Node* temp2 = m_boardMatrix(line-1, column);
                                 (*(m_boardMatrix(line, column)))[0] = m_boardMatrix(line-1, column);
 
                             }
@@ -261,6 +255,7 @@ bool Game::load(QDomDocument &xml, QString *error)
                             //Pour avoir quelque chose de plus générique :
                             //for(unsigned int link = 0; link < Graph::nbLinks; ++link)
                             //    m_boardMatrix(line, column)[link] = ?
+                            //=> inutile de toute façon puisque le format paramétrage des jeux n'est adapté qu'à la 2D
                         }
 
                         //on fait la même chose pour chaque pièce :
@@ -349,23 +344,6 @@ bool Game::load(QDomDocument &xml, QString *error)
 
                 //on libère pieces
                 List::clear(pieces);
-
-//                *log += "Affichage pièces";
-//                for(unsigned int line = 0; line < m_boardMatrix.getHeight(); ++line)
-//                {
-//                    for(unsigned int column = 0; column < m_boardMatrix.getWidth(); ++column)
-//                    {
-//                        if(getPieceNode(line, column, m_initialState))
-//                        {
-//                            *log += line << column << getPieceNode(line, column, m_initialState)->info;
-//                        }
-//                        else
-//                        {
-//                            *log += line << column << "NULL";
-//                        }
-//                    }
-//                }
-//                *log += "Fin affichage pièces";
             }
             else
             {
@@ -532,15 +510,10 @@ bool Game::getNodePieceIndex(const Graph::Node* &pieceNode, unsigned int &index,
 
 const Graph::Node *Game::getPieceNode(unsigned int line, unsigned int column, const State &state) const
 {
-    /*for(unsigned int i = 0; i < m_initialState.getLength(); ++i)
-        if(m_initialState.getConst(i) != state.getConst(i))
-            {}//qDebug()<<"Ce n'est pas l'etat initial";
-*/
     if(m_boardMatrix(line,column) == NULL)
         return NULL;
     else
         return state[m_boardMatrix(line, column)->info];
-    //return m_initialState.getConst(m_boardMatrix(line, column)->info);
 }
 
 void Game::clear()
@@ -559,52 +532,7 @@ void Game::clear()
     List::clear(m_pieces);
 }
 
-//const Graph::Node *& Game::getNodePiece(unsigned int index, const Vector<Graph::Node *> &etat) const
-//{
-//    qDebug() << "Game::getNodePiece à implémenter !";
-//}
-
 Game::~Game()
 {
     clear();
 }
-
-//unsigned int Game::getNumberPiece(unsigned int index, const Vector<Graph::Node *> &etat) const
-//{
-//    qDebug() << "Game::getNumberPiece à tester !";
-//    return etat[index]->info;
-//}
-
-
-/*void Lecture_DOM::lire()
-{
-    int i=0;
-    QString affichage;
-    QDomNodeList tab;
-    QDomElement mesure;
-    QDomNode n;
-    QMessageBox a(0);
-    QDomElement racine = doc.documentElement(); // renvoie la balise racine
-    QDomNode noeud = racine.firstChild(); // renvoie la première balise « mesure »
-    while(!noeud.isNull())
-    {
-        // convertit le nœud en élément pour utiliser les
-        // méthodes tagName() et attribute()
-        mesure = noeud.toElement();
-        // vérifie la présence de la balise « mesure »
-        if (mesure.tagName() == "mesure")
-        {
-            affichage = mesure.attribute("numero"); // récupère l'attribut
-            tab = mesure.childNodes(); // crée un tableau des enfants de « mesure »
-            for(i=0;i<tab.length();i++)
-            {
-                // pour chaque enfant, on extrait la donnée et on concatène
-                n = tab.item(i);
-                affichage = affichage + " " + n.firstChild().toText().data();
-            }
-            a.setText(affichage); // affichage dans un QMessageBox
-            a.exec();
-        }
-        noeud = noeud.nextSibling(); // passe à la "mesure" suivante
-    }
-}*/

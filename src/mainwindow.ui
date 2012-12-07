@@ -44,6 +44,7 @@
     </property>
     <addaction name="actionAfficher_Fin"/>
     <addaction name="actionAfficher_l_Historique"/>
+    <addaction name="actionDebug"/>
    </widget>
    <widget class="QMenu" name="menuAction">
     <property name="title">
@@ -107,6 +108,14 @@
    </property>
    <property name="shortcut">
     <string>Ctrl+H</string>
+   </property>
+  </action>
+  <action name="actionDebug">
+   <property name="text">
+    <string>Debug</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+D</string>
    </property>
   </action>
  </widget>

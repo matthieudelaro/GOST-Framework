@@ -26,6 +26,7 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWi
 
     m_finalStateWindow = NULL;
     m_historicalwindow = NULL;
+    m_debugHistoricalwindow = NULL;
     QObject::connect(ui->actionQuitter,SIGNAL(triggered()),qApp,SLOT(quit()));
     QObject::connect(ui->actionChoixJeu,SIGNAL(triggered()),this,SLOT(callChoiceGameFile()));
     QObject::connect(ui->actionAnnuler,SIGNAL(triggered()),this,SLOT(cancel()));
@@ -105,13 +106,21 @@ bool MainWindow::loadGameFromPath(QString &path, QString *error)
     }
     if(m_finalStateWindow)
     {
+        m_finalStateWindow->close();
         delete m_finalStateWindow;
         m_finalStateWindow = NULL;
     }
     if(m_historicalwindow)
     {
+        m_historicalwindow->close();
         delete m_historicalwindow;
         m_historicalwindow = NULL;
+    }    
+    if(m_debugHistoricalwindow)
+    {
+        m_debugHistoricalwindow->close();
+        delete m_debugHistoricalwindow;
+        m_debugHistoricalwindow = NULL;
     }
 
     List::clearDelete(m_history);
@@ -141,7 +150,9 @@ bool MainWindow::loadGameFromPath(QString &path, QString *error)
 
 
     m_historicalwindow = new HistoricalWindow;
+    m_debugHistoricalwindow = new HistoricalWindow;
     QObject::connect(ui->actionAfficher_l_Historique,SIGNAL(triggered()),m_historicalwindow,SLOT(show()));
+    QObject::connect(ui->actionDebug,SIGNAL(triggered()),m_debugHistoricalwindow,SLOT(show()));
 
     return true;
 }
@@ -159,6 +170,9 @@ MainWindow::~MainWindow()
 
     if(m_historicalwindow)
         delete m_historicalwindow;
+
+    if(m_debugHistoricalwindow)
+        delete m_debugHistoricalwindow;
 
     List::clearDelete(m_history);
 }
@@ -206,6 +220,8 @@ void MainWindow::callIAPossibleMove(QPointF *init, QPointF *final)
 
             }
 
+            m_historicalwindow->displayGameHistory(m_history, m_game);
+
             if(IA::isEnd(*newState,m_game.getFinalState(),&m_game))
                 QMessageBox::information(NULL,"Fin du jeu",QString::fromUtf8("Bien joué"));
             else
@@ -231,7 +247,7 @@ void MainWindow::showDifferentsPossibleStates()
     qDebug() << "showPossibleState";
     List::Node<const State *>* possibleStates = IA::getPossibleMove(*m_currentState,m_game);
 
-    m_historicalwindow->displayGameHistory(possibleStates,m_game);
+    m_debugHistoricalwindow->displayGameHistory(possibleStates,m_game);
 
     /*qDebug() << possibleStates;
     while(possibleStates)

@@ -83,8 +83,9 @@ private:
     QString m_loadedPath;///< Chemin du Xml chargé
     EndWindow *m_finalStateWindow;
     HistoricalWindow *m_historicalwindow;
-    State *m_currentState;
-    List::Node<State *> *m_history;///< Liste contenant l'historique des mouvements de l'utilisateur.
+    HistoricalWindow *m_debugHistoricalwindow;
+    const State *m_currentState;
+    List::Node<const State *> *m_history;///< Liste contenant l'historique des mouvements de l'utilisateur.
     unsigned int m_movesNumber;
 };
 
