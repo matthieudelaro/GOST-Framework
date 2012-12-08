@@ -36,6 +36,11 @@ public:
     bool loadGameFromPath(QString &path, QString *error = NULL);
 
     /*!
+     *      \brief Met à jour le jeu avec m_currentState->info
+     */
+    void setState();
+
+    /*!
      *      \brief destructeur de la classe
      */
     ~MainWindow();
@@ -71,6 +76,12 @@ public slots:
     void cancel();
 
     /*!
+     *  \brief Implémente Ctrl+Y. Permet de rejouer un coup qu'on avait annulé.
+     *  \return true si on peut revenir dans le temps, false sinon.
+     */
+    void redo();
+
+    /*!
      *  \brief montre les différents états possibles
      */
     void showDifferentsPossibleStates();
@@ -84,7 +95,8 @@ private:
     EndWindow *m_finalStateWindow;
     HistoricalWindow *m_historicalwindow;
     HistoricalWindow *m_debugHistoricalwindow;
-    const State *m_currentState;
+    //const State *m_currentState;
+    List::Node<const State *> *m_currentState;
     List::Node<const State *> *m_history;///< Liste contenant l'historique des mouvements de l'utilisateur.
     unsigned int m_movesNumber;
 };

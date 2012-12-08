@@ -18,13 +18,14 @@ class HistoricalWindow : public QWidget
 
 public:
     explicit HistoricalWindow(QWidget *parent = 0);
-    void displayGameHistory(List::Node<const State *> *possibleStates, Game &game);
+    void displayGameHistory(List::Node<const State *> *possibleStates, Game &game, bool oppositeOrder = false);
     ~HistoricalWindow();
 
 public slots:
     void resize(int w, int h);
 
 private:
+    void addStates(List::Node<const State *> *possibleStates, Game &game, bool oppositeOrder = false);
     Ui::HistoricalWindow *ui;
     List::Node<MyGraphicsScene*> *m_scenes;
     List::Node<QGraphicsView*> *m_views;

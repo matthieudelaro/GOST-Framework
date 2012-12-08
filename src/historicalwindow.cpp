@@ -15,33 +15,14 @@ HistoricalWindow::HistoricalWindow(QWidget *parent) :
     ui->scrollAreaWidgetContents->setLayout(m_verticalLayout);
 }
 
-void HistoricalWindow::displayGameHistory(List::Node<const State *> * possibleStates, Game &game)
+void HistoricalWindow::displayGameHistory(List::Node<const State *> * possibleStates, Game &game, bool oppositeOrder)
 {
-    List::Node<const State *> *it = possibleStates;
-
     List::clearDelete(m_scenes);
     List::clearDelete(m_views);
 
-    while(it)
-    {
-        MyGraphicsScene * tmpScene = new MyGraphicsScene(250);
-        QGraphicsView * tmpView = new QGraphicsView();
+    addStates(possibleStates, game, oppositeOrder);
+    //ui->scrollArea->ensureVisible(0, 1000000);//je voudrais que la fenêtre scroll jusqu'au dernier élément, mais je n'y arrive pas
 
-        tmpView->setScene(tmpScene);
-        tmpView->setAlignment(Qt::AlignTop | Qt::AlignLeft);
-        tmpView->setAcceptDrops(false);
-
-        tmpScene->associateGame(&game);
-        tmpScene->setState(it->info);
-
-        tmpView->setFixedSize(tmpScene->getWSize()*(tmpScene->getBaseRectSize()/tmpScene->getBSize())+3,tmpScene->getHSize()*(tmpScene->getBaseRectSize()/tmpScene->getBSize())+3);
-
-
-        List::push_front(tmpScene,m_scenes);
-        List::push_front(tmpView,m_views);
-        m_verticalLayout->addWidget(tmpView);
-        it = it->next;
-    }
 }
 
 HistoricalWindow::~HistoricalWindow()
@@ -52,4 +33,36 @@ HistoricalWindow::~HistoricalWindow()
 void HistoricalWindow::resize(int w, int h)
 {
 
+}
+
+void HistoricalWindow::addStates(List::Node<const State *> *possibleStates, Game &game, bool oppositeOrder)
+{
+    if(!possibleStates)
+        return;
+
+    if(oppositeOrder)
+        addStates(possibleStates->next, game, oppositeOrder);
+
+    //pour changer l'ordre de la liste, il suffit d'ajouter les éléments de la liste de façon récursive, et d'inverse l'ajout et le passage à l'élément suivant :)
+    MyGraphicsScene * tmpScene = new MyGraphicsScene(250);
+    QGraphicsView * tmpView = new QGraphicsView();
+
+    tmpView->setScene(tmpScene);
+    tmpView->setAlignment(Qt::AlignTop | Qt::AlignLeft);
+    tmpView->setAcceptDrops(false);
+
+    tmpScene->associateGame(&game);
+    tmpScene->setState(possibleStates->info);
+
+    tmpView->setFixedSize(tmpScene->getWSize()*(tmpScene->getBaseRectSize()/tmpScene->getBSize())+3,tmpScene->getHSize()*(tmpScene->getBaseRectSize()/tmpScene->getBSize())+3);
+
+    List::push_front(tmpScene,m_scenes);
+    List::push_front(tmpView,m_views);
+    m_verticalLayout->addWidget(tmpView);
+
+    if(!oppositeOrder)
+        addStates(possibleStates->next, game, oppositeOrder);
+
+    //ui->scrollArea->ensureWidgetVisible(tmpView);
+    //ui->scrollArea->ensureVisible(0, 1000000);//je voudrais que la fenêtre scroll jusqu'au dernier élément, mais je n'y arrive pas
 }

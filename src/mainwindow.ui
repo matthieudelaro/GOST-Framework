@@ -51,6 +51,7 @@
      <string>Action</string>
     </property>
     <addaction name="actionAnnuler"/>
+    <addaction name="actionRefaire_le_dernier_coup"/>
    </widget>
    <addaction name="menuPartie"/>
    <addaction name="menuAide"/>
@@ -116,6 +117,14 @@
    </property>
    <property name="shortcut">
     <string>Ctrl+D</string>
+   </property>
+  </action>
+  <action name="actionRefaire_le_dernier_coup">
+   <property name="text">
+    <string>Refaire le dernier coup</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+Y</string>
    </property>
   </action>
  </widget>
