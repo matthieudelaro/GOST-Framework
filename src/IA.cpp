@@ -180,15 +180,17 @@ List::Node<const State *>* IA::getPossibleMove(const State& currentState, const 
     return possibleMoves;
 }
 
-List::Node<const State *>* aStar(const State& initialState, const State& finalState, const Game &game)
+List::Node<const State *>* IA::aStar(const State *initialState,const State *finalState, const Game &game)
 {
-    List::Node<State *> *openNode;
-    List::Node<State *> *closeNode;
+    List::Node<const State *> *openNode;
+    List::Node<const State *> *closeNode;
 
-//    On commence par le noeud de départ, c'est le noeud courant
-    State *currentState = initialState;
+    List::push_front(*initialState,closeNode);
+    //    On commence par le noeud de départ, c'est le noeud courant
+    State *currentState = closeNode->info;
 
-    while(currentState != finalState)
+
+    while(currentState == finalState)
     {
 
         List::Node<State *> *neighbours = IA::getPossibleMove(currentState,game);
@@ -202,9 +204,10 @@ List::Node<const State *>* aStar(const State& initialState, const State& finalSt
 
                 if(List::contains(neighboursIterator->info,openNode));
                 {
-                    //Calcul de la qualité
+                    unsigned int neighbourgQuality = IA::nodeQuality(neighboursIterator->info,finalState,game);
+                    unsigned int currentQuality = IA::nodeQuality(currentState,finalState,game);
 
-                    if(/*MeilleurQualité*/)
+                    if(neighbourgQuality > currentQuality)
                     {
                         List::push_front(currentState,openNode);
                         List::pop_front(openNode);
@@ -217,15 +220,21 @@ List::Node<const State *>* aStar(const State& initialState, const State& finalSt
             }
         }
 
-        State *best = /*meilleur noeud de openNode*/;
+        State *best = List::best(openNode);
 
         if(best == NULL)
         {
-            //end of the A*
-            //No Solutions
-        }
+            qDebug() << "pas de solution";
+            return;
+         }
 
         List::push_front(best,closeNode);
-        List::delete(best,openNode); //A IMPLEMENTER
+        List::remove(best,openNode); //Pas sur
     }
+}
+
+unsigned int IA::nodeQuality(const State& currentState, const State& finalState, const Game &game)
+{
+
+
 }

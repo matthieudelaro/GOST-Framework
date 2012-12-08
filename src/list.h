@@ -120,6 +120,45 @@ namespace List
             return find(researched, l->next);
     }
 
+    template<typename T>
+    void remove(Node<T>* toRemove, Node<T>* l)
+    {
+        if(l = NULL)
+            return;
+        if(toRemove == l)
+        {
+            l = l->next;
+            toRemove->next = NULL;
+            delete toRemove;
+        }
+        else if(toRemove == l->next)
+        {
+            l->next = toRemove->next;
+            toRemove->next = NULL;
+            delete toRemove;
+        }
+        else
+        {
+            remove(toRemove,l->next);
+        }
+    }
+
+    template<typename T>
+    const Node<T> *best(const Node<T>* l)
+    {
+        if(l == NULL)
+            return NULL;
+        if(l->next == NULL)
+            return l;
+
+        const Node<T>* nextBest = List::best(l->next);
+        if(l->info > nextBest->info)
+            return l;
+        else
+            return nextBest;
+    }
+
+
     template<typename Key, typename Info>
     Node<Pair<Key, Info> >* find(const Key &key, const Node<Pair<Key, Info> >* n)
     {
@@ -142,6 +181,7 @@ namespace List
             return find(key, n->next);
     }
 
+
     template<typename T>
     void tests()
     {
@@ -151,13 +191,15 @@ namespace List
         List::push_front(2, l);
         List::pop_front(l);
         List::push_front(3, l);
+        List::push_front(32, l);
+        List::push_front(1, l);
+        List::push_front(2, l);
+        List::push_front(1, l);
+        List::push_front(2, l);
 
-        List::Node<T>* l2 = NULL;
-        List::push_front(4, l2);
-        List::push_front(5, l2);
-        List::push_front(6, l2);
+        const List::Node<T>* best = List::best(l);
 
-        List::push_front(l,l2);
+        qDebug() << "best : " << best->info;
 
         qDebug() << "\nl :";
         List::Node<T>* it = l;

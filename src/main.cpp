@@ -25,25 +25,17 @@ void testsMatthieu()
     game.load(file);*/
 
 
-    QFile file("../res/games/aneRouge.txt");
-    if(file.open(QIODevice::ReadOnly))
-    {
-        qDebug() << "fichier bien ouvert en lecture seule";
-    }
-    qDebug() << file.size();
-    QTextStream textStream(&file);
-    qDebug() << textStream.readAll();
+
 }
 
 int main(int argc, char *argv[])
 {
     QApplication a(argc, argv);
 
-    //testsMatthieu();
+    testsMatthieu();
 
     MainWindow w;
 
     w.show();
-
     return a.exec();
 }
