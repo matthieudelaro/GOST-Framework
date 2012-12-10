@@ -16,9 +16,9 @@ namespace IA
     List::Node<const State *>* aStar(const State *initialState,const State *finalState, const Game &game);
 
     //fonctions utiles pour le A*
-    //Matthieu je te laisserai faire des pointeurs de fonctions, pour moi c'est encore trop nébuleux ^^
-
-    unsigned int nodeQuality(const State& currentState, const State& finalState, const Game &game);
+    unsigned int stateValue(const State& state, const Game &game);
+    unsigned int gScore(const State& currentState, const State& initialState, const State& finalState, const Game &game);
+    unsigned int hScore(const State& currentState, const State& initialState, const State& finalState, const Game &game);
 }
 
 

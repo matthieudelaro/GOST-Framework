@@ -64,6 +64,16 @@ namespace List
         l->next = buffer;
     }
 
+    //push non const
+    template <typename T>
+    void push_front(T &info, Node<T>* &l)
+    {
+        Node<T> *buffer = l;
+        l = new Node<T>;
+        l->info = info;
+        l->next = buffer;
+    }
+
     template <typename T>
     void pop_front(Node<T>* &l)
     {
@@ -80,6 +90,39 @@ namespace List
                 delete l;
                 l = NULL;
             }
+        }
+    }
+
+    template <typename T>
+    Node<T>* pop_frontAndReturn(Node<T>* &l)
+    {
+        if(l)
+        {
+            if(l->next)
+            {
+                Node<T> *buffer = l;
+                l = l->next;
+                return buffer;
+            }
+            return l;
+        }
+    }
+    template <typename T>
+    T pop_frontAndReturnValue(Node<T>* &l)
+    {
+        if(l)
+        {
+            if(l->next)
+            {
+                Node<T> *buffer = l;
+                l = l->next;
+                T toReturn = buffer->info;
+                delete buffer;
+                return toReturn;
+            }
+            T toReturn = l->info;
+            delete l;
+            return toReturn;
         }
     }
 
@@ -143,22 +186,6 @@ namespace List
         }
     }
 
-    template<typename T>
-    const Node<T> *best(const Node<T>* l)
-    {
-        if(l == NULL)
-            return NULL;
-        if(l->next == NULL)
-            return l;
-
-        const Node<T>* nextBest = List::best(l->next);
-        if(l->info > nextBest->info)
-            return l;
-        else
-            return nextBest;
-    }
-
-
     template<typename Key, typename Info>
     Node<Pair<Key, Info> >* find(const Key &key, const Node<Pair<Key, Info> >* n)
     {
@@ -196,10 +223,6 @@ namespace List
         List::push_front(2, l);
         List::push_front(1, l);
         List::push_front(2, l);
-
-        const List::Node<T>* best = List::best(l);
-
-        qDebug() << "best : " << best->info;
 
         qDebug() << "\nl :";
         List::Node<T>* it = l;

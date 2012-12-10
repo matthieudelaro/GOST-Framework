@@ -57,7 +57,7 @@ State* IA::possibleMove(const State& currentState, const Graph::Node* initialBoa
         const Graph::Node* destinationNode = game.getBoardNode(indexSource)->getConstLink(direction);
         //if(Game.getPieceNode(destinationNode, currentStat) == NULL//si la case est libre
         //        || Game.getPieceNode(destinationNode, currentStat)->info == game.getPieceNode(initialBoardNode, currentStat)->info)//on si elle est occupée par la même pièce (qui va donc bouger)
-            //alors on peut déplacer
+        //alors on peut déplacer
         if(destinationNode)
         {
             if(game.getPieceNode(destinationNode, currentState) != NULL && game.getPieceNode(destinationNode, currentState)->info != game.getPieceNode(initialBoardNode, currentState)->info)
@@ -182,59 +182,161 @@ List::Node<const State *>* IA::getPossibleMove(const State& currentState, const 
 
 List::Node<const State *>* IA::aStar(const State *initialState,const State *finalState, const Game &game)
 {
-    List::Node<const State *> *openNode;
-    List::Node<const State *> *closeNode;
+    /*VERSION 1 : DEVELOPPEZ*/
+    //                    état          g              h
+    List::Node<Triple<const State*, unsigned int, unsigned int> > *openNode;
+    List::Node<Triple<const State*, unsigned int, unsigned int> > *closeNode;
 
-    List::push_front(*initialState,closeNode);
+    Triple<const State*, unsigned int, unsigned int> *tmpInitialNode;
+    //le noeud de base a la valeur minimal pour qu'il conserve sa place de premier
+    tmpInitialNode->first = initialState;
+    tmpInitialNode->second = 0;
+    tmpInitialNode->third = 0;
+
+    List::push_front(tmpInitialNode,closeNode);
     //    On commence par le noeud de départ, c'est le noeud courant
-    State *currentState = closeNode->info;
+    Triple<const State*, unsigned int, unsigned int> *currentState = closeNode->info;
 
-
-    while(currentState == finalState)
+    while(IA::stateValue(currentState->first,game) != IA::stateValue(finalState,game)) // tant que l'on a pas l'état final
     {
+        //on récupères tous les voisins de l'état courant
+        List::Node<State *> *neighbours = IA::getPossibleMove(currentState->first,game);
 
-        List::Node<State *> *neighbours = IA::getPossibleMove(currentState,game);
-
-        List::Node<State *> *neighboursIterator = neighbours;
-
-        while(neighboursIterator)
+        while(neighbours) // on parcours tous les voisins
         {
-            if(!List::contains(neighboursIterator->info,closeNode));
+            Triple<const State*, unsigned int, unsigned int> *tmpNeighbour;
+            tmpNeighbour->first = neighbours->info;
+            tmpNeighbour->second = 1; //valeurs temporaires
+            tmpNeighbour->third = 1;  //temporaires
+            if(!List::contains(tmpNeighbour,closeNode)); //s'ils sont dans la liste fermée alors on le laisse, il est bien placé
             {
-
-                if(List::contains(neighboursIterator->info,openNode));
+                if(List::contains(tmpNeighbour,openNode)); //s'il est dans la liste ouverte
                 {
-                    unsigned int neighbourgQuality = IA::nodeQuality(neighboursIterator->info,finalState,game);
-                    unsigned int currentQuality = IA::nodeQuality(currentState,finalState,game);
+                    tmpNeighbour->second = 0; //calcul de g
+                    tmpNeighbour->third = 0; //calcul de h
 
-                    if(neighbourgQuality > currentQuality)
-                    {
-                        List::push_front(currentState,openNode);
-                        List::pop_front(openNode);
+                    if((tmpNeighbour->second + tmpNeighbour->third) < (currentState->second + currentState->third))
+                    {//si le voisin est plus avantageux que l'element courant alors on le met à la place de l'élément courant
+                        //on récupère le premier élément de la pile fermée
+                        Triple<const State*, unsigned int, unsigned int> *tmpToMove = List::pop_frontAndReturnValue(closeNode);
+
+                        //on le remet dans la liste ouverte
+                        List::push_front(tmpToMove,openNode);
                     }
                 }
-                else
+                else //sinon on le met dans la liste ouverte
                 {
-                    List::push_front(neighboursIterator,openNode);
+                    List::push_front(tmpNeighbour,openNode);
                 }
             }
         }
 
-        State *best = List::best(openNode);
 
-        if(best == NULL)
+        if(openNode)
         {
-            qDebug() << "pas de solution";
-            return;
-         }
+            //recherche du noeud avec la plus petite valeur de f
+            List::Node<Triple<const State*, unsigned int, unsigned int> > *tmpBestNodeFromOpenList = openNode->info;
+            List::Node<Triple<const State*, unsigned int, unsigned int> > *BestNodeFromOpenList = openNode->info;
 
-        List::push_front(best,closeNode);
-        List::remove(best,openNode); //Pas sur
+            while(tmpBestNodeFromOpenList)
+            {
+                if((tmpBestNodeFromOpenList->info.second + tmpBestNodeFromOpenList->info.third) < (BestNodeFromOpenList->info.second + BestNodeFromOpenList->info.third))
+                BestNodeFromOpenList = tmpBestNodeFromOpenList;
+                tmpBestNodeFromOpenList = tmpBestNodeFromOpenList->next;
+            }
+
+            Triple<const State*, unsigned int, unsigned int> *bestToAddInCloseNode = BestNodeFromOpenList->info;
+            List::remove(BestNodeFromOpenList,openNode);
+            List::push_front(bestToAddInCloseNode,closeNode);
+            currentState = bestToAddInCloseNode;
+        }
+        else
+        {
+            qDebug( ) << "pas de solutions";
+            return NULL;
+        }
     }
 }
 
-unsigned int IA::nodeQuality(const State& currentState, const State& finalState, const Game &game)
+    /*VERSION 2 wikipedia
+
+    List::Node<const State *> *openNode;
+    List::Node<const State *> *closeNode;
+    List::push_front(initialState,closeNode);
+
+    // ??? came_from := the empty map    // The map of navigated nodes.
+
+    while(List::size(openNode) != 0)
+    {
+
+        List::Node<const State *> * current = List::worst(openNode);
+        if(current = finalState)
+            return ;//chemin
+
+        List::remove(current,openNode);
+        List::push_front(current,closeNode);
+
+        List::Node<const State *> * neighbourg = IA::getPossibleMove(current->info,game);
+        while(neighbourg)
+        {
+            if(List::contains(neighboug,closeNode))
+                neighbourg = neighbourg->next;
+            else
+            {
+                unsigned int gScoreCurrent = IA::gScore(current,initialState,FinalState,game)  + IA::heuristicScore(current,initialState,FinalState,game); //tentative_g_score := g_score[current] + dist_between(current,neighbor)
+                unsigned int gScoreNeighbourg = IA::gScore(neighbourg,initialState,FinalState,game)  + IA::heuristicScore(neighbourg,initialState,FinalState,game); //tentative_g_score := g_score[current] + dist_between(current,neighbor)
+
+
+                if(!List::contains(neighbourg) || (gScoreCurrent <= gScoreNeighbourg ))
+                {
+
+
+
+                }
+
+
+                    ???? came_from[neighbor] := current
+                    g_score[neighbor] := tentative_g_score
+                    f_score[neighbor] := g_score[neighbor] + heuristic_cost_estimate(neighbor, goal)
+                    if neighbor not in openset
+                        add neighbor to openset
+
+
+            }
+
+        }
+
+    }
+ */
+
+//pour différencier deux états
+unsigned int stateValue(const State& state, const Game &game)
 {
+    List::Node<Graph::Node*>* piece = game.getPieces();
+    unsigned int value = 0;
+    while(piece)
+    {
+        value +=(unsigned int)(game.getBoardNode(piece->info,state)); //cast pour obtenir une valeur moche
+        piece = piece->next;
+    }
+    return value;
+}
+
+unsigned int IA::gScore(const State& currentState, const State& initialState, const State &finalState, const Game &game)
+{
+    //calcul du coup à l'état initial
+
+    //calcul du coup à l'état final
+
+    //somme des deux
+}
 
 
+unsigned int IA::hScore(const State& currentState, const State& initialState, const State &finalState, const Game &game)
+{
+    //calcul du coup à l'état initial
+
+    //calcul du coup à l'état final
+
+    //somme des deux
 }
