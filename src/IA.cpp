@@ -184,8 +184,8 @@ List::Node<const State *>* IA::aStar(const State *initialState,const State *fina
 {
     /*VERSION 1 : DEVELOPPEZ*/
     //                    état          g              h
-    List::Node<Triple<const State*, unsigned int, unsigned int> > *openNode;
-    List::Node<Triple<const State*, unsigned int, unsigned int> > *closeNode;
+    List::Node<Triple<const State*, unsigned int, unsigned int> *> *openNode;
+    List::Node<Triple<const State*, unsigned int, unsigned int> *> *closeNode;
 
     Triple<const State*, unsigned int, unsigned int> *tmpInitialNode;
     //le noeud de base a la valeur minimal pour qu'il conserve sa place de premier
@@ -197,10 +197,11 @@ List::Node<const State *>* IA::aStar(const State *initialState,const State *fina
     //    On commence par le noeud de départ, c'est le noeud courant
     Triple<const State*, unsigned int, unsigned int> *currentState = closeNode->info;
 
-    while(IA::stateValue(currentState->first,game) != IA::stateValue(finalState,game)) // tant que l'on a pas l'état final
+    while ( (*(currentState->first)) == (*finalState))
+    //while(IA::stateValue(currentState->first,game) != IA::stateValue(finalState,game)) // tant que l'on a pas l'état final
     {
         //on récupères tous les voisins de l'état courant
-        List::Node<State *> *neighbours = IA::getPossibleMove(currentState->first,game);
+        List::Node<const State *> *neighbours = IA::getPossibleMove(*(currentState->first),game);
 
         while(neighbours) // on parcours tous les voisins
         {
@@ -210,7 +211,7 @@ List::Node<const State *>* IA::aStar(const State *initialState,const State *fina
             tmpNeighbour->third = 1;  //temporaires
             if(!List::contains(tmpNeighbour,closeNode)); //s'ils sont dans la liste fermée alors on le laisse, il est bien placé
             {
-                if(List::contains(tmpNeighbour,openNode)); //s'il est dans la liste ouverte
+                if(List::contains(tmpNeighbour,openNode)) //s'il est dans la liste ouverte
                 {
                     tmpNeighbour->second = 0; //calcul de g
                     tmpNeighbour->third = 0; //calcul de h
@@ -235,12 +236,13 @@ List::Node<const State *>* IA::aStar(const State *initialState,const State *fina
         if(openNode)
         {
             //recherche du noeud avec la plus petite valeur de f
-            List::Node<Triple<const State*, unsigned int, unsigned int> > *tmpBestNodeFromOpenList = openNode->info;
-            List::Node<Triple<const State*, unsigned int, unsigned int> > *BestNodeFromOpenList = openNode->info;
+            List::Node<Triple<const State*, unsigned int, unsigned int> *> *tmpBestNodeFromOpenList = openNode;
+            List::Node<Triple<const State*, unsigned int, unsigned int> *> *BestNodeFromOpenList = openNode;
 
             while(tmpBestNodeFromOpenList)
             {
-                if((tmpBestNodeFromOpenList->info.second + tmpBestNodeFromOpenList->info.third) < (BestNodeFromOpenList->info.second + BestNodeFromOpenList->info.third))
+                if((tmpBestNodeFromOpenList->info->second +
+                    tmpBestNodeFromOpenList->info->third) < (BestNodeFromOpenList->info->second + BestNodeFromOpenList->info->third))
                 BestNodeFromOpenList = tmpBestNodeFromOpenList;
                 tmpBestNodeFromOpenList = tmpBestNodeFromOpenList->next;
             }
@@ -309,18 +311,18 @@ List::Node<const State *>* IA::aStar(const State *initialState,const State *fina
     }
  */
 
-//pour différencier deux états
-unsigned int stateValue(const State& state, const Game &game)
-{
-    List::Node<Graph::Node*>* piece = game.getPieces();
-    unsigned int value = 0;
-    while(piece)
-    {
-        value +=(unsigned int)(game.getBoardNode(piece->info,state)); //cast pour obtenir une valeur moche
-        piece = piece->next;
-    }
-    return value;
-}
+////pour différencier deux états
+//unsigned int IA::stateValue(const State& state, const Game &game)
+//{
+//    List::Node<Graph::Node*>* piece = game.getPieces();
+//    unsigned int value = 0;
+//    while(piece)
+//    {
+//        value +=(unsigned int)(game.getBoardNode(piece->info,state)); //cast pour obtenir une valeur moche
+//        piece = piece->next;
+//    }
+//    return value;
+//}
 
 unsigned int IA::gScore(const State& currentState, const State& initialState, const State &finalState, const Game &game)
 {
