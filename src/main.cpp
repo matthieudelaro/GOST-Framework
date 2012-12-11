@@ -10,7 +10,7 @@
 void testsMatthieu()
 {
     //Vector<int>::tests();
-    //List::tests<int>();
+    List::tests<int>();
     //Matrix<int>::tests();
     //Graph::tests();
 
@@ -32,7 +32,7 @@ int main(int argc, char *argv[])
 {
     QApplication a(argc, argv);
 
-    testsMatthieu();
+    //testsMatthieu();
 
     MainWindow w;
 

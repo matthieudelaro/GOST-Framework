@@ -28,6 +28,21 @@ bool operator==(const Triple<T, U, V> &p1, const Triple<T, U, V> &p2)
     return (p1.first == p2.first) && (p1.second == p2.second) && (p1.third == p2.third);
 }
 
+template <typename T, typename U, typename V, typename W>
+struct Quadruple
+{
+    T first;
+    U second;
+    V third;
+    W fourth;
+};
+
+template <typename T, typename U, typename V, typename W>
+bool operator==(const Quadruple<T, U, V, W> &p1, const Quadruple<T, U, V, W> &p2)
+{
+    return (p1.first == p2.first) && (p1.second == p2.second) && (p1.third == p2.third) && (p1.fourth == p2.fourth) ;
+}
+
 /* Version avec des class, mais qui n'a aucun intéret pour l'instant
 template <typename T, typename U>
 class Pair

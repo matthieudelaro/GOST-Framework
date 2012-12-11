@@ -65,6 +65,7 @@ namespace Graph
      */
     void toConstList(const Graph::Node *graph, List::Node<const Graph::Node*> *&list);
 
+
     //Les chiffres attribués aux directions dans Game::load... ne permettent pas d'utiliser cette méthode, qui est trop spécifique pour les cas généraux qu'on veut englober.
     //inline unsigned int oppositeDirection(unsigned int direction) {return Node::nbLinks - direction;}
 

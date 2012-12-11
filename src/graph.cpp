@@ -95,6 +95,7 @@ void Graph::toConstList(const Graph::Node *graph, List::Node<const Graph::Node*>
     }
 }
 
+
 void Graph::tests()
 {
     qDebug() << "\ntestsGraph :";

@@ -94,6 +94,30 @@ namespace List
     }
 
     template <typename T>
+    Node<T>* pop_backAndReturn(Node<T>* &l)
+    {
+        Node<T> *it = l;
+        if(it)
+        {
+            if(it->next == NULL)
+            {//cas liste à un élément
+                return pop_frontAndReturn(it);
+            }
+            else
+            {
+                while(it->next->next != NULL)
+                {
+                    it = it->next;
+                }
+                //on a la fin de la liste en l->next;
+                Node<T> *toReturn = it->next;
+                it->next = NULL;
+                return toReturn;
+            }
+        }
+    }
+
+    template <typename T>
     Node<T>* pop_frontAndReturn(Node<T>* &l)
     {
         if(l)
@@ -208,6 +232,16 @@ namespace List
             return find(key, n->next);
     }
 
+    template<typename Key, typename Info1, typename Info2, typename Info3>
+    Node<Quadruple<Key, Info1, Info2, Info3> >* find(const Key &key, Node<Quadruple<Key, Info1, Info2, Info3> >* n)
+    {
+        if(n == NULL)
+            return NULL;
+        else if(n->info.first == key)
+            return n;
+        else
+            return find(key, n->next);
+    }
 
     template<typename T>
     void tests()
@@ -224,6 +258,8 @@ namespace List
         List::push_front(1, l);
         List::push_front(2, l);
 
+
+
         qDebug() << "\nl :";
         List::Node<T>* it = l;
         while(it)
@@ -231,6 +267,12 @@ namespace List
             qDebug() << it->info;
             it = it->next;
         }
+
+        List::Node<T>* test = List::pop_backAndReturn(l);
+        qDebug() << "pop back :" << test->info;
+        List::Node<T>* test2 = List::pop_frontAndReturn(l);
+        qDebug() << "pop front :" << test2->info;
+
 /*
         qDebug() << "size(l) = " << List::size(l);
         qDebug() << "clear(l);";

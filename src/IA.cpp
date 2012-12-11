@@ -184,12 +184,12 @@ List::Node<const State *>* IA::aStar(const State *initialState,const State *fina
 {
     /*VERSION 1 : DEVELOPPEZ*/
 
-    //                    état          g              h
-    List::Node<Triple<const State*, unsigned int, unsigned int> *> *openNode;
-    List::Node<Triple<const State*, unsigned int, unsigned int> *> *closeNode;
+    //                         état          g              h          dad
+    List::Node<Quadruple<const State*, unsigned int, unsigned int, const State *> *> *openNode;
+    List::Node<Quadruple<const State*, unsigned int, unsigned int, const State *> *> *closeNode;
 
 
-    Triple<const State*, unsigned int, unsigned int> *tmpInitialNode;
+    Quadruple<const State*, unsigned int, unsigned int, const State *> *tmpInitialNode;
     //le noeud de base a la valeur minimal pour qu'il conserve sa place de premier
     tmpInitialNode->first = initialState;
     tmpInitialNode->second = 0;
@@ -197,7 +197,7 @@ List::Node<const State *>* IA::aStar(const State *initialState,const State *fina
 
     List::push_front(tmpInitialNode,closeNode);
     //    On commence par le noeud de départ, c'est le noeud courant
-    Triple<const State*, unsigned int, unsigned int> *currentState = closeNode->info;
+    Quadruple<const State*, unsigned int, unsigned int, const State *> *currentState = closeNode->info;
 
     while ( (*(currentState->first)) == (*finalState))
     //while(IA::stateValue(currentState->first,game) != IA::stateValue(finalState,game)) // tant que l'on a pas l'état final
@@ -207,7 +207,7 @@ List::Node<const State *>* IA::aStar(const State *initialState,const State *fina
 
         while(neighbours) // on parcours tous les voisins
         {
-            Triple<const State*, unsigned int, unsigned int> *tmpNeighbour;
+            Quadruple<const State*, unsigned int, unsigned int, const State *> *tmpNeighbour;
             tmpNeighbour->first = neighbours->info;
             tmpNeighbour->second = 1; //valeurs temporaires
             tmpNeighbour->third = 1;  //temporaires
@@ -215,13 +215,13 @@ List::Node<const State *>* IA::aStar(const State *initialState,const State *fina
             {
                 if(List::contains(tmpNeighbour,openNode)) //s'il est dans la liste ouverte
                 {
-                    tmpNeighbour->second = 0; //calcul de g
-                    tmpNeighbour->third = 0; //calcul de h
+                    //tmpNeighbour->second = IA::gScore(*(neighbours->info),*initialState,*finalState,game);
+                    //tmpNeighbour->third = IA::hScore(*(neighbours->info),*initialState,*finalState,game);
 
                     if((tmpNeighbour->second + tmpNeighbour->third) < (currentState->second + currentState->third))
                     {//si le voisin est plus avantageux que l'element courant alors on le met à la place de l'élément courant
                         //on récupère le premier élément de la pile fermée
-                        Triple<const State*, unsigned int, unsigned int> *tmpToMove = List::pop_frontAndReturnValue(closeNode);
+                        Quadruple<const State*, unsigned int, unsigned int, const State *> *tmpToMove = List::pop_frontAndReturnValue(closeNode);
 
                         //on le remet dans la liste ouverte
                         List::push_front(tmpToMove,openNode);
@@ -238,8 +238,8 @@ List::Node<const State *>* IA::aStar(const State *initialState,const State *fina
         if(openNode)
         {
             //recherche du noeud avec la plus petite valeur de f
-            List::Node<Triple<const State*, unsigned int, unsigned int> *> *tmpBestNodeFromOpenList = openNode;
-            List::Node<Triple<const State*, unsigned int, unsigned int> *> *BestNodeFromOpenList = openNode;
+            List::Node<Quadruple<const State*, unsigned int, unsigned int, const State *> *> *tmpBestNodeFromOpenList = openNode;
+            List::Node<Quadruple<const State*, unsigned int, unsigned int, const State *> *> *BestNodeFromOpenList = openNode;
 
             while(tmpBestNodeFromOpenList)
             {
@@ -249,14 +249,14 @@ List::Node<const State *>* IA::aStar(const State *initialState,const State *fina
                 tmpBestNodeFromOpenList = tmpBestNodeFromOpenList->next;
             }
 
-            Triple<const State*, unsigned int, unsigned int> *bestToAddInCloseNode = BestNodeFromOpenList->info;
+            Quadruple<const State*, unsigned int, unsigned int, const State *> *bestToAddInCloseNode = BestNodeFromOpenList->info;
             List::remove(BestNodeFromOpenList,openNode);
             List::push_front(bestToAddInCloseNode,closeNode);
             currentState = bestToAddInCloseNode;
         }
         else
         {
-            //qDebug( ) << "pas de solutions";
+            qDebug( ) << "pas de solutions";
             return NULL;
         }
     }
@@ -329,19 +329,32 @@ List::Node<const State *>* IA::aStar(const State *initialState,const State *fina
 
 unsigned int IA::gScore(const State& currentState, const State& initialState, const State &finalState, const Game &game)
 {
-    //calcul du coup à l'état initial
+    /*
 
-    //calcul du coup à l'état final
 
-    //somme des deux
+
+
+      */
 }
 
 
-unsigned int IA::hScore(const State& currentState, const State& initialState, const State &finalState, const Game &game)
+unsigned int IA::hScore(const State& currentState, const State &finalState, const Game &game)
 {
-    //calcul du coup à l'état initial
+    //principe : on regarde combien de noeuds sont à une position différente de la fin, très moche mais simple
+    //idée : travailler sur des distances
+    //faire une fonction qui calcul la distance entre deux noeud du graph
 
-    //calcul du coup à l'état final
+    unsigned int hScore = 0;
 
-    //somme des deux
+    /*for(unsigned int i = 0; i < game.getBoardMatrix()->getHeight(); i ++)
+    {
+        for(unsigned int j = 0; j < game.getBoardMatrix()->getWidth(); j ++)
+        {
+        //test par rapport aux joker et tout
+            if(game.getPieceNode(j,i,currentState) != game.getPieceNode(j,i,currentState))
+                hScore ++;
+        }
+    }
+*/
+    return hScore;
 }
