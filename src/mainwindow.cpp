@@ -147,6 +147,7 @@ bool MainWindow::loadGameFromPath(QString &path, QString *error)
 void MainWindow::setState()
 {
     m_scene->setState(m_currentState->info);
+    qDebug() << IA::stateValue(*(m_currentState->info),m_game);
     m_historicalwindow->displayGameHistory(m_currentState, m_game, true);
 
     if(IA::isEnd(*(m_currentState->info),m_game.getFinalState(),&m_game))
