@@ -15,6 +15,11 @@ class EndWindow : public QWidget
 public:
     explicit EndWindow(QWidget *parent = 0);
     ~EndWindow();
+
+    /*!
+     * \brief Affiche la fin de partie de game.
+     * \param game Le jeu dont on souhaite afficher la fin de partie.
+     */
     void display(Game &game);
 
 public slots:
@@ -26,7 +31,7 @@ public slots:
      void resize(int w, int h);
 
 private:
-    Ui::EndWindow *ui;
+    Ui::EndWindow *ui;///< Représente les éléments générés par QDesigner
     MyGraphicsScene *m_scene;///< Scene qui est associée à la zone graphique
 };
 

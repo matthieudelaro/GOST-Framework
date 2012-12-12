@@ -89,7 +89,7 @@ public slots:
 
 private:
     XmlFileChoice *m_xmlChoiceWindow;///< Fenetre de choix du fichier Xml
-    Ui::MainWindow *ui;///< Fenetre principale, conenant le GUI
+    Ui::MainWindow *ui;///< Représente les éléments générés par QDesigner
     MyGraphicsScene *m_scene;///< Scene qui est associée à la zone graphique
     Game m_game;///< Game qui contient tout le jeu
     QString m_loadedPath;///< Chemin du Xml chargé
