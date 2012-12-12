@@ -5,6 +5,7 @@
 #include <QGraphicsView>
 #include <QVBoxLayout>
 #include <QDomDocument>
+#include <QLabel>
 #include "mygraphicsscene.h"
 #include "xmlfilechoice.h"
 #include "game.h"
@@ -93,12 +94,13 @@ private:
     Game m_game;///< Game qui contient tout le jeu
     QString m_loadedPath;///< Chemin du Xml chargé
     EndWindow *m_finalStateWindow;
-    HistoricalWindow *m_historicalwindow;
+    HistoricalWindow *m_historicalWindow;
     HistoricalWindow *m_debugHistoricalwindow;
     //const State *m_currentState;
     List::Node<const State *> *m_currentState;
     List::Node<const State *> *m_history;///< Liste contenant l'historique des mouvements de l'utilisateur.
     unsigned int m_movesNumber;
+    QLabel *m_labelMovesNumber;
 };
 
 #endif // MAINWINDOW_H

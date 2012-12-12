@@ -24,8 +24,11 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWi
     raccourcisChoixJeu.push_back(QKeySequence("Ctrl+c"));//c comme choisir. Plus accessible pour la main gauche
     ui->actionChoixJeu->setShortcuts(raccourcisChoixJeu);
 
+    m_labelMovesNumber = new QLabel(QString());
+    ui->statusBar->addPermanentWidget(m_labelMovesNumber);
+
     m_finalStateWindow = NULL;
-    m_historicalwindow = NULL;
+    m_historicalWindow = NULL;
     m_debugHistoricalwindow = NULL;
     QObject::connect(ui->actionQuitter,SIGNAL(triggered()),qApp,SLOT(quit()));
     QObject::connect(ui->actionChoixJeu,SIGNAL(triggered()),this,SLOT(callChoiceGameFile()));
@@ -93,11 +96,11 @@ bool MainWindow::loadGameFromPath(QString &path, QString *error)
         delete m_finalStateWindow;
         m_finalStateWindow = NULL;
     }
-    if(m_historicalwindow)
+    if(m_historicalWindow)
     {
-        m_historicalwindow->close();
-        delete m_historicalwindow;
-        m_historicalwindow = NULL;
+        m_historicalWindow->close();
+        delete m_historicalWindow;
+        m_historicalWindow = NULL;
     }
     if(m_debugHistoricalwindow)
     {
@@ -108,6 +111,7 @@ bool MainWindow::loadGameFromPath(QString &path, QString *error)
     List::clearDelete(m_history);
     m_currentState = NULL;
     m_movesNumber = 0;
+    m_labelMovesNumber->setText(QString());
 
     //on met en place le nouveau jeu
     m_scene = new MyGraphicsScene();
@@ -123,9 +127,7 @@ bool MainWindow::loadGameFromPath(QString &path, QString *error)
     m_currentState = m_history;//Au début du jeu, l'état courant est le premier de l'historique
     m_scene->associateGame(&m_game);
 
-    //m_scene->displayMatrix();
     m_scene->callResize();
-    //m_scene->setState(m_game);
 
     m_finalStateWindow = new EndWindow;
 
@@ -133,11 +135,11 @@ bool MainWindow::loadGameFromPath(QString &path, QString *error)
 
     m_finalStateWindow->display(m_game);
 
-    m_historicalwindow = new HistoricalWindow;
-    m_historicalwindow->setWindowTitle("Historique");
+    m_historicalWindow = new HistoricalWindow;
+    m_historicalWindow->setWindowTitle("Historique");
     m_debugHistoricalwindow = new HistoricalWindow;
     m_debugHistoricalwindow->setWindowTitle("Prochains coups possibles");
-    QObject::connect(ui->actionAfficher_l_Historique,SIGNAL(triggered()),m_historicalwindow,SLOT(show()));
+    QObject::connect(ui->actionAfficher_l_Historique,SIGNAL(triggered()),m_historicalWindow,SLOT(show()));
     QObject::connect(ui->actionDebug,SIGNAL(triggered()),m_debugHistoricalwindow,SLOT(show()));
 
     setState();
@@ -147,7 +149,13 @@ bool MainWindow::loadGameFromPath(QString &path, QString *error)
 void MainWindow::setState()
 {
     m_scene->setState(m_currentState->info);
-    m_historicalwindow->displayGameHistory(m_currentState, m_game, true);
+    m_historicalWindow->displayGameHistory(m_currentState, m_game, true);
+    if(m_movesNumber == 1)
+        m_labelMovesNumber->setText(QString("Vous avez fait %1 coup.").arg(m_movesNumber));
+    else if(m_movesNumber > 1)
+        m_labelMovesNumber->setText(QString("Vous avez fait %1 coups.").arg(m_movesNumber));
+    else
+        m_labelMovesNumber->setText(QString(""));
 
     if(IA::isEnd(*(m_currentState->info),m_game.getFinalState(),&m_game))
         QMessageBox::information(NULL,"Fin du jeu",QString::fromUtf8("Bien joué"));
@@ -164,13 +172,20 @@ MainWindow::~MainWindow()
         delete m_xmlChoiceWindow;
 
     if(m_finalStateWindow)
+    {
+        m_finalStateWindow->close();
         delete m_finalStateWindow;
-
-    if(m_historicalwindow)
-        delete m_historicalwindow;
-
+    }
+    if(m_historicalWindow)
+    {
+        m_historicalWindow->close();
+        delete m_historicalWindow;
+    }
     if(m_debugHistoricalwindow)
+    {
+        m_debugHistoricalwindow->close();
         delete m_debugHistoricalwindow;
+    }
 
     List::clearDelete(m_history);
 }
@@ -205,50 +220,34 @@ void MainWindow::callIAPossibleMove(QPointF *init, QPointF *final)
                                            m_game);
         if(newState)
         {
-            //if(m_history && (*newState) == (*(m_history->info)))//si on fait marche arrière
             if(m_currentState && m_currentState->next && (*newState) == (*m_currentState->next->info))//si on fait marche arrière
             {
                 cancel();
             }
-            else//cas de base
+            else//sinon
             {
-                //if(m_currentState != m_history)
-                //{
-                //on recherche le cas joué après l'état courant
-//                List::Node<const State *> *it = m_history;
-//                while(it && it != m_currentState && it->next != m_currentState)
-//                {
-//                    it = it->next;
-//                }
-//                if(*(it->info) == *(m_currentState->info))//si on refait le coup qu'on avait annulé
-//                {
-//                    m_currentState = it;
-//                }
-//                //}
-//                else // si on ne refait pas le coup qu'on avait annulé
-//                {
-//                    //alors on supprime tous les coups qu'on avait annulés
-//                    List::Node<const State *> *it = m_history, it2;
-//                    while(it && it != m_currentState && it->next != m_currentState)
-//                    {
-//                        it2 = it->next;
-//                        delete it->info;
-//                        delete it;
-//                        it = next;
-//                    }
-//                    //et le dernier coup de l'historique devient le dernier coup joué par l'utilisateur
-//                    m_history = m_currentState;
-//                    List::push_front(newState, m_history);
-//                    m_currentState = m_history;
-//                }
-//                m_movesNumber++;
+                //on recherche le coup joué après l'état courant
+                List::Node<const State *> *it = m_history;
+                while(it && it != m_currentState && it->next != m_currentState)
+                {
+                    it = it->next;
+                }
 
-                List::push_front<const State *>(newState, m_history);
-                m_currentState = m_history;
-                m_movesNumber++;
-
+                if(it && *(it->info) == (*newState))//si c'est le même que le nouveau coup
+                {
+                    redo();
+                }
+                else//si c'est un coup quelconque
+                {
+                    while(m_history != m_currentState)
+                    {
+                        List::pop_front(m_history);
+                    }
+                    List::push_front<const State *>(newState, m_history);
+                    m_currentState = m_history;
+                    m_movesNumber++;
+                }
             }
-//            m_scene->setState(m_currentState);
             setState();
         }
     }
@@ -258,59 +257,35 @@ void MainWindow::cancel()
 {
     if(!m_currentState)
         return;//on ne fait rien si il n'y a pas de jeu en cours
-    if(m_currentState && m_currentState->next)//si il y a un coup précédent
+    else if(m_currentState->next)//si il y a un coup précédent
     {
         m_currentState = m_currentState->next;
         if(m_movesNumber > 0)//protection contre l'overflow !
             m_movesNumber--;
+        setState();
     }
-    setState();
 }
 
 void MainWindow::redo()
 {
     if(!m_currentState)
         return;//on ne fait rien si il n'y a pas de jeu en cours
-    qDebug() << "redo";
-    if(m_history && m_currentState != m_history)
+    else if(m_history && m_currentState != m_history)
     {
         List::Node<const State *> *it = m_history;
         //on recherche le coup joué après l'état courant
-        while(it && it != m_currentState && it->next != m_currentState)
+        while(it && it->next != m_currentState)
         {
             it = it->next;
         }
         m_currentState = it;
         m_movesNumber++;
         setState();
-
-//        if(*(it->info) == *(m_currentState->info))//si on refait le coup qu'on avait annulé
-//        {
-//            m_currentState = it;
-//        }
-//        else // si on ne refait pas le coup qu'on avait annulé
-//        {
-//            //alors on supprime tous les coups qu'on avait annulés
-//            List::Node<const State *> *it = m_history, it2;
-//            while(it && it != m_currentState && it->next != m_currentState)
-//            {
-//                it2 = it->next;
-//                delete it->info;
-//                delete it;
-//                it = next;
-//            }
-//            //et le dernier coup de l'historique devient le dernier coup joué par l'utilisateur
-//            m_history = m_currentState;
-//            List::push_front(newState, m_history);
-//            m_currentState = m_history;
-//        }
     }
-    return;
 }
 
 void MainWindow::showDifferentsPossibleStates()
 {
-    qDebug() << "showPossibleState";
     List::Node<const State *>* possibleStates = IA::getPossibleMove(*(m_currentState->info),m_game);
 
     m_debugHistoricalwindow->displayGameHistory(possibleStates,m_game);

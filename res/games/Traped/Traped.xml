@@ -1,0 +1,69 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<game>
+    <board>
+        <initialShape type="defined">
+            <line>
+                <column type="piece" number="1"/>
+                <column type="piece" number="1"/>
+                <column type="piece" number="1"/>
+                <column type="piece" number="5"/>
+            </line>
+            <line>
+                <column type="piece" number="1"/>
+                <column type="piece" number="2"/>
+                <column type="piece" number="3"/>
+                <column type="piece" number="6"/>
+            </line>
+            <line>
+                <column type="piece" number="1"/>
+                <column type="piece" number="4"/>
+                <column type="void"/>
+                <column type="piece" number="7"/>
+            </line>
+            <line>
+                <column type="piece" number="1"/>
+                <column type="piece" number="1"/>
+                <column type="piece" number="1"/>
+                <column type="free"/>
+            </line>
+            <line>
+                <column type="free"/>
+                <column type="free"/>
+                <column type="free"/>
+                <column type="free"/>
+            </line>
+        </initialShape>
+        <finalShape>
+            <line>
+                <column type="piece" number="1"/>
+                <column type="piece" number="1"/>
+                <column type="piece" number="1"/>
+                <column type="piece" number="4"/>
+            </line>
+            <line>
+                <column type="piece" number="1"/>
+                <column type="piece" number="7"/>
+                <column type="piece" number="6"/>
+                <column type="piece" number="5"/>
+            </line>
+            <line>
+                <column type="piece" number="1"/>
+                <column type="free"/>
+                <column type="void"/>
+                <column type="free"/>
+            </line>
+            <line>
+                <column type="piece" number="1"/>
+                <column type="piece" number="1"/>
+                <column type="piece" number="1"/>
+                <column type="free"/>
+            </line>
+            <line>
+                <column type="piece" number="2"/>
+                <column type="piece" number="3"/>
+                <column type="free"/>
+                <column type="free"/>
+            </line>
+        </finalShape>
+    </board>
+</game>

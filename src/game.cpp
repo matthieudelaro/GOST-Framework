@@ -117,8 +117,6 @@ bool Game::load(QDomDocument &xml, QString *error)
                     {
                         QDomElement element = columns.item(column).toElement();
                         QDomElement finalElement = finalColumns.item(column).toElement();
-                        qDebug() << element.attribute("type") << "et" << finalElement.attribute("type");
-                        //qDebug() << finalElement.attribute("type");
                         if(element.attribute("type") != "void")
                         {
                             if(finalElement.attribute("type") == "void")
