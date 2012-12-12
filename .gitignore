@@ -2,4 +2,5 @@ doc/
 *-build-*/
 *~
 *.pro.user
+*.pro.user*
 
