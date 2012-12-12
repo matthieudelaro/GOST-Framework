@@ -199,8 +199,8 @@ List::Node<const State *>* IA::aStar(const State *initialState,const State *fina
     //    On commence par le noeud de départ, c'est le noeud courant
     Quadruple<const State*, unsigned int, unsigned int, const State *> *currentState = closeNode->info;
 
-    while ( (*(currentState->first)) == (*finalState))
     //while(IA::stateValue(currentState->first,game) != IA::stateValue(finalState,game)) // tant que l'on a pas l'état final
+    while ( (*(currentState->first)) == (*finalState))
     {
         //on récupères tous les voisins de l'état courant
         List::Node<const State *> *neighbours = IA::getPossibleMove(*(currentState->first),game);
@@ -215,7 +215,7 @@ List::Node<const State *>* IA::aStar(const State *initialState,const State *fina
             {
                 if(List::contains(tmpNeighbour,openNode)) //s'il est dans la liste ouverte
                 {
-                    //tmpNeighbour->second = IA::gScore(*(neighbours->info),*initialState,*finalState,game);
+                    tmpNeighbour->second = currentState->second + 1;
                     //tmpNeighbour->third = IA::hScore(*(neighbours->info),*initialState,*finalState,game);
 
                     if((tmpNeighbour->second + tmpNeighbour->third) < (currentState->second + currentState->third))
@@ -329,32 +329,24 @@ List::Node<const State *>* IA::aStar(const State *initialState,const State *fina
 
 unsigned int IA::gScore(const State& currentState, const State& initialState, const State &finalState, const Game &game)
 {
-    /*
-
-
-
-
-      */
+    //improve this function ?
 }
 
 
 unsigned int IA::hScore(const State& currentState, const State &finalState, const Game &game)
 {
     //principe : on regarde combien de noeuds sont à une position différente de la fin, très moche mais simple
-    //idée : travailler sur des distances
-    //faire une fonction qui calcul la distance entre deux noeud du graph
 
     unsigned int hScore = 0;
-
-    /*for(unsigned int i = 0; i < game.getBoardMatrix()->getHeight(); i ++)
+    Matrix<Graph::Node *> *matrix = game.getBoardMatrix();
+    for(unsigned int i = 0; i < matrix->getHeight() ; i ++)
     {
-        for(unsigned int j = 0; j < game.getBoardMatrix()->getWidth(); j ++)
+        for(unsigned int j = 0; j < matrix->getWidth(); j ++)
         {
         //test par rapport aux joker et tout
             if(game.getPieceNode(j,i,currentState) != game.getPieceNode(j,i,currentState))
                 hScore ++;
         }
     }
-*/
     return hScore;
 }

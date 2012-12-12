@@ -96,6 +96,8 @@ namespace List
     template <typename T>
     Node<T>* pop_backAndReturn(Node<T>* &l)
     {
+        if(l == NULL)
+            return NULL;
         Node<T> *it = l;
         if(it)
         {
@@ -120,6 +122,8 @@ namespace List
     template <typename T>
     Node<T>* pop_frontAndReturn(Node<T>* &l)
     {
+        if(l == NULL)
+            return NULL;
         if(l)
         {
             if(l->next)
@@ -134,6 +138,8 @@ namespace List
     template <typename T>
     T pop_frontAndReturnValue(Node<T>* &l)
     {
+        if(l == NULL)
+            return NULL;
         if(l)
         {
             if(l->next)
