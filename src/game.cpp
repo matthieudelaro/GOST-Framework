@@ -92,7 +92,7 @@ bool Game::load(QDomDocument &xml, QString *error)
 
                 if(((unsigned int)listFinalLines.count()) != nbLines)
                 {
-                    *log += "Il n'y a pas autant de lines dans l'état final que dans l'état initial.";
+                    *log += QString("Il n'y a pas autant de lignes dans l'état final que dans l'état initial.");
                     clear();
                     return false;
                 }
@@ -105,7 +105,8 @@ bool Game::load(QDomDocument &xml, QString *error)
                     unsigned int nbColumns = ((unsigned int)columns.count());
                     if(((unsigned int)finalColumns.count()) != nbColumns)
                     {
-                        *log += "Il n'y a pas autant de columns dans l'état final (" + QString(finalColumns.count()) + ") que dans l'état initial (" + QString(nbColumns) + ") pour la line " + QString(line) + "\n";
+                        //*log += "Il n'y a pas autant de columns dans l'état final (" + QString(finalColumns.count()) + ") que dans l'état initial (" + QString(nbColumns) + ") pour la line " + QString(line) + "\n";
+                        *log += QString("Il n'y a pas autant de colonnes dans l'état final (%1) que dans l'état initial (%2) pour la ligne %3.\n").arg(finalColumns.count()).arg(nbColumns).arg(line);
                         clear();
                         return false;
                     }
@@ -157,7 +158,7 @@ bool Game::load(QDomDocument &xml, QString *error)
                         }
                         else if(!(finalElement.attribute("type") == "void"))
                         {
-                            *log += QString("Incohérence entre l'état initial et l'état final (line = %1), columne = %2) : est-ce que la case existe ? \n").arg(line).arg(column);
+                            *log += QString("Incohérence entre l'état initial et l'état final (ligne = %1), colonne = %2) : est-ce que la case existe ? \n").arg(line).arg(column);
                             clear();
                             return false;
                         }
@@ -254,7 +255,6 @@ bool Game::load(QDomDocument &xml, QString *error)
                             if(line > 0)
                             {
                                 (*(m_boardMatrix(line, column)))[0] = m_boardMatrix(line-1, column);
-
                             }
                             if(line + 1 < m_boardMatrix.getHeight())
                                 (*(m_boardMatrix(line, column)))[1] = m_boardMatrix(line+1, column);
@@ -311,7 +311,8 @@ bool Game::load(QDomDocument &xml, QString *error)
                                 }
                                 else
                                 {
-                                    *log += "Piece dans finalState inexistante dans initialState (pièce numéro " + QString(finalElement.attribute("number").toInt()) + ")\n";
+                                    //*log += "Piece dans finalState inexistante dans initialState (pièce numéro " + QString(finalElement.attribute("number").toInt()) + ")\n";
+                                    *log += QString("Piece dans finalState inexistante dans initialState (pièce numéro %1).").arg(finalElement.attribute("number").toInt());
                                     clear();
                                     return false;
                                 }
@@ -358,21 +359,21 @@ bool Game::load(QDomDocument &xml, QString *error)
             }
             else
             {
-                *log += "Nodes initialShape, finalShape, et/ou board manquant(s).\n";
+                *log += QString("Nodes initialShape, finalShape, et/ou board manquant(s).\n");
                 clear();
                 return false;
             }
         }
         else
         {
-            *log += "Nodes initialShape, finalShape, et/ou board manquant(s).\n";
+            *log += QString("Nodes initialShape, finalShape, et/ou board manquant(s).\n");
             clear();
             return false;
         }
     }
     else
     {
-        *log += "Nodes initialShape, finalShape, et/ou board manquant(s).\n";
+        *log += QString("Nodes initialShape, finalShape, et/ou board manquant(s).\n");
         clear();
         return false;
     }

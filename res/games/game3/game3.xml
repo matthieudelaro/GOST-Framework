@@ -25,7 +25,7 @@
                 <column type="free"/>
             </line>
             <line>
-                <column type="piece" number="0"/>
+                <column type="piece" number="1"/>
                 <column type="piece" number="1"/>
             </line>
             <line>
@@ -51,7 +51,7 @@
             <line>
                 <column type="piece" number="1"/>
                 <column type="void"/>
-                <column type="piece" number="1"/>
+                <column type="piece" number="6"/>
             </line>
             <line>
                 <column type="free"/>
