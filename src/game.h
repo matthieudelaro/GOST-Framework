@@ -16,11 +16,26 @@ typedef Vector<const Graph::Node*> State;///< Représente un état du jeu. Chaqu
 class Game
 {
 public:
-    Game(const Game &original);
-    Game& operator=(const Game& original);
 
     Game();
+
+    /*!
+     * \brief Permet de charger un jeu au format xml.
+     * \param xml Le fichier à charger.
+     * \param error Si error est différent de NULL, alors error est utilisé pour renvoyer les erreurs de lecture du fichier xml
+     * \return true si le chargement a été effectué avec succès, false sinon.
+     */
     bool load(QDomDocument &xml, QString *error = NULL);
+
+    /*!
+     * \brief Permet de charger un jeu au format Pepper
+     *
+     *  Cette fonction génère un xml à partir de file, et appel Game::load(QDomDocument &xml, QString *error = NULL) avec.
+     *
+     * \param file Le fichier à charger.
+     * \param error Si error est différent de NULL, alors error est utilisé pour renvoyer les erreurs de lecture du fichier xml
+     * \return true si le chargement a été effectué avec succès, false sinon.
+     */
     bool load(const QString &file, QString *error = NULL);
 
     /*! \return Le nombre de cases existantes sur le plateau. Tout State doit avoir cette longueur.
@@ -120,6 +135,28 @@ public:
     virtual ~Game();
 
 private:
+    /*!
+     * \brief Le constructeur de copie.
+     *
+     *  Le constructeur de copie ne doit jamais être appelé, même par la classe Game elle-même,
+     *  car il entraînerait une contre-performance. Le déclarer comme private ne suffisant pas,
+     *  il génère aussi une exception lors de l'exécution.
+     *
+     * \param original Le jeu copié.
+     */
+    Game(const Game &original);
+
+    /*!
+     * \brief L'opérateur d'affectation.
+     *
+     *  L'opérateur d'affectation ne doit jamais être appelé, même par la classe Game elle-même,
+     *  car il entraînerait une contre-performance. Le déclarer comme private ne suffisant pas,
+     *  il génère aussi une exception lors de l'exécution.
+     *
+     * \param original Le jeu copié.
+     */
+    Game& operator=(const Game& original);
+
     Graph::Node *m_board; ///< Représente le tableau de jeu. Utile pour l'accès récursif.
     Graph::Node *m_jocker; ///< Représente la pièce jocker pour l'état final.
     Matrix<Graph::Node*> m_boardMatrix; ///< Représente le tableau de jeu. Utile pour l'accès en ligne/colonne.

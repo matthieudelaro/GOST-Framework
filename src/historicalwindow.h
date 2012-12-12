@@ -26,7 +26,7 @@ public slots:
 
 private:
     void addStates(List::Node<const State *> *possibleStates, Game &game, bool oppositeOrder = false);
-    Ui::HistoricalWindow *ui;
+    Ui::HistoricalWindow *ui;///< Représente les éléments générés par QDesigner
     List::Node<MyGraphicsScene*> *m_scenes;
     List::Node<QGraphicsView*> *m_views;
     QVBoxLayout *m_verticalLayout;
