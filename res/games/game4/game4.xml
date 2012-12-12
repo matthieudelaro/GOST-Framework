@@ -53,7 +53,7 @@
             </line>
             <line>
                 <column type="jocker"/>
-                <column type="void"/>
+                <column type="free"/>
                 <column type="jocker"/>
             </line>
             <line>

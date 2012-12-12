@@ -64,7 +64,7 @@ bool MainWindow::loadGameFromPath(QString &path, QString *error)
     {
         if(!m_game.load(xmlDomDocument,log))
         {
-            QMessageBox::information(this,"Erreur de chargement du QDomDocument",*log);
+            QMessageBox::information(this, "Erreur de chargement du fichier", QString::fromUtf8(log->toStdString().c_str()));
             file.close();
             return false;
         }

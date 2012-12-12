@@ -115,18 +115,23 @@ bool Game::load(QDomDocument &xml, QString *error)
                     for(unsigned int column = 0; column < nbColumns; ++column)
                     {
                         QDomElement element = columns.item(column).toElement();
-                        QDomElement finalElement = columns.item(column).toElement();
+                        QDomElement finalElement = finalColumns.item(column).toElement();
+                        qDebug() << element.attribute("type") << "et" << finalElement.attribute("type");
+                        //qDebug() << finalElement.attribute("type");
                         if(element.attribute("type") != "void")
                         {
                             if(finalElement.attribute("type") == "void")
                             {
-                                *log += "Il n'y a pas autant de columns dans l'état final que dans l'état initial pour la line " + QString(line) + "\n";
+                                //*log += "Il n'y a pas autant de columns dans l'état final que dans l'état initial pour la line " + QString(line) + "\n";
+                                //*log += QString("Il n'y a pas autant de colonne dans l'état final que dans l'état initial pour la line %1.\n").arg(line);
+                                *log += QString("Incohérence entre l'état initial et l'état final (ligne = %1), colonne = %2) : est-ce que la case existe ? \n").arg(line).arg(column);
                                 clear();
                                 return false;
                             }
                             else if(finalElement.attribute("type") == "piece" && finalElement.attribute("number").toInt() == 0)
                             {
-                                *log += "Le numéro de pièce 0 est réservé pour le jocker (finalState, line = " + QString(line) + ", columne = " + QString(column) + ")" + "\n";
+                                //*log += "Le numéro de pièce 0 est réservé pour le jocker (finalState, ligne = " + QString(line) + ", colonne = " + QString(column) + ")" + "\n";
+                                *log += QString("Le numéro de pièce 0 est réservé pour le jocker (finalState, ligne = %1, colonne = %2) \n").arg(line).arg(column);
                                 clear();
                                 return false;
                             }
@@ -136,7 +141,7 @@ bool Game::load(QDomDocument &xml, QString *error)
                             {
                                 if(element.attribute("number").toInt() == 0)
                                 {
-                                    *log += "Le numéro de pièce 0 est réservé pour le jocker.";
+                                    *log += QString("Le numéro de pièce 0 est réservé pour le jocker (initialState, ligne = %1, colonne = %2) \n").arg(line).arg(column);
                                     clear();
                                     return false;
                                 }
@@ -149,6 +154,12 @@ bool Game::load(QDomDocument &xml, QString *error)
                                     List::push_front(piece, pieces);
                                 }
                             }
+                        }
+                        else if(!(finalElement.attribute("type") == "void"))
+                        {
+                            *log += QString("Incohérence entre l'état initial et l'état final (line = %1), columne = %2) : est-ce que la case existe ? \n").arg(line).arg(column);
+                            clear();
+                            return false;
                         }
                     }
                 }
