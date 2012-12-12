@@ -178,7 +178,7 @@ namespace List
     }
 
     template<typename T>
-    Node<T>* find(const T &researched, const Node<T>* l)
+    Node<T>* find(const T &researched, Node<T>* l)
     {
         if(l == NULL)
             return NULL;
