@@ -17,7 +17,6 @@ SOURCES += main.cpp\
     mygraphicsscene.cpp \
     xmlfilechoice.cpp \
     graph.cpp \
-    list.cpp \
     endwindow.cpp \
     IA.cpp \
     historicalwindow.cpp

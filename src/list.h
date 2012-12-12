@@ -96,45 +96,40 @@ namespace List
     template <typename T>
     Node<T>* pop_backAndReturn(Node<T>* &l)
     {
-        if(l == NULL)
-            return NULL;
+        if(!l)
+            return l;
         Node<T> *it = l;
-        if(it)
+        if(it->next == NULL)//cas liste à un élément
         {
-            if(it->next == NULL)
-            {//cas liste à un élément
-                return pop_frontAndReturn(it);
-            }
-            else
+            return pop_frontAndReturn(it);
+        }
+        else
+        {
+            while(it->next->next != NULL)
             {
-                while(it->next->next != NULL)
-                {
-                    it = it->next;
-                }
-                //on a la fin de la liste en l->next;
-                Node<T> *toReturn = it->next;
-                it->next = NULL;
-                return toReturn;
+                it = it->next;
             }
+            //on a la fin de la liste en l->next;
+            Node<T> *toReturn = it->next;
+            it->next = NULL;
+            return toReturn;
         }
     }
 
     template <typename T>
     Node<T>* pop_frontAndReturn(Node<T>* &l)
     {
-        if(l == NULL)
-            return NULL;
-        if(l)
-        {
-            if(l->next)
-            {
-                Node<T> *buffer = l;
-                l = l->next;
-                return buffer;
-            }
+        if(!l)
             return l;
+        if(l->next)
+        {
+            Node<T> *buffer = l;
+            l = l->next;
+            return buffer;
         }
+        return l;
     }
+
     template <typename T>
     T pop_frontAndReturnValue(Node<T>* &l)
     {

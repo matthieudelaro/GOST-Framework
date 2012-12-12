@@ -71,6 +71,14 @@ public:
      */
     inline const Graph::Node* getPieceNode(const Graph::Node* &boardNode, const State &state) const { return state[boardNode->info];}
 
+    /*! \brief Effectue la liaison entre un index, et le noeud de la pièce qui l'occupe.
+     *
+     *  \param index L'index pour lequel on recherche la pièce.
+     *  \param state L'état du jeu auquel on souhaite obtenir le noeud de la pièce.
+     *  \return Un pointeur vers le noeud de la pièce.
+     */
+    inline const Graph::Node* getPieceNode(unsigned int index, const State &state) const { return state[index];}
+
     /*! \brief Effectue la liaison entre une position sur le plateau, et le noeud de la pièce qui l'occupe.
      *
      *  \param line Ordonnée de la position.
