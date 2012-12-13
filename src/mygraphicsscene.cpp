@@ -4,6 +4,8 @@
 #include <QGraphicsSimpleTextItem>
 #include "mygraphicsscene.h"
 
+using namespace Gost;
+
 inline int myMax(int x,int y){return(x>y)?x:y;}
 
 MyGraphicsScene::MyGraphicsScene(int baseRectSize)

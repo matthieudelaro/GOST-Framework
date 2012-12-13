@@ -24,7 +24,7 @@ class MainWindow;
 
 /*!
  *      \brief La classe MainWindow gère le GUI du projet.
- *      Elle permet de charger un fichier XML, de l'associer et de l'afficher à travers la m_scene.
+ *      Elle permet de charger un fichier xml ou Pepper via une instance de Game, de l'associer et de l'afficher à travers la m_scene.
  */
 class MainWindow : public QMainWindow
 {
@@ -108,8 +108,8 @@ protected:
     EndWindow *m_finalStateWindow;
     HistoricalWindow *m_historicalWindow;///< La fenêtre affichant l'historique du jeu.
     HistoricalWindow *m_debugHistoricalwindow;///< La fenêtre de debug.
-    List::Node<const State *> *m_currentState;///< L'état courant dans l'historique.
-    List::Node<const State *> *m_history;///< Liste contenant l'historique des mouvements de l'utilisateur.
+    Gost::List::Node<const Gost::State *> *m_currentState;///< L'état courant dans l'historique.
+    Gost::List::Node<const Gost::State *> *m_history;///< Liste contenant l'historique des mouvements de l'utilisateur.
     unsigned int m_movesNumber;///< Le nombre de coups effectués par le joueur.
     QLabel *m_labelMovesNumber;///< Le label affichant le nombre de coups effectués par le joueur. Vide si celui-ci vaut 0.
 };

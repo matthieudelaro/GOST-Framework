@@ -1,6 +1,8 @@
 #ifndef COLLECTION_H
 #define COLLECTION_H
 
+namespace Gost
+{
 /*! \brief La structure Pair permet de gérer deux éléments (fist et second) de types quelconques en même temps.
  */
 template <typename T, typename U>
@@ -79,5 +81,5 @@ bool operator==(const AStarNode<T, U, V> &p1, const AStarNode<T, U, V> &p2)
 {
     return (p1.first == p2.first) && (p1.second == p2.second) && (p1.third == p2.third) && (p1.parent == p2.parent) ;
 }
-
+}
 #endif // COLLECTION_H

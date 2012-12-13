@@ -2,7 +2,9 @@
 #include <QMessageBox>
 #include "IA.h"
 
-State* IA::possibleMove(const State& currentState, const Graph::Node* initialBoardNode, const Graph::Node* finalBoardNode, const Game &game)
+namespace Gost
+{
+State* IA::possibleMove(const State& currentState, const Graph::Node* initialBoardNode, const Graph::Node* finalBoardNode, const GeneralGame &game)
 {
     //qDebug() << "######################################################";
     //qDebug() << "start" << initialBoardNode << "end " << finalBoardNode;
@@ -106,32 +108,8 @@ State* IA::possibleMove(const State& currentState, const Graph::Node* initialBoa
     return afterMove;
 }
 
-bool IA::isEnd(const State& currentState, const State& endState, Game *game)
+List::Node<const State *>* IA::getPossibleMove(const State& currentState, const Graph::Node* piece, const GeneralGame &game)
 {
-    for(unsigned int i = 0; i < game->getNbNodes() ; i ++)
-    {
-        const Graph::Node* finalNode = game->getPieceNode(i,endState);
-        const Graph::Node* currentNode = game->getPieceNode(i,currentState);
-        if(finalNode) //si on a une case à tester
-        {
-            if(finalNode->info != 0) //si on ne teste pas un joker
-            {
-                if(!currentNode)//si la case courante est vide
-                    return false;
-                else if(currentNode->info != finalNode->info)//si les deux cases ne contiennent pas la même pièce
-                    return false;
-            }
-        }
-        else if (currentNode) //si la case est vide à l'état final (car else if), mais non vide à l'état courant
-            return false;
-    }
-    return true;
-}
-
-List::Node<const State *>* IA::getPossibleMove(const State& currentState, const Graph::Node* piece, const Game &game)
-{
-    //qDebug() << "getpossible move on piece : " << game.getBoardNode(piece,currentState) << piece->info;
-
     List::Node<const State *>* possibleMoves = NULL;
     for(unsigned int i = 0; i < Graph::Node::nbLinks ; i ++)
     {
@@ -147,7 +125,7 @@ List::Node<const State *>* IA::getPossibleMove(const State& currentState, const 
     return possibleMoves;
 }
 
-List::Node<const State *>* IA::getPossibleMove(const State& currentState, const Game &game)
+List::Node<const State *>* IA::getPossibleMove(const State& currentState, const GeneralGame &game)
 {
     const List::Node<Graph::Node *>* piecesToCheck = game.getPieces();
 
@@ -166,7 +144,7 @@ List::Node<const State *>* IA::getPossibleMove(const State& currentState, const 
     return possibleMoves;
 }
 
-List::Node<const State *>* IA::aStar(const State &initialState,const State &finalState, const Game &game)
+List::Node<const State *>* IA::aStar(const State &initialState,const State &finalState, const GeneralGame &game)
 {
     //                        état          g              h
     List::Node<AStarNode<const State*, unsigned int, unsigned int> *> *openNode = NULL;
@@ -282,36 +260,36 @@ List::Node<const State *>* IA::aStar(const State &initialState,const State &fina
 
 
 
-unsigned int IA::gScore(const State& currentState, const State& initialState, const State &finalState, const Game &game)
+unsigned int IA::gScore(const State& currentState, const State& initialState, const State &finalState, const GeneralGame &game)
 {
     //improve this function ?
 }
 
 
-unsigned int IA::hScore(const State& currentState, const State &finalState, const Game &game)
+unsigned int IA::hScore(const State& currentState, const State &finalState, const GeneralGame &game)
 {
     //principe : on regarde combien de noeuds sont à une position différente de la fin
-
     unsigned int hScore = 0;
     for(unsigned int i = 0; i < game.getNbNodes() ; i ++)
     {
         const Graph::Node* finalNode = game.getPieceNode(i,finalState);
+        const Graph::Node* currentNode = game.getPieceNode(i,currentState);
         if(finalNode) //si on a une case à tester
         {
             if(finalNode->info != 0) //si on ne teste pas un joker
             {
-                const Graph::Node* currentNode = game.getPieceNode(i,currentState);
-                if(currentNode->info != finalNode->info) //si les deux pièces sont différentes on incrémente le score
+                if(!currentNode)//si la case courante est vide
+                    hScore ++;
+                else if(currentNode->info != finalNode->info)//si les deux cases ne contiennent pas la même pièce
                     hScore ++;
             }
         }
-        else if (game.getPieceNode(i,currentState)) //si la case est vide à l'état final (car else if), mais non vide à l'état courant
-            hScore++;
+        else if (currentNode) //si la case est vide à l'état final (car else if), mais non vide à l'état courant
+            hScore ++;
     }
-
     return hScore;
 }
-
+}
 
 /*VERSION 2 wikipedia
 

@@ -1,6 +1,9 @@
 #include "graph.h"
 #include <QDebug>
 
+namespace Gost
+{
+
 void Graph::clear(Graph::Node* &g)
 {
     List::Node<Graph::Node*> *list = toList(g);//on récupère tous les Nodes
@@ -122,4 +125,5 @@ void Graph::tests()
     Graph::clear(v);
     qDebug() << "clear(w) : ";
     Graph::clear(w);
+}
 }

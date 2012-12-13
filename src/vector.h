@@ -4,6 +4,8 @@
 #include "tools.h"
 #include <QDebug>
 
+namespace Gost
+{
 /*! \brief Le classe Vector gère un tableau générique à taille dynamique.
  */
 template <typename T>
@@ -221,15 +223,20 @@ private:
     unsigned int m_length; ///< longueur du tableau
 };
 
+/*!
+ *  \brief Permet de comparer unes à unes les cases de deux Vector.
+ *  \return true si les cases sont toutes égales une à une, false sinon.
+ */
 template <typename T>
 bool operator==(const Vector<T>& v, const Vector<T>& w)
 {
     if(v.getLength() != w.getLength())
-        return false;//on renvoie false si ils n'ont pas la même longuer
+        return false;//on renvoie false si ils n'ont pas la même longueur
     for(unsigned int i = 0; i < v.getLength(); ++i)
         if(v.getConst(i) != w.getConst(i))
             return false;//on renvoie false si toutes les cases ne sont pas identiques 2 à 2
     return true;//si tout va bien, on renvoie true
+}
 }
 
 #endif // VECTOR_H

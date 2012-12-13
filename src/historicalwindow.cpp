@@ -2,6 +2,8 @@
 #include "ui_historicalwindow.h"
 #include <QScrollBar>
 
+using namespace Gost;
+
 HistoricalWindow::HistoricalWindow(QWidget *parent) :
     QWidget(parent),
     ui(new Ui::HistoricalWindow)

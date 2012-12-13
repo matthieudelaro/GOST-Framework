@@ -4,6 +4,8 @@
 #include <exception>
 #include <string>
 
+namespace Gost
+{
 /*!
  * \brief La classe BadAllocation est une surcouche de std::bad_alloc, qui pourrait transmettre des messages personnalisés.
  */
@@ -25,5 +27,6 @@ public:
 private:
     std::string m_message;
 };
+}
 
 #endif // TOOLS_H

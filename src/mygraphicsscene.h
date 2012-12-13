@@ -35,7 +35,7 @@ public:
      * \brief Change l'état du jeu affiché.
      * \param state Le nouvel état que l'on veut afficher.
      */
-    void setState(const State *state);
+    void setState(const Gost::State *state);
 
     /*!
      * \brief Génère les couleurs de l'arc-en-ciel, et renvoie celle correspondant à x.
@@ -103,9 +103,9 @@ signals:
     void sendPositions(QPointF *init,QPointF *final);
 
 protected:
-    const State *m_currentState;///< L'état affiché.
-    Matrix<QGraphicsRectItem* > m_items; ///< Les morceaux de pièces et du plateau.
-    Matrix<QGraphicsSimpleTextItem* > m_texteItems; ///< affiche du texte dans les cases
+    const Gost::State *m_currentState;///< L'état affiché.
+    Gost::Matrix<QGraphicsRectItem* > m_items; ///< Les morceaux de pièces et du plateau.
+    Gost::Matrix<QGraphicsSimpleTextItem* > m_texteItems; ///< affiche du texte dans les cases
     int m_HSize;///< Le nombre de lignes.
     int m_WSize;///< Le nombre de colonnes.
     int m_BSize;///< La taille du côté des cases.
@@ -113,7 +113,7 @@ protected:
     int m_caseWSize;///< Largeur d'une case en pixels.
     int m_baseRectSize;///< Taille de base de la zone graphique.
     Game *m_game;///< Le jeu dont on affiche les états.
-    Vector<QBrush *> m_brushs; ///< La palette de couleurs utilisées pour les éléments du jeu.
+    Gost::Vector<QBrush *> m_brushs; ///< La palette de couleurs utilisées pour les éléments du jeu.
     QPointF *m_initialPos;///< Position initiale d'un déplacement.
     QPointF *m_finalPos;///< Position finale d'un déplacement.
 };
