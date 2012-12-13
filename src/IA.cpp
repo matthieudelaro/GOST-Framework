@@ -184,76 +184,94 @@ List::Node<const State *>* IA::getPossibleMove(const State& currentState, const 
 List::Node<const State *>* IA::aStar(const State &initialState,const State &finalState, const Game &game)
 {
     //                        état          g              h          parent
-    List::Node<Quadruple<const State*, unsigned int, unsigned int, const State *> *> *openNode = NULL;
-    List::Node<Quadruple<const State*, unsigned int, unsigned int, const State *> *> *closeNode = NULL;
+    List::Node<AStarNode<const State*, unsigned int, unsigned int> *> *openNode = NULL;
+    List::Node<AStarNode<const State*, unsigned int, unsigned int> *> *closeNode = NULL;
 
 
-    Quadruple<const State*, unsigned int, unsigned int, const State *> *tmpInitialNode = new Quadruple<const State*, unsigned int, unsigned int, const State *>;
+    AStarNode<const State*, unsigned int, unsigned int> *tmpInitialNode = new AStarNode<const State*, unsigned int, unsigned int>;
+
+    if(tmpInitialNode == NULL) //si l'allocation a échoué (parce qu'il n'y a plus de RAM libre par exemple)
+    {
+        BadAllocation exception("Unable to allocate memory to create a new Node.");
+        throw exception;
+    }
+
     //le noeud de base a la valeur minimal pour qu'il conserve sa place de premier
     tmpInitialNode->first = &initialState;
     tmpInitialNode->second = 0;
     tmpInitialNode->third = 0;
-    tmpInitialNode->fourth = NULL;
+    tmpInitialNode->parent = NULL;
 
     List::push_front(tmpInitialNode,closeNode);
 
-    //    On commence par le noeud de départ, c'est le noeud courant
-    Quadruple<const State*, unsigned int, unsigned int, const State *> *currentState = closeNode->info;
+    //On commence par le noeud de départ, c'est le noeud courant
+    AStarNode<const State*, unsigned int, unsigned int> *currentState = closeNode->info;
 
     //while(IA::stateValue(currentState->first,game) != IA::stateValue(finalState,game)) // tant que l'on a pas l'état final
     while (!((*(currentState->first)) == finalState))
     {
-
+        qDebug() << "nouvel état";
         //on récupères tous les voisins de l'état courant
         List::Node<const State *> *neighbours = IA::getPossibleMove(*(currentState->first),game);
 
         while(neighbours) // on parcours tous les voisins
         {
-            Quadruple<const State*, unsigned int, unsigned int, const State *> *tmpNeighbour = new Quadruple<const State*, unsigned int, unsigned int, const State *>;
+            qDebug() << "nouveau voisin";
+            AStarNode<const State*, unsigned int, unsigned int> *tmpNeighbour = new AStarNode<const State*, unsigned int, unsigned int>;
+
+            if(tmpNeighbour == NULL) //si l'allocation a échoué (parce qu'il n'y a plus de RAM libre par exemple)
+            {
+                BadAllocation exception("Unable to allocate memory to create a new Node.");
+                throw exception;
+            }
+
             tmpNeighbour->first = neighbours->info;
             tmpNeighbour->second = currentState->second + 1;
             tmpNeighbour->third = 1;  //temporaire en attente du calcul de h
-            tmpNeighbour->fourth = currentState->first;
+            tmpNeighbour->parent = currentState;
 
             if(!List::contains(tmpNeighbour,closeNode)) //s'il est dans la liste fermée alors on le laisse, il est bien placé
             {
                 //on regarde si on ne passe pas sur un noeud déjà visité
-                List::Node<Quadruple<const State*, unsigned int, unsigned int, const State *> *> *findResultList = List::find(tmpNeighbour,openNode);
-
+                List::Node<AStarNode<const State*, unsigned int, unsigned int> *> *findResultList = List::find(tmpNeighbour,openNode);
+                qDebug() << "result : " << findResultList;
                 if(findResultList) //s'il est dans la liste ouverte on regarde s'il est plus avantageux
                 {
-                    Quadruple<const State*, unsigned int, unsigned int, const State *> *findResult = findResultList->info;
+                    AStarNode<const State*, unsigned int, unsigned int> *findResult = findResultList->info;
                     tmpNeighbour->third = IA::hScore(*(neighbours->info),finalState,game);
 
                     if((tmpNeighbour->second + tmpNeighbour->third) < (findResult->second + findResult->third))
                     {//si le nouveau passage sur ce noeud est plus avantageux on modifie son homologue dans la liste ouverte
                         findResult->second = tmpNeighbour->second;
                         findResult->third = tmpNeighbour->third;
-                        findResult->fourth = tmpNeighbour->fourth;
+                        findResult->parent = tmpNeighbour;
                     }
                 }
                 else //sinon on le met dans la liste ouverte
                 {
                     List::push_front(tmpNeighbour,openNode);
+                    qDebug() << "ajout de l'état dans open node";
                 }
             }
+            neighbours = neighbours->next;
         }
 
         if(openNode) //s'il y a encore des noeuds ouverts
         {
             //recherche du noeud avec la plus petite valeur de f
-            List::Node<Quadruple<const State*, unsigned int, unsigned int, const State *> *> *tmpBestNodeFromOpenList = openNode;
-            List::Node<Quadruple<const State*, unsigned int, unsigned int, const State *> *> *BestNodeFromOpenList = openNode;
+            List::Node<AStarNode<const State*, unsigned int, unsigned int> *> *tmpBestNodeFromOpenList = openNode;
+            List::Node<AStarNode<const State*, unsigned int, unsigned int> *> *BestNodeFromOpenList = openNode;
 
             while(tmpBestNodeFromOpenList)
             {
+                qDebug() << "nouveau noeud max";
                 if((tmpBestNodeFromOpenList->info->second +
                     tmpBestNodeFromOpenList->info->third) < (BestNodeFromOpenList->info->second + BestNodeFromOpenList->info->third))
-                BestNodeFromOpenList = tmpBestNodeFromOpenList;
+                    BestNodeFromOpenList = tmpBestNodeFromOpenList;
                 tmpBestNodeFromOpenList = tmpBestNodeFromOpenList->next;
             }
 
-            Quadruple<const State*, unsigned int, unsigned int, const State *> *bestToAddInCloseNode = BestNodeFromOpenList->info;
+            AStarNode<const State*, unsigned int, unsigned int> *bestToAddInCloseNode = BestNodeFromOpenList->info;
             List::remove(BestNodeFromOpenList,openNode);
             List::push_front(bestToAddInCloseNode,closeNode);
             currentState = bestToAddInCloseNode;

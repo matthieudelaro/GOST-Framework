@@ -46,7 +46,7 @@ struct Quadruple
     T first;///< Le premier élément.
     U second;///< Le deuxième élément.
     V third;///< Le troisième élément.
-    W fourth;///< Le quatrième élément.
+    W parent;///< Le quatrième élément.
 };
 
 /*! \brief Permet de comparer deux instances de Quadruple.
@@ -55,7 +55,25 @@ struct Quadruple
 template <typename T, typename U, typename V, typename W>
 bool operator==(const Quadruple<T, U, V, W> &p1, const Quadruple<T, U, V, W> &p2)
 {
-    return (p1.first == p2.first) && (p1.second == p2.second) && (p1.third == p2.third) && (p1.fourth == p2.fourth) ;
+    return (p1.first == p2.first) && (p1.second == p2.second) && (p1.third == p2.third) && (p1.parent == p2.parent) ;
+}
+
+template <typename T, typename U, typename V>
+struct AStarNode
+{
+    T first;///< Le premier élément.
+    U second;///< Le deuxième élément.
+    V third;///< Le troisième élément.
+    AStarNode *parent;///< Le quatrième élément.
+};
+
+/*! \brief Permet de comparer deux instances de Quadruple.
+ *  \return true si les éléments sont égaux deux à deux, false sinon.
+ */
+template <typename T, typename U, typename V>
+bool operator==(const AStarNode<T, U, V> &p1, const AStarNode<T, U, V> &p2)
+{
+    return (p1.first == p2.first) && (p1.second == p2.second) && (p1.third == p2.third) && (p1.parent == p2.parent) ;
 }
 
 #endif // COLLECTION_H

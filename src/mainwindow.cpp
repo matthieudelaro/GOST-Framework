@@ -1,5 +1,6 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
+#include "tools.h"
 #include <QDebug>
 #include <QTextStream>
 
@@ -286,10 +287,21 @@ void MainWindow::redo()
 
 void MainWindow::showDifferentsPossibleStates()
 {
-    //List::Node<const State *>* possibleStates = IA::getPossibleMove(*(m_currentState->info),m_game);
-    //List::Node<const State *>* IAResult = IA::aStar(m_game.getInitialState(),m_game.getFinalState(),m_game);
-    //m_debugHistoricalwindow->displayGameHistory(IAResult,m_game);
-    //m_debugHistoricalwindow->displayGameHistory(possibleStates,m_game);
+    /*List::Node<const State *>* IAResult = NULL;
+    try
+    {
+         IAResult = IA::aStar(m_game.getInitialState(),m_game.getFinalState(),m_game);
+    }catch(const BadAllocation& e)
+    {
+        QMessageBox::warning(this,"ERROR", "Impossible de trouver la solution pour une erreur de mémoire.");
+    }
+
+    if(IAResult)
+        m_debugHistoricalwindow->displayGameHistory(IAResult,m_game);*/
+
+    List::Node<const State *>* possibleStates = IA::getPossibleMove(*(m_currentState->info),m_game);
+
+    m_debugHistoricalwindow->displayGameHistory(possibleStates,m_game);
 
     /*qDebug() << possibleStates;
     while(possibleStates)
