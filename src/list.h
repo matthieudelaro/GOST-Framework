@@ -286,7 +286,7 @@ namespace List
      *  Cette fonction permet de mimer le fonctionnement des std::map.
      *
      *  \param key L'élément que l'on recherche.
-     *  \param l la liste dans laquelle on recherche.
+     *  \param n la liste dans laquelle on recherche.
      *  \return NULL si l'élément n'est pas trouvé, un pointeur sur l'élément sinon.
      */
     template<typename Key, typename Info>
@@ -306,7 +306,7 @@ namespace List
      *  Cette fonction permet de mimer le fonctionnement des std::map.
      *
      *  \param key L'élément que l'on recherche.
-     *  \param l la liste dans laquelle on recherche.
+     *  \param n la liste dans laquelle on recherche.
      *  \return NULL si l'élément n'est pas trouvé, un pointeur sur l'élément sinon.
      */
     template<typename Key, typename Info1, typename Info2>
@@ -326,7 +326,7 @@ namespace List
      *  Cette fonction permet de mimer le fonctionnement des std::map.
      *
      *  \param key L'élément que l'on recherche.
-     *  \param l la liste dans laquelle on recherche.
+     *  \param n la liste dans laquelle on recherche.
      *  \return NULL si l'élément n'est pas trouvé, un pointeur sur l'élément sinon.
      */
     template<typename Key, typename Info1, typename Info2, typename Info3>
@@ -346,7 +346,7 @@ namespace List
      *  Cette fonction permet de mimer le fonctionnement des std::map.
      *
      *  \param key L'élément que l'on recherche.
-     *  \param l la liste dans laquelle on recherche.
+     *  \param n la liste dans laquelle on recherche.
      *  \return NULL si l'élément n'est pas trouvé, un pointeur sur l'élément sinon.
      */
     template<typename Key, typename Info1, typename Info2>

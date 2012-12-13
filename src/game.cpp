@@ -7,7 +7,7 @@ Game::Game(const Game &original)
     throw "Appel du constructeur de copie de Game !";
 }
 
-Game &Game::Game::operator =(const Game &original)
+Game Game::operator =(const Game &original)
 {
     throw "Appel de l'opérateur d'affectation de Game !";
 }

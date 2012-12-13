@@ -58,6 +58,10 @@ bool operator==(const Quadruple<T, U, V, W> &p1, const Quadruple<T, U, V, W> &p2
     return (p1.first == p2.first) && (p1.second == p2.second) && (p1.third == p2.third) && (p1.parent == p2.parent) ;
 }
 
+/*! \brief La structure AStarNode permet de gérer quatres éléments (fist, second, third and parent) de types quelconques en même temps.
+ *
+ *  Il est utilisé dans l'algorithme A* pour stocker chaque état avec ses deux coûts et avec son parent.
+ */
 template <typename T, typename U, typename V>
 struct AStarNode
 {
@@ -67,7 +71,7 @@ struct AStarNode
     AStarNode *parent;///< Le quatrième élément.
 };
 
-/*! \brief Permet de comparer deux instances de Quadruple.
+/*! \brief Permet de comparer deux instances de AStarNode.
  *  \return true si les éléments sont égaux deux à deux, false sinon.
  */
 template <typename T, typename U, typename V>

@@ -132,7 +132,7 @@ public:
      */
     void clear();
 
-    virtual ~Game();
+    virtual ~Game();///< Le destructeur.
 
 private:
     /*!
