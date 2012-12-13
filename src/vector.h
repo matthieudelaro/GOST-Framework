@@ -237,6 +237,7 @@ bool operator==(const Vector<T>& v, const Vector<T>& w)
             return false;//on renvoie false si toutes les cases ne sont pas identiques 2 à 2
     return true;//si tout va bien, on renvoie true
 }
+
 }
 
 #endif // VECTOR_H

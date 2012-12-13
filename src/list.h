@@ -219,11 +219,16 @@ namespace List
         }
         else
         {
-            Node<T> *it = l1;
-            while(it->next != NULL)
-                it = it->next;
+            if(l2 == NULL)
+                return;
+            else
+            {
+                Node<T>* lTmp = l2;
+                while(lTmp->next != NULL) lTmp = lTmp->next;
 
-            it->next = l2;
+                lTmp->next = l1;
+                l1 = l2;
+            }
         }
     }
 
@@ -371,17 +376,24 @@ namespace List
     {
         qDebug() << "\ntestsList : ";
         List::Node<T>* l = NULL;
+
+        List::Node<T> *nodeToRemove = new  List::Node<T>;
+        nodeToRemove->info = 10;
+        nodeToRemove->next = NULL;
+
         List::push_front(1, l);
         List::push_front(2, l);
         List::pop_front(l);
         List::push_front(3, l);
         List::push_front(32, l);
+        List::push_front(l,nodeToRemove);
         List::push_front(1, l);
         List::push_front(2, l);
         List::push_front(1, l);
         List::push_front(2, l);
 
 
+        List::remove(nodeToRemove,l);
 
         qDebug() << "\nl :";
         List::Node<T>* it = l;
@@ -390,13 +402,13 @@ namespace List
             qDebug() << it->info;
             it = it->next;
         }
-
+/*
         List::Node<T>* test = List::pop_backAndReturn(l);
         qDebug() << "pop back :" << test->info;
         List::Node<T>* test2 = List::pop_frontAndReturn(l);
         qDebug() << "pop front :" << test2->info;
 
-/*
+
         qDebug() << "size(l) = " << List::size(l);
         qDebug() << "clear(l);";
         List::clear(l);
