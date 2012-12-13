@@ -108,37 +108,22 @@ State* IA::possibleMove(const State& currentState, const Graph::Node* initialBoa
 
 bool IA::isEnd(const State& currentState, const State& endState, Game *game)
 {
-    ////qDebug() << "debut test fin";
-    for(unsigned int line = 0; line < game->getBoardMatrix()->getHeight() ; ++line)
+    for(unsigned int i = 0; i < game->getNbNodes() ; i ++)
     {
-        for(unsigned int column = 0; column < game->getBoardMatrix()->getWidth() ; ++column)
+        const Graph::Node* finalNode = game->getPieceNode(i,endState);
+        const Graph::Node* currentNode = game->getPieceNode(i,currentState);
+        if(finalNode) //si on a une case à tester
         {
-            ////qDebug() << line << column;
-            if(game->getPieceNode(line,column,endState))
+            if(finalNode->info != 0) //si on ne teste pas un joker
             {
-                ////qDebug() << "il existe une pièce à l'arrivée";
-                if(game->getPieceNode(line,column,endState)->info == 0)
-                {
-                    ////qDebug() << "on a un jocker : on passe";
-                }
-                else if(!game->getPieceNode(line,column,currentState))
-                {
-                    ////qDebug() << "on n'a pas de pièce maintenant";
+                if(!currentNode)//si la case courante est vide
                     return false;
-                }
-                else
-                {//si la case d'arrivée n'est pas un jocker on vérifie les compatibilités
-                    ////qDebug() << game->getPieceNode(line,column,endState)->info << "? = " << game->getPieceNode(line,column,currentState)->info;
-                    if(game->getPieceNode(line,column,endState)->info != game->getPieceNode(line,column,currentState)->info)
-                        return false;
-                }
-            }
-            if(!game->getPieceNode(line,column,endState) && game->getPieceNode(line,column,currentState))
-            {
-                ////qDebug() << "Il y a une pièce alors qu'il ne doit pas y en avoir à la fin.";
-                return false;
+                else if(currentNode->info != finalNode->info)//si les deux cases ne contiennent pas la même pièce
+                    return false;
             }
         }
+        else if (currentNode) //si la case est vide à l'état final (car else if), mais non vide à l'état courant
+            return false;
     }
     return true;
 }
@@ -183,7 +168,7 @@ List::Node<const State *>* IA::getPossibleMove(const State& currentState, const 
 
 List::Node<const State *>* IA::aStar(const State &initialState,const State &finalState, const Game &game)
 {
-    //                        état          g              h          parent
+    //                        état          g              h
     List::Node<AStarNode<const State*, unsigned int, unsigned int> *> *openNode = NULL;
     List::Node<AStarNode<const State*, unsigned int, unsigned int> *> *closeNode = NULL;
 
