@@ -155,7 +155,7 @@ void MainWindow::setState()
     else if(m_movesNumber > 1)
         m_labelMovesNumber->setText(QString("Vous avez fait %1 coups.").arg(m_movesNumber));
     else
-        m_labelMovesNumber->setText(QString(""));
+        m_labelMovesNumber->setText(QString::fromUtf8("Début du jeu"));
 
     if(IA::isEnd(*(m_currentState->info),m_game.getFinalState(),&m_game))
         QMessageBox::information(NULL,"Fin du jeu",QString::fromUtf8("Bien joué"));
@@ -287,8 +287,10 @@ void MainWindow::redo()
 void MainWindow::showDifferentsPossibleStates()
 {
     List::Node<const State *>* possibleStates = IA::getPossibleMove(*(m_currentState->info),m_game);
+    List::Node<const State *>* IAResult = IA::aStar(m_game.getInitialState(),m_game.getFinalState(),m_game);
 
-    m_debugHistoricalwindow->displayGameHistory(possibleStates,m_game);
+    m_debugHistoricalwindow->displayGameHistory(IAResult,m_game);
+    //m_debugHistoricalwindow->displayGameHistory(possibleStates,m_game);
 
     /*qDebug() << possibleStates;
     while(possibleStates)
