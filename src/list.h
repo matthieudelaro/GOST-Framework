@@ -245,7 +245,7 @@ namespace List
     template<typename T>
     void remove(Node<T>* toRemove, Node<T>* l)
     {
-        if(l = NULL)
+        if(l == NULL)
             return;
         if(toRemove == l)
         {

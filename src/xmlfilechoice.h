@@ -28,7 +28,7 @@ public slots:
 signals:
     void returnSelectedPath(QString);
 
-private:
+protected:
     Ui::XmlFileChoice *ui;
     QTableWidget *m_autoChoiceTableView;
     QString m_selectDir;

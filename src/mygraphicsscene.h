@@ -24,9 +24,6 @@ public:
 
     void associateGame(Game *g);
 
-    void addPiecesInitialState();
-
-    void addPiecesFinalState();
     void setState(const State *state);
 
     QColor createRainBow(unsigned int x);
@@ -53,7 +50,7 @@ signals:
     void sendResize(int w, int h);
     void sendPositions(QPointF *init,QPointF *final);
 
-private:
+protected:
     const State *m_currentState;
     Matrix<QGraphicsRectItem* > m_items;
     Matrix<QGraphicsSimpleTextItem* > m_texteItems; ///< affiche du texte dans les cases

@@ -87,7 +87,7 @@ public slots:
      */
     void showDifferentsPossibleStates();
 
-private:
+protected:
     XmlFileChoice *m_xmlChoiceWindow;///< Fenetre de choix du fichier Xml
     Ui::MainWindow *ui;///< Représente les éléments générés par QDesigner
     MyGraphicsScene *m_scene;///< Scene qui est associée à la zone graphique

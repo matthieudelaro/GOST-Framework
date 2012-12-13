@@ -31,7 +31,6 @@ HEADERS  += mainwindow.h \
     vector.h \
     mygraphicsscene.h \
     xmlfilechoice.h \
-    state.h \
     endwindow.h \
     IA.h \
     historicalwindow.h

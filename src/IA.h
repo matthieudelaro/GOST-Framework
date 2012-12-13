@@ -6,6 +6,9 @@
 #include "graph.h"
 #include "game.h"
 
+/*! \brief Le namespace IA englobe tout ce qui concerne les IA
+ *
+ */
 namespace IA
 {
     /*! \brief Cette fonction évalue si un déplacement est possible, auquel cas elle retourne le nouvel état créé

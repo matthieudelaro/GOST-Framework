@@ -34,7 +34,7 @@ public:
     void displayGameHistory(List::Node<const State *> *possibleStates, Game &game, bool oppositeOrder = false);
     ~HistoricalWindow();
 
-private:
+protected:
     /*!
      * \brief addStates est appelée récursivement par displayGameHistory. Elle affiche les éléments de la liste un à un,
      * en changeant l'ordre si besoin est en fonction de oppositeOrder.

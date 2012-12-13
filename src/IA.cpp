@@ -183,11 +183,9 @@ List::Node<const State *>* IA::getPossibleMove(const State& currentState, const 
 
 List::Node<const State *>* IA::aStar(const State &initialState,const State &finalState, const Game &game)
 {
-    /*VERSION 1 : DEVELOPPEZ*/
-
     //                        état          g              h          parent
-    List::Node<Quadruple<const State*, unsigned int, unsigned int, const State *> *> *openNode;
-    List::Node<Quadruple<const State*, unsigned int, unsigned int, const State *> *> *closeNode;
+    List::Node<Quadruple<const State*, unsigned int, unsigned int, const State *> *> *openNode = NULL;
+    List::Node<Quadruple<const State*, unsigned int, unsigned int, const State *> *> *closeNode = NULL;
 
 
     Quadruple<const State*, unsigned int, unsigned int, const State *> *tmpInitialNode = new Quadruple<const State*, unsigned int, unsigned int, const State *>;
@@ -195,8 +193,10 @@ List::Node<const State *>* IA::aStar(const State &initialState,const State &fina
     tmpInitialNode->first = &initialState;
     tmpInitialNode->second = 0;
     tmpInitialNode->third = 0;
+    tmpInitialNode->fourth = NULL;
 
     List::push_front(tmpInitialNode,closeNode);
+
     //    On commence par le noeud de départ, c'est le noeud courant
     Quadruple<const State*, unsigned int, unsigned int, const State *> *currentState = closeNode->info;
 
@@ -215,7 +215,7 @@ List::Node<const State *>* IA::aStar(const State &initialState,const State &fina
             tmpNeighbour->third = 1;  //temporaire en attente du calcul de h
             tmpNeighbour->fourth = currentState->first;
 
-            if(!List::contains(tmpNeighbour,closeNode)); //s'il est dans la liste fermée alors on le laisse, il est bien placé
+            if(!List::contains(tmpNeighbour,closeNode)) //s'il est dans la liste fermée alors on le laisse, il est bien placé
             {
                 //on regarde si on ne passe pas sur un noeud déjà visité
                 List::Node<Quadruple<const State*, unsigned int, unsigned int, const State *> *> *findResultList = List::find(tmpNeighbour,openNode);

@@ -30,7 +30,7 @@ public slots:
      */
      void resize(int w, int h);
 
-private:
+protected:
     Ui::EndWindow *ui;///< Représente les éléments générés par QDesigner
     MyGraphicsScene *m_scene;///< Scene qui est associée à la zone graphique
 };

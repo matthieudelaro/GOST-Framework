@@ -62,16 +62,6 @@ void MyGraphicsScene::associateGame(Game *g)
     callResize();
 }
 
-void MyGraphicsScene::addPiecesInitialState()
-{
-    setState(&(m_game->getInitialState()));
-}
-
-void MyGraphicsScene::addPiecesFinalState()
-{
-    setState(&(m_game->getFinalState()));
-}
-
 void MyGraphicsScene::setState(const State *state)
 {
     if(state)
