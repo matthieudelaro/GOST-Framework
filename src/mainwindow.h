@@ -16,13 +16,16 @@
 #include "IA.h"
 
 /*!
- *      \brief La classe MainWindow gère le GUI du projet.
- *      Elle permet de charger un fichier XML, de l'associer et de l'afficher à travers la m_scene.
+ *  \brief Le namespace Ui sert à Qt Designer.
  */
 namespace Ui {
 class MainWindow;
 }
 
+/*!
+ *      \brief La classe MainWindow gère le GUI du projet.
+ *      Elle permet de charger un fichier XML, de l'associer et de l'afficher à travers la m_scene.
+ */
 class MainWindow : public QMainWindow
 {
     Q_OBJECT
@@ -88,7 +91,7 @@ public slots:
     void showDifferentsPossibleStates();
 
 protected:
-    XmlFileChoice *m_xmlChoiceWindow;///< Fenetre de choix du fichier Xml
+    GameFileChoice *m_xmlChoiceWindow;///< Fenetre de choix du fichier Xml
     Ui::MainWindow *ui;///< Représente les éléments générés par QDesigner
     MyGraphicsScene *m_scene;///< Scene qui est associée à la zone graphique
     Game m_game;///< Game qui contient tout le jeu

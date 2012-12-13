@@ -2,6 +2,7 @@
 #define VECTOR_H
 
 #include "tools.h"
+#include <QDebug>
 
 /*! \brief Le classe Vector gère un tableau générique à taille dynamique.
  */

@@ -4,10 +4,16 @@
 #include <QWidget>
 #include "mygraphicsscene.h"
 
+/*!
+ *  \brief Le namespace Ui sert à Qt Designer.
+ */
 namespace Ui {
 class EndWindow;
 }
 
+/*!
+ * \brief La classe EndWindow permet d'afficher l'état final du jeu.
+ */
 class EndWindow : public QWidget
 {
     Q_OBJECT

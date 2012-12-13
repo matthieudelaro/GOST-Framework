@@ -8,6 +8,9 @@
 #include "mygraphicsscene.h"
 #include "list.h"
 
+/*!
+ *  \brief Le namespace Ui sert à Qt Designer.
+ */
 namespace Ui {
 class HistoricalWindow;
 }

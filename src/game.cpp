@@ -1,6 +1,6 @@
 #include "game.h"
-
 #include "tools.h"
+#include <QStringList>
 
 Game::Game(const Game &original)
 {

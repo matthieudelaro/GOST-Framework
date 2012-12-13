@@ -49,7 +49,7 @@ public:
     QColor createRainBow(unsigned int x);
 
     /*!
-     * \brief Génère la palette de couleur utilisée pour les éléments du jeu.
+     * \brief Génère la palette de couleurs utilisées pour les éléments du jeu.
      */
     void createBrushs();
 
@@ -102,14 +102,19 @@ signals:
     void sendPositions(QPointF *init,QPointF *final);
 
 protected:
-    const State *m_currentState;
-    Matrix<QGraphicsRectItem* > m_items;
+    const State *m_currentState;///< L'état affiché.
+    Matrix<QGraphicsRectItem* > m_items; ///< Les morceaux de pièces et du plateau.
     Matrix<QGraphicsSimpleTextItem* > m_texteItems; ///< affiche du texte dans les cases
-    int m_HSize,m_WSize,m_BSize,m_caseHSize,m_caseWSize; ///< taille de hauteur, largeur et de base
-    int m_baseRectSize;
-    Game *m_game;
-    Vector<QBrush *> m_brushs; ///< Différents qpainter du jeu
-    QPointF *m_initialPos, *m_finalPos;///< sauvegarde des positions initiales et finales de déplacement
+    int m_HSize;///< Le nombre de lignes.
+    int m_WSize;///< Le nombre de colonnes.
+    int m_BSize;///< La taille du côté des cases.
+    int m_caseHSize;///< Hauteur d'une case en pixels.
+    int m_caseWSize;///< Largeur d'une case en pixels.
+    int m_baseRectSize;///< Taille de base de la zone graphique.
+    Game *m_game;///< Le jeu dont on affiche les états.
+    Vector<QBrush *> m_brushs; ///< La palette de couleurs utilisées pour les éléments du jeu.
+    QPointF *m_initialPos;///< Position initiale d'un déplacement.
+    QPointF *m_finalPos;///< Position finale d'un déplacement.
 };
 
 #endif // MYGRAPHICSSCENE_H

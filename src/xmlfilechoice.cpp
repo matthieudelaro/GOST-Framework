@@ -4,7 +4,7 @@
 #include <QDirIterator>
 #include <QFileDialog>
 
-XmlFileChoice::XmlFileChoice(QWidget *parent) : QDialog(parent), ui(new Ui::XmlFileChoice)
+GameFileChoice::GameFileChoice(QWidget *parent) : QDialog(parent), ui(new Ui::GameFileChoice)
 {
     ui->setupUi(this);
 
@@ -26,32 +26,31 @@ XmlFileChoice::XmlFileChoice(QWidget *parent) : QDialog(parent), ui(new Ui::XmlF
     QObject::connect(ui->buttonBox,SIGNAL(accepted()),this,SLOT(callReturn()));
     QObject::connect(ui->buttonChoice,SIGNAL(clicked()),this,SLOT(chooseFile()));
 
-    m_selectDir = "../res/games";
-    m_files = findXMLFiles(m_selectDir);
+    m_files = findXMLFiles();
     addFilesToTableWidget(m_files);
 }
 
-XmlFileChoice::~XmlFileChoice()
+GameFileChoice::~GameFileChoice()
 {
     delete ui;
     delete m_autoChoiceTableView;
 }
 
 
-void XmlFileChoice::openFileOfItem(int row, int)
+void GameFileChoice::openFileOfItem(int row, int)
 {
     m_selectedPath = m_files[row];
     m_selectedFile.setFile(m_files[row]);
 }
 
-void XmlFileChoice::openFileOfItemAndQuit(int row, int)
+void GameFileChoice::openFileOfItemAndQuit(int row, int)
 {
     m_selectedPath = m_files[row];
     m_selectedFile.setFile(m_files[row]);
     callReturn();
 }
 
-void XmlFileChoice::chooseFile()
+void GameFileChoice::chooseFile()
 {
     QString fichierTmp = QFileDialog::getOpenFileName(NULL,"choix","../res/games");
 
@@ -64,22 +63,22 @@ void XmlFileChoice::chooseFile()
     ui->labelChoice->setText(m_selectedFile.fileName());
 }
 
-void XmlFileChoice::callReturn()
+void GameFileChoice::callReturn()
 {
     emit returnSelectedPath(m_selectedFile.absoluteFilePath());
 }
 
-QStringList XmlFileChoice::findXMLFiles(QString dir)
+QStringList GameFileChoice::findXMLFiles()
 {
     QStringList filtre;
     filtre << "*.xml";
-    QDirIterator dirIterator(dir, filtre ,QDir::Files | QDir::NoSymLinks, QDirIterator::Subdirectories);
+    QDirIterator dirIterator("../res/games", filtre ,QDir::Files | QDir::NoSymLinks, QDirIterator::Subdirectories);
     QStringList fileList;
     while(dirIterator.hasNext()){fileList << dirIterator.next();}
     return fileList;
 }
 
-void XmlFileChoice::addFilesToTableWidget(QStringList &files)
+void GameFileChoice::addFilesToTableWidget(QStringList &files)
 {
     for (int i = 0; i < files.size(); i++)
     {
