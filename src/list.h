@@ -35,7 +35,7 @@ namespace List
             delete curr;
         }
         l = NULL;
-    }    
+    }
 
     /*!
      *  \brief Vide la liste, et "delete" les informations de chaque noeud.
@@ -54,7 +54,7 @@ namespace List
             delete curr;
         }
         l = NULL;
-    }    
+    }
 
     /*!
      *  \brief Permet de savoir si la liste contient un élément donné.
@@ -156,7 +156,7 @@ namespace List
             it->next = NULL;
             return toReturn;
         }
-    }    
+    }
 
     /*!
      * \brief Permet de supprimer un élément au début de la liste, et de le récupérer.
@@ -245,7 +245,7 @@ namespace List
     template<typename T>
     void remove(Node<T>* toRemove, Node<T>* l)
     {
-        if(l = NULL)
+        if(l == NULL)
             return;
         if(toRemove == l)
         {
@@ -285,7 +285,7 @@ namespace List
      *
      *  Cette fonction permet de mimer le fonctionnement des std::map.
      *
-     *  \param researched L'élément que l'on recherche.
+     *  \param key L'élément que l'on recherche.
      *  \param l la liste dans laquelle on recherche.
      *  \return NULL si l'élément n'est pas trouvé, un pointeur sur l'élément sinon.
      */
@@ -305,7 +305,7 @@ namespace List
      *
      *  Cette fonction permet de mimer le fonctionnement des std::map.
      *
-     *  \param researched L'élément que l'on recherche.
+     *  \param key L'élément que l'on recherche.
      *  \param l la liste dans laquelle on recherche.
      *  \return NULL si l'élément n'est pas trouvé, un pointeur sur l'élément sinon.
      */
@@ -325,7 +325,7 @@ namespace List
      *
      *  Cette fonction permet de mimer le fonctionnement des std::map.
      *
-     *  \param researched L'élément que l'on recherche.
+     *  \param key L'élément que l'on recherche.
      *  \param l la liste dans laquelle on recherche.
      *  \return NULL si l'élément n'est pas trouvé, un pointeur sur l'élément sinon.
      */
@@ -339,6 +339,27 @@ namespace List
         else
             return find(key, n->next);
     }
+
+    /*!
+     *  \brief Recherche un élément dans une liste d'AStarNode, en fonction du premier membre de l'AStarNode.
+     *
+     *  Cette fonction permet de mimer le fonctionnement des std::map.
+     *
+     *  \param key L'élément que l'on recherche.
+     *  \param l la liste dans laquelle on recherche.
+     *  \return NULL si l'élément n'est pas trouvé, un pointeur sur l'élément sinon.
+     */
+    template<typename Key, typename Info1, typename Info2>
+    Node<AStarNode<Key, Info1, Info2> >* find(const Key &key, Node<AStarNode<Key, Info1, Info2> >* n)
+    {
+        if(n == NULL)
+            return NULL;
+        else if(n->info.first == key)
+            return n;
+        else
+            return find(key, n->next);
+    }
+
 
     /*!
      * \brief Implémente une série de tests pour tester le namespace de manière autonome.
