@@ -4,36 +4,53 @@
 #include <cstddef> //pour avoir NULL
 #include "list.h"
 
+/*! \brief Le namespace Graph englobe tout ce qui concerne les Graphs.
+ *
+ */
 namespace Graph
 {
+    /*!
+     * \brief La class Node représente un noeud du Graph.
+     */
     class Node
     {
     public :
+        /*!
+         * \brief Ce constructeur initialise tous les Nodes voisins à NULL.
+         */
         Node()
         {
             for(unsigned int i = 0; i < nbLinks; ++i)
                 m_links[i] = NULL;
         }
 
+        /*!
+         * \brief Ce constructeur initialise tous les Nodes voisins à NULL, et l'info à i.
+         */
         Node(unsigned int i) : info(i)
         {
             for(unsigned int i = 0; i < nbLinks; ++i)
                 m_links[i] = NULL;
         }
 
-        ~Node()
-        {
-
-        }
-
+        /*!
+         * \brief Le nombre de liens vers des voisins.
+         *
+         *  Tous les Nodes ont nbLinks pointeurs vers des Nodes voisins. Si un pointeur vaut NULL
+         *  alors il n'y a pas de voisin dans cette direction.
+         *
+         *  Pour utiliser
+         *
+         *  \see m_links
+         */
         static const unsigned int nbLinks = 4;
         inline Node*& operator[](unsigned int direction) {return m_links[direction];}
         inline Node* getConstLink(unsigned int direction) const {return m_links[direction];}
         inline Node*& getLink(unsigned int direction) {return m_links[direction];}
 
-        unsigned int info;
+        unsigned int info;///< Représente l'information contenue dans le Node.
     private :
-        Node* m_links[nbLinks];
+        Node* m_links[nbLinks];///< Représente les liens vers les Nodes voisin du Node.
     };
 
     void clear(Node *&g);

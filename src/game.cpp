@@ -2,34 +2,6 @@
 
 #include "tools.h"
 
-//Game::Game(QFile &input)
-//{
-//    QString line;
-//    unsigned int nbMaxColumns = 0, nbLines = 0;
-
-//    //Pour chaque pièce : son numéro, un tableau 2D de Graph::Node*, un Graph::Node* pour le début de la pièce
-//    List::Node<Triple<int, Matrix<Graph::Node*>, Graph::Node*> > *pieces = NULL;
-
-//    while( !input.atEnd() ){
-//        nbLines++;
-//        line = input.readLine();
-//        if((unsigned int) line.length() > nbMaxColumns)
-//            nbMaxColumns = line.length();
-//    }
-
-//    m_index = new Graph::Node* [m_nbNodes];
-//    List::Node<Triple<int, Matrix<Graph::Node*>, Graph::Node*> > *it = pieces;
-//    while(it)
-//    {
-//        it->info.second.resize(nbLines, nbMaxColumns);
-//        it = it->next;
-//    }
-//    m_boardMatrix.resize(nbLines, nbMaxColumns, NULL);
-
-//    /*qDebug() << str.section( " ", 0, 0 ).toInt();
-//    qDebug() << str.section( " ", 1, 1 ).toFloat();*/
-//}
-
 Game::Game(const Game &original)
 {
     throw "Appel du constructeur de copie de Game !";
