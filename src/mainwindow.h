@@ -16,13 +16,16 @@
 #include "IA.h"
 
 /*!
- *      \brief La classe MainWindow gère le GUI du projet.
- *      Elle permet de charger un fichier XML, de l'associer et de l'afficher à travers la m_scene.
+ *  \brief Le namespace Ui sert à Qt Designer.
  */
 namespace Ui {
 class MainWindow;
 }
 
+/*!
+ *      \brief La classe MainWindow gère le GUI du projet.
+ *      Elle permet de charger un fichier XML, de l'associer et de l'afficher à travers la m_scene.
+ */
 class MainWindow : public QMainWindow
 {
     Q_OBJECT
@@ -87,8 +90,8 @@ public slots:
      */
     void showDifferentsPossibleStates();
 
-private:
-    XmlFileChoice *m_xmlChoiceWindow;///< Fenetre de choix du fichier Xml
+protected:
+    GameFileChoice *m_xmlChoiceWindow;///< Fenetre de choix du fichier Xml
     Ui::MainWindow *ui;///< Représente les éléments générés par QDesigner
     MyGraphicsScene *m_scene;///< Scene qui est associée à la zone graphique
     Game m_game;///< Game qui contient tout le jeu
@@ -96,14 +99,17 @@ private:
     /*!
      * \brief Représente l'état final du jeu.
      *
+     * \warning Ce n'est pas un état valide si on considère les pointeurs vers les morceaux de cases. car on y retrouve plusieurs cases
+     * contenant des pointeurs vers les même morceaux de pièces. Par contre, les info de ces pointeurs contiennent des
+     * numéros de pièces valides, avec 0 signifiant "Jocker"
      */
     EndWindow *m_finalStateWindow;
-    HistoricalWindow *m_historicalWindow;
-    HistoricalWindow *m_debugHistoricalwindow;
-    List::Node<const State *> *m_currentState;
+    HistoricalWindow *m_historicalWindow;///< La fenêtre affichant l'historique du jeu.
+    HistoricalWindow *m_debugHistoricalwindow;///< La fenêtre de debug.
+    List::Node<const State *> *m_currentState;///< L'état courant dans l'historique.
     List::Node<const State *> *m_history;///< Liste contenant l'historique des mouvements de l'utilisateur.
-    unsigned int m_movesNumber;
-    QLabel *m_labelMovesNumber;
+    unsigned int m_movesNumber;///< Le nombre de coups effectués par le joueur.
+    QLabel *m_labelMovesNumber;///< Le label affichant le nombre de coups effectués par le joueur. Vide si celui-ci vaut 0.
 };
 
 #endif // MAINWINDOW_H

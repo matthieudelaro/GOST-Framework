@@ -157,6 +157,7 @@ private:
      */
     Game& operator=(const Game& original);
 
+protected :
     Graph::Node *m_board; ///< Représente le tableau de jeu. Utile pour l'accès récursif.
     Graph::Node *m_jocker; ///< Représente la pièce jocker pour l'état final.
     Matrix<Graph::Node*> m_boardMatrix; ///< Représente le tableau de jeu. Utile pour l'accès en ligne/colonne.

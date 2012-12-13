@@ -62,16 +62,6 @@ void MyGraphicsScene::associateGame(Game *g)
     callResize();
 }
 
-void MyGraphicsScene::addPiecesInitialState()
-{
-    setState(&(m_game->getInitialState()));
-}
-
-void MyGraphicsScene::addPiecesFinalState()
-{
-    setState(&(m_game->getFinalState()));
-}
-
 void MyGraphicsScene::setState(const State *state)
 {
     if(state)
@@ -183,14 +173,10 @@ MyGraphicsScene::~MyGraphicsScene()
 
 void MyGraphicsScene::mousePressEvent(QGraphicsSceneMouseEvent *mouseEvent)
 {
-    //comme test permet juste de récupérer la position de la sourie au clic (ou en continu) et de trouver la case du tableau correspondante
+    //comme test permet juste de récupérer la position de la souris au clic (ou en continu) et de trouver la case du tableau correspondante
     QPointF pos = mouseEvent->lastScenePos();
     m_initialPos->setX((int)(pos.x()/(m_baseRectSize*(1./m_BSize))));
     m_initialPos->setY((int)(pos.y()/(m_baseRectSize*(1./m_BSize))));
-}
-void MyGraphicsScene::mouseMoveEvent(QGraphicsSceneMouseEvent *mouseEvent)
-{
-
 }
 
 void MyGraphicsScene::mouseReleaseEvent(QGraphicsSceneMouseEvent *mouseEvent)

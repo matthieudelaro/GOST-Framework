@@ -199,7 +199,7 @@ void MainWindow::resize(int w, int h)
 
 void MainWindow::callChoiceGameFile()
 {
-    m_xmlChoiceWindow = new XmlFileChoice;
+    m_xmlChoiceWindow = new GameFileChoice;
     QObject::connect(m_xmlChoiceWindow,SIGNAL(returnSelectedPath(QString)),this,SLOT(saveSelectedPathFromXml(QString)));
     m_xmlChoiceWindow->show();
 }
@@ -287,7 +287,6 @@ void MainWindow::redo()
 
 void MainWindow::showDifferentsPossibleStates()
 {
-
     /*List::Node<const State *>* IAResult = NULL;
     try
     {

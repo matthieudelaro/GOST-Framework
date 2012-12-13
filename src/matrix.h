@@ -12,18 +12,8 @@ template <typename T>
 class Matrix
 {
 public:
-    //le constructeur de copie et l'opérateur = sont bien implémentés dans Vector, donc à priori il n'y a plus besoin de les implémenter dans Matrix
-    /*Matrix(const Matrix &original) : m_vector(original.m_vector), m_height(original.getHeight()), m_width(original.getWidth())
-    {
-    }
-
-    Matrix& operator=(const Matrix& original)
-    {
-        m_height = original.getHeight();
-        m_width = original.getWidth();
-        m_vector = original.m_vector;
-        return *this;
-    }*/
+    //le constructeur de copie et l'opérateur = sont bien implémentés dans Vector,
+    //donc il n'y a plus besoin de les réimplémenter dans Matrix
 
     /*! \brief Ce constructeur initialise une Matrix de hauteur height et de largeur width.
      *
@@ -61,7 +51,6 @@ public:
     inline T& get(unsigned int index) {return m_vector[index];}
 
     /*! \return Une copie de la case (line, column).
-     *  \deprecated
      *  \see getConst(unsigned int line, unsigned int column) const
      */
     inline T operator()(unsigned int line, unsigned int column) const {return m_vector[convertToIndex(line, column)];}
@@ -163,6 +152,9 @@ public:
         return m_vector.toString();
     }
 
+    /*!
+     * \brief Implémente une série de tests pour tester la class Matrix de manière autonome.
+     */
     static void tests()
     {
         qDebug() << "\ntestsMatrix :";
