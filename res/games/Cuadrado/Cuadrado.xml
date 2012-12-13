@@ -82,63 +82,63 @@
         </initialShape>
         <finalShape>
             <line>
-                <column type="piece" number="1"/>
-                <column type="piece" number="1"/>
-                <column type="piece" number="1"/>
-                <column type="piece" number="2"/>
-                <column type="piece" number="2"/>
-                <column type="piece" number="2"/>
-                <column type="free"/>
-            </line>
-            <line>
-                <column type="piece" number="1"/>
-                <column type="piece" number="1"/>
                 <column type="piece" number="3"/>
                 <column type="piece" number="3"/>
-                <column type="piece" number="2"/>
-                <column type="piece" number="2"/>
+                <column type="piece" number="5"/>
+                <column type="piece" number="4"/>
+                <column type="free"/>
                 <column type="free"/>
                 <column type="free"/>
             </line>
             <line>
+                <column type="piece" number="3"/>
+                <column type="piece" number="5"/>
+                <column type="piece" number="5"/>
+                <column type="piece" number="4"/>
+                <column type="piece" number="4"/>
+                <column type="free"/>
+                <column type="free"/>
+                <column type="free"/>
+            </line>
+            <line>
+                <column type="piece" number="5"/>
+                <column type="piece" number="5"/>
+                <column type="piece" number="5"/>
+                <column type="piece" number="4"/>
+                <column type="piece" number="4"/>
+                <column type="piece" number="4"/>
+                <column type="free"/>
+                <column type="free"/>
+                <column type="free"/>
+            </line>
+            <line>
+                <column type="piece" number="2"/>
+                <column type="piece" number="2"/>
+                <column type="piece" number="2"/>
+                <column type="piece" number="1"/>
+                <column type="piece" number="1"/>
                 <column type="piece" number="1"/>
                 <column type="free"/>
-                <column type="piece" number="3"/>
                 <column type="free"/>
                 <column type="free"/>
+            </line>
+            <line>
+                <column type="piece" number="6"/>
                 <column type="piece" number="2"/>
+                <column type="piece" number="2"/>
+                <column type="piece" number="1"/>
+                <column type="piece" number="1"/>
                 <column type="free"/>
                 <column type="free"/>
                 <column type="free"/>
             </line>
             <line>
-                <column type="piece" number="4"/>
-                <column type="free"/>
-                <column type="piece" number="5"/>
-                <column type="free"/>
-                <column type="free"/>
-                <column type="piece" number="6"/>
-                <column type="free"/>
-                <column type="free"/>
-                <column type="free"/>
-            </line>
-            <line>
-                <column type="piece" number="4"/>
-                <column type="piece" number="4"/>
                 <column type="piece" number="6"/>
                 <column type="piece" number="6"/>
-                <column type="piece" number="5"/>
-                <column type="piece" number="5"/>
+                <column type="piece" number="2"/>
+                <column type="piece" number="1"/>
                 <column type="free"/>
                 <column type="free"/>
-            </line>
-            <line>
-                <column type="piece" number="4"/>
-                <column type="piece" number="4"/>
-                <column type="piece" number="4"/>
-                <column type="piece" number="5"/>
-                <column type="piece" number="5"/>
-                <column type="piece" number="5"/>
                 <column type="free"/>
             </line>
         </finalShape>
