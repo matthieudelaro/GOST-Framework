@@ -190,7 +190,7 @@ List::Node<const State *>* IA::aStar(const State &initialState,const State &fina
     List::Node<Quadruple<const State*, unsigned int, unsigned int, const State *> *> *closeNode;
 
 
-    Quadruple<const State*, unsigned int, unsigned int, const State *> *tmpInitialNode;
+    Quadruple<const State*, unsigned int, unsigned int, const State *> *tmpInitialNode = new Quadruple<const State*, unsigned int, unsigned int, const State *>;
     //le noeud de base a la valeur minimal pour qu'il conserve sa place de premier
     tmpInitialNode->first = &initialState;
     tmpInitialNode->second = 0;
@@ -209,7 +209,7 @@ List::Node<const State *>* IA::aStar(const State &initialState,const State &fina
 
         while(neighbours) // on parcours tous les voisins
         {
-            Quadruple<const State*, unsigned int, unsigned int, const State *> *tmpNeighbour;
+            Quadruple<const State*, unsigned int, unsigned int, const State *> *tmpNeighbour = new Quadruple<const State*, unsigned int, unsigned int, const State *>;
             tmpNeighbour->first = neighbours->info;
             tmpNeighbour->second = currentState->second + 1;
             tmpNeighbour->third = 1;  //temporaire en attente du calcul de h

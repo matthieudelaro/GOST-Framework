@@ -13,6 +13,7 @@
 
 /*!
  *  \brief La classe MyGraphicsScene gère l'affichage graphique du jeu.
+ *  \
  */
 class MyGraphicsScene : public QGraphicsScene
 {
@@ -46,7 +47,6 @@ public:
 
 protected:
     void mousePressEvent(QGraphicsSceneMouseEvent *mouseEvent);
-    void mouseMoveEvent(QGraphicsSceneMouseEvent *mouseEvent);
     void mouseReleaseEvent(QGraphicsSceneMouseEvent *mouseEvent);
 
 signals:
@@ -56,7 +56,7 @@ signals:
 private:
     const State *m_currentState;
     Matrix<QGraphicsRectItem* > m_items;
-    Matrix<QGraphicsSimpleTextItem* > m_texteItems; //affiche du texte dans les cases
+    Matrix<QGraphicsSimpleTextItem* > m_texteItems; ///< affiche du texte dans les cases
     int m_HSize,m_WSize,m_BSize,m_caseHSize,m_caseWSize; ///< taille de hauteur, largeur et de base
     int m_baseRectSize;
     Game *m_game;

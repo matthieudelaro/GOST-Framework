@@ -31,11 +31,6 @@ HistoricalWindow::~HistoricalWindow()
     delete ui;
 }
 
-void HistoricalWindow::resize(int w, int h)
-{
-
-}
-
 void HistoricalWindow::addStates(List::Node<const State *> *possibleStates, Game &game, bool oppositeOrder)
 {
     if(!possibleStates)

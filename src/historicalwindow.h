@@ -34,9 +34,6 @@ public:
     void displayGameHistory(List::Node<const State *> *possibleStates, Game &game, bool oppositeOrder = false);
     ~HistoricalWindow();
 
-public slots:
-    void resize(int w, int h);
-
 private:
     /*!
      * \brief addStates est appelée récursivement par displayGameHistory. Elle affiche les éléments de la liste un à un,

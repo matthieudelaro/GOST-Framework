@@ -188,10 +188,6 @@ void MyGraphicsScene::mousePressEvent(QGraphicsSceneMouseEvent *mouseEvent)
     m_initialPos->setX((int)(pos.x()/(m_baseRectSize*(1./m_BSize))));
     m_initialPos->setY((int)(pos.y()/(m_baseRectSize*(1./m_BSize))));
 }
-void MyGraphicsScene::mouseMoveEvent(QGraphicsSceneMouseEvent *mouseEvent)
-{
-
-}
 
 void MyGraphicsScene::mouseReleaseEvent(QGraphicsSceneMouseEvent *mouseEvent)
 {
