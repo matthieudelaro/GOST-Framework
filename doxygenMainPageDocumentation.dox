@@ -1,0 +1,60 @@
+/*!
+    \mainpage Documentation du Framework GOST : "Game of Sliding Technology"
+    
+    GOST permet de créer des jeux à pièces coulissantes très facilement
+    à partir de fichiers de configuration, au format xml ou au format texte.
+    
+    Dans le cadre d'une architecture MVC (Modèle, Vue, Controller), cette partie 
+    du framework est gérée par la classe Game, la classe MyGraphicsScene, et la classe MainWindow.
+  
+    GOST propose aussi un niveau d'abstration beaucoup plus élevé avec le contenu du namespace Gost.
+    En effet, Gost::GeneralGame est une base pour n'importe quel jeu de logique,
+    de dimension indéfinie, aux règles totalement libres, ... La seule limite est l'imagination
+    du programmeur qui utilisera cette classe abstraite.
+  
+    Exemple de format xml :
+    \xml
+        "<?xml version='1.0' encoding='UTF-8'?> <!-- Définit l'encode et la version du xml. -->
+        <game> <!-- Tout le contenu du jeu doit être à l'intérieur de la balise Game. -->
+            <identity> <!-- Carte d'identité du jeu. Cette balise est facultative. -->
+                <name name="Sample Game"/> <!-- Le nom du jeu. -->
+                <date day="28" month="10" year="2012"/> <!-- La date de création du jeu. -->
+                <creators> <!-- Les créateurs. -->
+                    <creator name="Matthieu"/>
+                    <creator name="Sébastien"/>
+                    <creator name="Victor"/>
+                </creators>
+                <versions> <!-- Gère les versions du jeu. -->
+                    <version changelog="Add colors" creator="Matthieu" number="1"/>
+                </versions>
+            </identity>
+            <board> <!-- Le plateau du jeu. -->
+                <background> <!-- Le fond d'écran.  Cette balise est facultative.-->
+                    <color red="0" blue="0" green="255"/>
+                    <image file="img.bmp"/>
+                    <!--When there is both an image and a color, the color is used if an error occurs while loading the image.-->
+                </background>
+                <initialShape type="defined"> <!-- L'état initial. -->
+                    <line> <!-- Une ligne. -->
+                        <column type="void"> <!-- Une case sur la ligne. Cette case est inaccessible aux pièces (comme un mur ou du vide). -->
+                        <column type="piece" number="1"/> <!-- Cette case contient la pièce numéro 1. La pièce 0 est réservée au joker, il est donc impossible de l'utiliser pour déclarer une pièce "0"-->
+                        <column type="free"/> <!-- Cette case est libre. -->
+                    </line>
+                </initialShape>
+                <finalShape> <!-- L'état final du jeu. -->
+                    <line>
+                        <column type="jocker"/> <!-- Les cases de type jocker peuvent contenir n'importe quelle pièce, voire aucune. -->
+                        <column type="piece" number="1"/> <!-- La pièce 1 doit obligatoirement être sur cette case pour finir le jeu.-->
+                    </line>
+                </finalShape>
+                <pieces> <!-- Définit les pièces.  Cette balise est facultative.-->
+                    <piece number="1">
+                        <color red="255" blue="0" green="0"/>
+                    </piece>
+                </pieces>
+                <free> <!-- Définit les cases vides.  Cette balise est facultative.-->
+                    <color red="0" blue="255" green="0"/>
+                </free>
+            </board>
+        </game>"
+ */
