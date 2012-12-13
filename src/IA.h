@@ -43,8 +43,6 @@ namespace IA
      */
     List::Node<const State *>* aStar(const State& initialState,const State& finalState, const GeneralGame &game);
 
-    //fonctions utiles pour le A*
-    //unsigned int stateValue(const State& state, const Game &game);
     /*!
      * \brief Calcule le coût G d'un état.
      * \param currentState L'état dont on calcule le coût G.

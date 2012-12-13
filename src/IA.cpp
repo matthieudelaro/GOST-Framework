@@ -146,7 +146,7 @@ List::Node<const State *>* IA::getPossibleMove(const State& currentState, const 
 
 List::Node<const State *>* IA::aStar(const State &initialState,const State &finalState, const GeneralGame &game)
 {
-    //                        état          g              h          parent
+    //                        état          g              h
     List::Node<AStarNode<const State*, unsigned int, unsigned int> *> *openNode = NULL;
     List::Node<AStarNode<const State*, unsigned int, unsigned int> *> *closeNode = NULL;
 
