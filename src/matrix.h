@@ -3,6 +3,8 @@
 
 #include "vector.h"
 
+namespace Gost
+{
 /*! \brief Le classe Matrix gère un tableau 2D à taille variable.
  *
  *  Matrix se base sur un Vector pour stocker ses données. Toutes les données sont donc les unes à la suites des autres
@@ -191,5 +193,6 @@ private:
     unsigned int m_width; ///< La largeur de la Matrix.
     Vector<T> m_vector; ///< Vector stockant les données de la Matrix.
 };
+}
 
 #endif // MATRIX_H

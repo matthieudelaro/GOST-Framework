@@ -34,7 +34,7 @@ public:
      * \param game Le jeu auquel correspondent les états.
      * \param oppositeOrder Permet d'inverser l'ordre d'affichage des éléments de la liste d'états.
      */
-    void displayGameHistory(List::Node<const State *> *possibleStates, Game &game, bool oppositeOrder = false);
+    void displayGameHistory(Gost::List::Node<const Gost::State *> *possibleStates, Game &game, bool oppositeOrder = false);
     ~HistoricalWindow();
 
     public slots:
@@ -53,10 +53,10 @@ protected:
      * \param game Le jeu auquel correspondent les états.
      * \param oppositeOrder Permet d'inverser l'ordre d'affichage des éléments de la liste d'états.
      */
-    void addStates(List::Node<const State *> *possibleStates, Game &game, bool oppositeOrder = false);
+    void addStates(Gost::List::Node<const Gost::State *> *possibleStates, Game &game, bool oppositeOrder = false);
     Ui::HistoricalWindow *ui;///< Représente les éléments générés par QDesigner
-    List::Node<MyGraphicsScene*> *m_scenes;///< Contient les représentations graphiques des états.
-    List::Node<QGraphicsView*> *m_views;///< Contient les représentations graphiques des états.
+    Gost::List::Node<MyGraphicsScene*> *m_scenes;///< Contient les représentations graphiques des états.
+    Gost::List::Node<QGraphicsView*> *m_views;///< Contient les représentations graphiques des états.
     QVBoxLayout *m_verticalLayout;///< Permet d'afficher les états les uns au dessus des autres.
 };
 

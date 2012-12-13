@@ -4,6 +4,8 @@
 #include <QDebug>
 #include <QTextStream>
 
+using namespace Gost;
+
 MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
@@ -139,7 +141,7 @@ bool MainWindow::loadGameFromPath(QString &path, QString *error)
     m_historicalWindow = new HistoricalWindow;
     m_historicalWindow->setWindowTitle("Historique");
     m_debugHistoricalwindow = new HistoricalWindow;
-    m_debugHistoricalwindow->setWindowTitle("Prochains coups possibles");
+    m_debugHistoricalwindow->setWindowTitle("Fenêtre de debug");
     QObject::connect(ui->actionAfficher_l_Historique,SIGNAL(triggered()),m_historicalWindow,SLOT(show()));
     QObject::connect(ui->actionDebug,SIGNAL(triggered()),m_debugHistoricalwindow,SLOT(show()));
 
@@ -247,9 +249,9 @@ void MainWindow::callIAPossibleMove(QPointF *init, QPointF *final)
                     List::push_front<const State *>(newState, m_history);
                     m_currentState = m_history;
                     m_movesNumber++;
+                    setState();
                 }
             }
-            setState();
         }
     }
 }

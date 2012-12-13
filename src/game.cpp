@@ -2,23 +2,7 @@
 #include "tools.h"
 #include <QStringList>
 
-Game::Game(const Game &original)
-{
-    throw "Appel du constructeur de copie de Game !";
-}
-
-Game Game::operator =(const Game &original)
-{
-    throw "Appel de l'opérateur d'affectation de Game !";
-}
-
-Game::Game()
-{
-    m_board = NULL;
-    m_jocker = NULL;
-    m_pieces = NULL;
-    m_nbNodes = 0;
-}
+using namespace Gost;
 
 bool Game::load(QDomDocument &xml, QString *error)
 {
@@ -470,48 +454,12 @@ bool Game::load(const QString &file, QString* error)
     return load(xml, log);
 }
 
-const Graph::Node *Game::getBoardNode(const Graph::Node *&pieceNode, const State &state) const
-{
-    for(unsigned int i = 0; i < state.getLength(); ++i)
-        if(state[i] == pieceNode)
-            return m_index[i];
-
-    //si on n'a pas trouvé
-    return NULL;
-}
-
-bool Game::getNodePieceIndex(const Graph::Node* &pieceNode, unsigned int &index, const State &state) const
-{
-    for(index = 0; index < state.getLength(); ++index)
-        if(state[index] == pieceNode)
-            return true;
-
-    //si on n'a pas trouvé la pièce
-    return false;
-}
-
 const Graph::Node *Game::getPieceNode(unsigned int line, unsigned int column, const State &state) const
 {
     if(m_boardMatrix(line,column) == NULL)
         return NULL;
     else
         return state[m_boardMatrix(line, column)->info];
-}
-
-void Game::clear()
-{
-    //Supprimer le m_board
-    Graph::clear(m_board);
-
-    //Supprimer les pièces
-    Graph::clear(m_jocker);
-    List::Node<Graph::Node*>* it = m_pieces;
-    while(it)
-    {
-        delete it->info;
-        it = it->next;
-    }
-    List::clear(m_pieces);
 }
 
 Game::~Game()

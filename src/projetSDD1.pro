@@ -19,7 +19,8 @@ SOURCES += main.cpp\
     graph.cpp \
     endwindow.cpp \
     IA.cpp \
-    historicalwindow.cpp
+    historicalwindow.cpp \
+    generalGame.cpp
 
 HEADERS  += mainwindow.h \
     game.h \
@@ -33,7 +34,8 @@ HEADERS  += mainwindow.h \
     xmlfilechoice.h \
     endwindow.h \
     IA.h \
-    historicalwindow.h
+    historicalwindow.h \
+    generalGame.h
 
 FORMS    += mainwindow.ui \
     xmlfilechoice.ui \

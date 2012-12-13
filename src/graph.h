@@ -4,6 +4,8 @@
 #include <cstddef> //pour avoir NULL
 #include "list.h"
 
+namespace Gost
+{
 /*! \brief Le namespace Graph englobe tout ce qui concerne les graphes.
  *
  */
@@ -78,6 +80,7 @@ namespace Graph
         inline Node*& getLink(unsigned int direction) {return m_links[direction];}
 
         unsigned int info;///< Représente l'information contenue dans le Node.
+
     private :
         Node* m_links[nbLinks];///< Représente les liens vers les Nodes voisin du Node.
     };
@@ -119,6 +122,7 @@ namespace Graph
      * \brief Implémente une série de tests pour tester le namespace de manière autonome.
      */
     void tests();
+}
 }
 
 #endif // GRAPH_H

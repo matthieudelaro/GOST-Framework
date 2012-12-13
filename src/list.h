@@ -4,6 +4,8 @@
 #include "collection.h"
 #include <QDebug>
 
+namespace Gost
+{
 /*!
  *  \brief Le namespace List englobe tout ce qui concerne les listes.
  *  Tout est implémententé sur la base de template, ce qui assure une généricité maximale du code.
@@ -408,5 +410,5 @@ namespace List
         }*/
     }
 }
-
+}
 #endif // LIST_H
