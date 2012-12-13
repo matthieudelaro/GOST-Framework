@@ -34,6 +34,14 @@ public:
     void displayGameHistory(List::Node<const State *> *possibleStates, Game &game, bool oppositeOrder = false);
     ~HistoricalWindow();
 
+    public slots:
+    /*!
+     * \brief Fait en sorte que la fenêtre se positionne automatiquement au dernier état lorsqu'on en ajoute un.
+     * \param min
+     * \param max
+     */
+    void moveScrollBarToBottom(int min, int max);
+
 protected:
     /*!
      * \brief addStates est appelée récursivement par displayGameHistory. Elle affiche les éléments de la liste un à un,

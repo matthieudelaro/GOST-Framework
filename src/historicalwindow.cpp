@@ -14,6 +14,7 @@ HistoricalWindow::HistoricalWindow(QWidget *parent) :
     m_verticalLayout = new QVBoxLayout;
 
     ui->scrollAreaWidgetContents->setLayout(m_verticalLayout);
+    QObject::connect(ui->scrollArea->verticalScrollBar(), SIGNAL(rangeChanged(int,int)), this, SLOT(moveScrollBarToBottom(int, int)));
 }
 
 void HistoricalWindow::displayGameHistory(List::Node<const State *> * possibleStates, Game &game, bool oppositeOrder)
@@ -22,13 +23,17 @@ void HistoricalWindow::displayGameHistory(List::Node<const State *> * possibleSt
     List::clearDelete(m_views);
 
     addStates(possibleStates, game, oppositeOrder);
-    //ui->scrollArea->ensureVisible(0, 1000000);//je voudrais que la fenêtre scroll jusqu'au dernier élément, mais je n'y arrive pas
-    //ui->scrollArea->verticalScrollBar()->setValue(ui->scrollArea->verticalScrollBar()->maximum()*2);//ne vas pas exactement jusqu'au bout. S'arrête à l'avant derner état.
 }
 
 HistoricalWindow::~HistoricalWindow()
 {
     delete ui;
+}
+
+void HistoricalWindow::moveScrollBarToBottom(int min, int max)
+{
+    Q_UNUSED(min);
+    ui->scrollArea->verticalScrollBar()->setValue(max);
 }
 
 void HistoricalWindow::addStates(List::Node<const State *> *possibleStates, Game &game, bool oppositeOrder)
@@ -58,7 +63,4 @@ void HistoricalWindow::addStates(List::Node<const State *> *possibleStates, Game
 
     if(!oppositeOrder)
         addStates(possibleStates->next, game, oppositeOrder);
-
-    //ui->scrollArea->ensureWidgetVisible(tmpView);
-    //ui->scrollArea->ensureVisible(0, 1000000);//je voudrais que la fenêtre scroll jusqu'au dernier élément, mais je n'y arrive pas
 }
