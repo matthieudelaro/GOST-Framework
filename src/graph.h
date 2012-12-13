@@ -4,7 +4,7 @@
 #include <cstddef> //pour avoir NULL
 #include "list.h"
 
-/*! \brief Le namespace Graph englobe tout ce qui concerne les Graphs.
+/*! \brief Le namespace Graph englobe tout ce qui concerne les graphes.
  *
  */
 namespace Graph
@@ -39,13 +39,42 @@ namespace Graph
          *  Tous les Nodes ont nbLinks pointeurs vers des Nodes voisins. Si un pointeur vaut NULL
          *  alors il n'y a pas de voisin dans cette direction.
          *
-         *  Pour utiliser
+         *  Pour utiliser le framework avec des Nodes ayant un certain nombre de voisins, il faut
+         *  modifier cette variable. Par exemple, pour faire un jeu en 3D à base cubique : chaque cube a
+         *  6 faces, donc il a au maximum 6 voisins. Il faut donc mettre nbLinks à 6.
+         *
+         *  Les liens vers les voisins sont stockés dans un tableau à taille statique. Ils sont numérotés
+         *  de 0 à nbLinks-1. On peut associer ce numéro à une direction.
          *
          *  \see m_links
          */
         static const unsigned int nbLinks = 4;
+
+        /*!
+         * \brief Permet de modifier directement un lien du Node vers ses voisins.
+         * \param direction Le numéro du lien que l'on veut modifier.
+         * \return Une référence vers le lien.
+         * \see inline Node*& getLink(unsigned int direction)
+         * \see inline Node* getConstLink(unsigned int direction)
+         */
         inline Node*& operator[](unsigned int direction) {return m_links[direction];}
+
+        /*!
+         * \brief Réimplémentation constante de l' operator[], qui ne permet que de consulter le lien.
+         * \param direction Le numéro du lien que l'on veut consulter.
+         * \return Une référence constante vers le lien.
+         * \see inline Node*& getLink(unsigned int direction)
+         * \see inline Node*& operator[](unsigned int direction)
+         */
         inline Node* getConstLink(unsigned int direction) const {return m_links[direction];}
+
+        /*!
+         * \brief Réimplémentation de l' operator[]
+         * \param direction Le numéro du lien que l'on veut modifier.
+         * \return Une référence vers le lien.
+         * \see inline Node*& operator[](unsigned int direction)
+         * \see inline Node* getConstLink(unsigned int direction)
+         */
         inline Node*& getLink(unsigned int direction) {return m_links[direction];}
 
         unsigned int info;///< Représente l'information contenue dans le Node.
@@ -53,6 +82,10 @@ namespace Graph
         Node* m_links[nbLinks];///< Représente les liens vers les Nodes voisin du Node.
     };
 
+    /*!
+     * \brief Supprime tous les éléments du graph représenté par le Node g.
+     * \param Le Node g, dont on veut supprimer le graph.
+     */
     void clear(Node *&g);
 
     /*! \brief Cette fonction renvoie une copie du Graph.
@@ -82,6 +115,9 @@ namespace Graph
      */
     void toConstList(const Graph::Node *graph, List::Node<const Graph::Node*> *&list);
 
+    /*!
+     * \brief Implémente une série de tests pour tester le namespace de manière autonome.
+     */
     void tests();
 }
 

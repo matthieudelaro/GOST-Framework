@@ -286,10 +286,10 @@ void MainWindow::redo()
 
 void MainWindow::showDifferentsPossibleStates()
 {
-    List::Node<const State *>* possibleStates = IA::getPossibleMove(*(m_currentState->info),m_game);
-    List::Node<const State *>* IAResult = IA::aStar(m_game.getInitialState(),m_game.getFinalState(),m_game);
+    //List::Node<const State *>* possibleStates = IA::getPossibleMove(*(m_currentState->info),m_game);
+    //List::Node<const State *>* IAResult = IA::aStar(m_game.getInitialState(),m_game.getFinalState(),m_game);
 
-    m_debugHistoricalwindow->displayGameHistory(IAResult,m_game);
+    //m_debugHistoricalwindow->displayGameHistory(IAResult,m_game);
     //m_debugHistoricalwindow->displayGameHistory(possibleStates,m_game);
 
     /*qDebug() << possibleStates;

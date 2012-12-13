@@ -24,7 +24,7 @@ public:
 
 public slots:
     /*!
-     *      \brief resize redimensionne la fenêtre en fonction du contenu de m_scene.
+     *      \brief Redimensionne la fenêtre en fonction du contenu de m_scene.
      *      \param w est la largeur de m_scene
      *      \param h est la hauteur de m_scene
      */

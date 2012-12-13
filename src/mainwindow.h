@@ -93,10 +93,13 @@ private:
     MyGraphicsScene *m_scene;///< Scene qui est associée à la zone graphique
     Game m_game;///< Game qui contient tout le jeu
     QString m_loadedPath;///< Chemin du Xml chargé
+    /*!
+     * \brief Représente l'état final du jeu.
+     *
+     */
     EndWindow *m_finalStateWindow;
     HistoricalWindow *m_historicalWindow;
     HistoricalWindow *m_debugHistoricalwindow;
-    //const State *m_currentState;
     List::Node<const State *> *m_currentState;
     List::Node<const State *> *m_history;///< Liste contenant l'historique des mouvements de l'utilisateur.
     unsigned int m_movesNumber;

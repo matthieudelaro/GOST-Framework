@@ -302,6 +302,8 @@ unsigned int IA::hScore(const State& currentState, const State &finalState, cons
                     hScore ++;
             }
         }
+        else if (game.getPieceNode(i,currentState)) //si la case est vide à l'état final (car else if), mais non vide à l'état courant
+            hScore++;
     }
 
     return hScore;

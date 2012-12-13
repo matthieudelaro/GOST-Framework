@@ -1,5 +1,6 @@
 #include "historicalwindow.h"
 #include "ui_historicalwindow.h"
+#include <QScrollBar>
 
 HistoricalWindow::HistoricalWindow(QWidget *parent) :
     QWidget(parent),
@@ -22,7 +23,7 @@ void HistoricalWindow::displayGameHistory(List::Node<const State *> * possibleSt
 
     addStates(possibleStates, game, oppositeOrder);
     //ui->scrollArea->ensureVisible(0, 1000000);//je voudrais que la fenêtre scroll jusqu'au dernier élément, mais je n'y arrive pas
-
+    //ui->scrollArea->verticalScrollBar()->setValue(ui->scrollArea->verticalScrollBar()->maximum()*2);//ne vas pas exactement jusqu'au bout. S'arrête à l'avant derner état.
 }
 
 HistoricalWindow::~HistoricalWindow()
