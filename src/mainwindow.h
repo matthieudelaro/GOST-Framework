@@ -31,11 +31,13 @@ class MainWindow : public QMainWindow
     Q_OBJECT
 
 public:
-    explicit MainWindow(QWidget *parent = 0);
+    explicit MainWindow(QWidget *parent = 0);///< Le contructeur.
 
     /*!
-     *      \brief loadGameFromXml va charger le document Xml dans la classe game et afficher le jeu
-     *      \param xml est un document qui contient le Xml.
+     *      \brief Charge un jeu.
+     *      \param path Le nom du fichier à charger.
+     *      \param error Si error est différent de NULL, alors error est utilisé pour renvoyer les erreurs de lecture du fichier xml
+     *      \return true si le chargement a été effectué avec succès, false sinon.
      */
     bool loadGameFromPath(QString &path, QString *error = NULL);
 

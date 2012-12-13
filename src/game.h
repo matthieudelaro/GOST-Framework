@@ -56,7 +56,7 @@ public:
     /*! \brief Effectue la liaison entre des coordonnées 2D et un noeud du plateau.
      *
      *  \param line La ligne dont on veut obtenir le noeud correspondant.
-     *  \param line La colonne dont on veut obtenir le noeud correspondant.
+     *  \param column La colonne dont on veut obtenir le noeud correspondant.
      *  \return Un pointeur vers le noeud correspondant.
      */
     inline const Graph::Node* getBoardNode(unsigned int line, unsigned int column) const { return m_boardMatrix.getConst(line, column);}

@@ -84,7 +84,7 @@ namespace Graph
 
     /*!
      * \brief Supprime tous les éléments du graph représenté par le Node g.
-     * \param Le Node g, dont on veut supprimer le graph.
+     * \param g Le Node g, dont on veut supprimer le graph.
      */
     void clear(Node *&g);
 

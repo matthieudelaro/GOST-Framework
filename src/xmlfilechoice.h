@@ -17,11 +17,10 @@ class GameFileChoice : public QDialog
     Q_OBJECT
 
 public:
-    explicit GameFileChoice(QWidget *parent = 0);
+    explicit GameFileChoice(QWidget *parent = 0);///< Le contructeur.
 
     /*!
-     * \brief Recherche tous les fichiers xml dans le dossier dir.
-     * \param dir Le dossier dans lequel les fichiers xml sont recherchés.
+     * \brief Recherche tous les fichiers xml dans res/games/
      * \return La liste des noms des fichiers.
      */
     QStringList findXMLFiles();
@@ -49,9 +48,9 @@ signals:
 protected:
     Ui::GameFileChoice *ui;///< Représente les éléments générés par QDesigner
     QTableWidget *m_autoChoiceTableView;///< La tableau dans lequel sont rangés les fichiers trouvés automatiquement.
-    QStringList m_files;
-    QString m_selectedPath;
-    QFileInfo m_selectedFile;
+    QStringList m_files;///< La liste des fichiers.
+    QString m_selectedPath;///< Le chemin d'accès au fichier choisi.
+    QFileInfo m_selectedFile;///< Le fichier choisi.
 };
 
 #endif // XMLFILECHOICE_H

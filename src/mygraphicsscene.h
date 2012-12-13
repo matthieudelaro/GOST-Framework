@@ -13,7 +13,6 @@
 
 /*!
  *  \brief La classe MyGraphicsScene gère l'affichage graphique du jeu.
- *  \
  */
 class MyGraphicsScene : public QGraphicsScene
 {
@@ -91,13 +90,15 @@ protected:
 signals:
     /*!
      *  \brief Appelle le redimensionnement de ui->graphicsView en fonction du contenu de la matrice.
+     *  \param w La largeur
+     *  \param h La hauteur
      */
     void sendResize(int w, int h);
 
     /*!
      * \brief Appel le changement d'état lorsque l'utilisateur essaye de bouger une pièce.
-     * \param Le point de départ du mouvement
-     * \param Le point d'arrivée du mouvement
+     * \param init Le point de départ du mouvement
+     * \param final Le point d'arrivée du mouvement
      */
     void sendPositions(QPointF *init,QPointF *final);
 

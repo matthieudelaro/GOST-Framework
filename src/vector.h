@@ -10,6 +10,11 @@ template <typename T>
 class Vector
 {
 public:
+    /*!
+     * \brief Le constructeur de copie permet de copier un Vector.
+     * \param original Le Vector copié.
+     * \return Une copie d'original
+     */
     Vector& operator=(const Vector& original)
     {
         m_tab = NULL;
@@ -21,7 +26,7 @@ public:
 
     /*! \brief Ce constructeur initialise la taille du tableau à la valeur de length.
      *
-     *  \param lenght Définit la taille du tableau. Sa valeur par défaut est 0.
+     *  \param length Définit la taille du tableau. Sa valeur par défaut est 0.
      */
     Vector(unsigned int length = 0) : m_tab(NULL)
     {
@@ -30,7 +35,7 @@ public:
 
     /*! \brief Ce constructeur initialise la taille du tableau à la valeur de length, en remplissant toutes les cases avec value.
      *
-     *  \param lenght Définit la taille du tableau. Sa valeur par défaut est 0.
+     *  \param length Définit la taille du tableau. Sa valeur par défaut est 0.
      *  \param value La valeur que prendra chaque case du tableau.
      */
     Vector(unsigned int length, const T &value) : m_tab(NULL)
@@ -56,15 +61,28 @@ public:
      */
     inline T& operator[](unsigned int index) { return m_tab[index];}
 
+    /*! \brief Permet d'accéder aux éléments du tableau.
+     *
+     *  \param index L'index dont on veut connaître la valeur.
+     *  \return Une référence vers la valeur contenue à l'index.
+     *  \see inline const T& operator[](unsigned int index) const
+     */
     inline T& get(unsigned int index) { return m_tab[index];}
 
     /*! \brief Permet d'accéder aux éléments du tableau.
      *
      *  \param index L'index dont on veut connaître la valeur.
      *  \return La valeur contenue à l'index.
+     *  \see inline T& get(unsigned int index)
      */
     inline const T& operator[](unsigned int index) const { return m_tab[index];}
 
+    /*! \brief Permet de consulter les éléments du tableau.
+     *
+     *  \param index L'index dont on veut connaître la valeur.
+     *  \return Une référence constante vers la valeur contenue à l'index.
+     *  \see inline const T& operator[](unsigned int index) const
+     */
     inline const T& getConst(unsigned int index) const { return m_tab[index];}
 
     /*! \return La longueur du tableau.
@@ -168,6 +186,9 @@ public:
         clear();
     }
 
+    /*!
+     * \brief Implémente une série de tests pour tester la classe Vector de manière autonome.
+     */
     static void tests()
     {
         qDebug() << "\ntestsVector :";

@@ -27,7 +27,7 @@ class HistoricalWindow : public QWidget
     Q_OBJECT
 
 public:
-    explicit HistoricalWindow(QWidget *parent = 0);
+    explicit HistoricalWindow(QWidget *parent = 0);///< Le contructeur.
     /*!
      * \brief displayGameHistory permet de changer la liste d'états que la fenêtre affiche.
      * \param possibleStates La liste des nouveaux états à afficher.

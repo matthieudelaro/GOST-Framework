@@ -19,7 +19,7 @@ class EndWindow : public QWidget
     Q_OBJECT
 
 public:
-    explicit EndWindow(QWidget *parent = 0);
+    explicit EndWindow(QWidget *parent = 0);///< Le contructeur.
     ~EndWindow();
 
     /*!

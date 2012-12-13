@@ -153,7 +153,7 @@ public:
     }
 
     /*!
-     * \brief Implémente une série de tests pour tester la class Matrix de manière autonome.
+     * \brief Implémente une série de tests pour tester la classe Matrix de manière autonome.
      */
     static void tests()
     {
