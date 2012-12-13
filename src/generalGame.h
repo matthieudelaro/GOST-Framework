@@ -99,7 +99,7 @@ public :
     /*!
      *  \return Le nombre de pièces du jeu.
      */
-    inline unsigned int getNbPieces() const {return List::size(m_pieces);}
+    virtual inline unsigned int getNbPieces() const {return List::size(m_pieces);}
 
 protected :
     GeneralGame();///< Le constructeur.
