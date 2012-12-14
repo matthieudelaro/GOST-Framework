@@ -246,7 +246,7 @@ List::Node<const State *>* IA::aStar(const State &initialState,const State &fina
         }
     }
 
-    List::Node<const State *>* toReturn;
+    List::Node<const State *>* toReturn = NULL;
 
     while(closeNode)
     {

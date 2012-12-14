@@ -21,13 +21,25 @@
         <initialShape type="defined">
             <line>
                 <column type="piece" number="1"/>
+                <column type="piece" number="2"/>
                 <column type="free"/>
+            </line>
+            <line>
+                <column type="void"/>
+                <column type="free"/>
+                <column type="void"/>
             </line>
         </initialShape>
         <finalShape>
             <line>
-                <column type="free"/>
+                <column type="jocker"/>
+                <column type="jocker"/>
                 <column type="piece" number="1"/>
+            </line>
+            <line>
+                <column type="void"/>
+                <column type="jocker"/>
+                <column type="void"/>
             </line>
         </finalShape>
         <pieces>

@@ -4,10 +4,13 @@
 #include <QFile>
 #include <QFileDialog>
 #include "mainwindow.h"
+#include "list.h"
 
 int main(int argc, char *argv[])
 {
     QApplication a(argc, argv);
+
+    //Gost::List::tests<int>();
 
     MainWindow w;
 
