@@ -1,9 +1,0 @@
-warning: Tag `SHOW_DIRECTORIES' at line 547 of file Doxyfile has become obsolete.
-To avoid this warning please remove this line from your configuration file or upgrade it using "doxygen -u"
-warning: Tag `HTML_ALIGN_MEMBERS' at line 941 of file Doxyfile has become obsolete.
-To avoid this warning please remove this line from your configuration file or upgrade it using "doxygen -u"
-warning: Tag `USE_INLINE_TREES' at line 1132 of file Doxyfile has become obsolete.
-To avoid this warning please remove this line from your configuration file or upgrade it using "doxygen -u"
-Warning: The selected output language "french" has not been updated
-since release 1.8.0.  As a result some sentences may appear in English.
-

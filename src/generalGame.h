@@ -8,7 +8,7 @@
 #include "matrix.h"
 
 /*!
- *  Le namespace Gost contient tous les éléments du framework Gost.
+ *  Le namespace Gost contient tous les éléments du framework Gost : Games based On Sliding Technology
  */
 namespace Gost
 {

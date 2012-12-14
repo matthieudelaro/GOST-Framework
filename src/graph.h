@@ -36,13 +36,13 @@ namespace Graph
         }
 
         /*!
-         * \brief Le nombre de liens vers des voisins.
+         * \brief Le nombre de liens possibles vers les voisins du noeud.
          *
          *  Tous les Nodes ont nbLinks pointeurs vers des Nodes voisins. Si un pointeur vaut NULL
          *  alors il n'y a pas de voisin dans cette direction.
          *
          *  Pour utiliser le framework avec des Nodes ayant un certain nombre de voisins, il faut
-         *  modifier cette variable. Par exemple, pour faire un jeu en 3D à base cubique : chaque cube a
+         *  modifier cette variable. Par exemple, pour faire un jeu en 3D à base cubique, chaque cube a
          *  6 faces, donc il a au maximum 6 voisins. Il faut donc mettre nbLinks à 6.
          *
          *  Les liens vers les voisins sont stockés dans un tableau à taille statique. Ils sont numérotés

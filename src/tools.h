@@ -7,7 +7,7 @@
 namespace Gost
 {
 /*!
- * \brief La classe BadAllocation est une surcouche de std::bad_alloc, qui pourrait transmettre des messages personnalisés.
+ * \brief La classe BadAllocation est une surcouche de std::bad_alloc, qui permet de transmettre des messages personnalisés.
  */
 class BadAllocation : public std::bad_alloc
 {
@@ -25,7 +25,7 @@ public:
     ~BadAllocation() throw() {}///< Le destructeur.
 
 private:
-    std::string m_message;
+    std::string m_message;///< Le message transmis.
 };
 }
 

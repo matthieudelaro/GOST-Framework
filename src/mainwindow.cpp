@@ -51,13 +51,13 @@ bool MainWindow::loadGameFromPath(QString &path, QString *error)
     QFile file(path);
     if(!file.exists())
     {
-        *log += "Pas de fichier";
+        *log += QString("Pas de fichier");
         return false;
     }
 
     if(!file.open(QIODevice::ReadOnly | QIODevice::Text))
     {
-        *log += "Pas de fichier lisible";
+        *log += QString("Pas de fichier lisible");
         return false;
     }
 
@@ -79,7 +79,7 @@ bool MainWindow::loadGameFromPath(QString &path, QString *error)
     {
         if(!m_game.load(toLoad,log))
         {
-            QMessageBox::information(this,"Erreur de chargement du QString",*log);
+            QMessageBox::information(this,"Erreur de chargement du fichier", QString::fromUtf8(log->toStdString().c_str()));
             file.close();
             return false;
         }
@@ -289,14 +289,14 @@ void MainWindow::redo()
 
 void MainWindow::showDifferentsPossibleStates()
 {
-    List::Node<const State *>* IAResult = NULL;
+    /*List::Node<const State *>* IAResult = NULL;
     try
     {
          IAResult = IA::aStar(m_game.getInitialState(),m_game.getFinalState(),m_game);
     }catch(const BadAllocation& e)
     {
-        QMessageBox::warning(this,"ERROR", "Impossible de trouver la solution pour une erreur de mémoire.");
-    }
+        QMessageBox::warning(this,"Erreur", "Une erreur est survenue en mémoire, rendant impossible la recherche de la solution. Cela est probablement dû à un manque de mémoire vive sur votre ordinateur, par rapport à l'implémentation actuelles de l'algorithme de recherche, et par rapport à la complexité du jeu.");
+    }*/
 
     //if(IAResult)
      //   m_debugHistoricalwindow->displayGameHistory(IAResult,m_game);
