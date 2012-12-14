@@ -10,7 +10,7 @@
  *  La classe Game est un exemple d'utilisation du framework GOST.
  *  Elle limite les possibilités de jeux aux jeux 2D à carrée, mais implémente
  *  en contre-partie la prise en charge de jeux dynamique, via les fichiers xml
- *  ou le format Pepper.
+ *  ou le format texte.
  */
 class Game : public Gost::GeneralGame
 {
@@ -26,7 +26,7 @@ public:
     bool load(QDomDocument &xml, QString *error = NULL);
 
     /*!
-     * \brief Permet de charger un jeu au format Pepper
+     * \brief Permet de charger un jeu au format texte.
      *
      *  Cette fonction génère un xml à partir de file, et appel Game::load(QDomDocument &xml, QString *error = NULL) avec.
      *

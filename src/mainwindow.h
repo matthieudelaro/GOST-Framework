@@ -24,7 +24,7 @@ class MainWindow;
 
 /*!
  *      \brief La classe MainWindow gère le GUI du projet.
- *      Elle permet de charger un fichier xml ou Pepper via une instance de Game, de l'associer et de l'afficher à travers la m_scene.
+ *      Elle permet de charger un fichier xml ou texte via une instance de Game, de l'associer et de l'afficher à travers la m_scene.
  */
 class MainWindow : public QMainWindow
 {

@@ -336,7 +336,7 @@ bool Game::load(QDomDocument &xml, QString *error)
 }
 
 /*
- *  Cette fonction convertit les fichiers du format Pepper au format xml, puis charge le xml ainsi créé xml.
+ *  Cette fonction convertit les fichiers du format texte au format xml, puis charge le xml ainsi créé xml.
  */
 bool Game::load(const QString &file, QString* error)
 {

@@ -39,7 +39,7 @@ public:
 public slots:
     void openFileOfItem(int, int);///< Réimplémentation de la méthode de QDialog.
     void openFileOfItemAndQuit(int row, int);///< Réimplémentation de la méthode de QDialog.
-    void chooseFile();///< Propose à l'utilisateur de charger un jeu qui n'aurait pas été trouvé automatiquement (jeu au format Pepper par exemple)
+    void chooseFile();///< Propose à l'utilisateur de charger un jeu qui n'aurait pas été trouvé automatiquement (jeu au format texte par exemple)
     void callReturn();///< Renvoie à la MainWindow le chemin du fichier sélectionné par l'utilisateur.
 
 signals:
