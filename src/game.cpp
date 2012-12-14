@@ -307,6 +307,7 @@ bool Game::load(QDomDocument &xml, QString *error)
                     List::push_front(it->info.third, m_pieces);
                     it = it->next;
                 }
+                m_nbPieces = List::size(m_pieces);
 
                 //on libère pieces
                 List::clear(pieces);
@@ -347,7 +348,7 @@ bool Game::load(const QString &file, QString* error)
         log = new QString();
 
 
-    *log += "Début de Game::load(QString)";
+    //*log += QString("Début de Game::load(QString)");
     QChar empty = '.', nonexistent = 'X', jocker = '#';
     QStringList lines = file.split("\n");//on split le fichier en lignes, en concervant les lignes vides
 
@@ -400,7 +401,7 @@ bool Game::load(const QString &file, QString* error)
             }
             else
             {
-                *log += "Caractère inconnu.";
+                *log += QString("Caractère inconnu.");
                 return false;
             }
             lineElement.appendChild(columnElement);
@@ -439,15 +440,15 @@ bool Game::load(const QString &file, QString* error)
             }
             else
             {
-                *log += "Caractère inconnu.";
+                *log += QString("Caractère inconnu.");
                 return false;
             }
             lineElement.appendChild(columnElement);
         }
     }
-    *log += "Résultat :";
-    *log += xml.toString();
-    *log += "Fin de Game::load(QString)";
+    //*log += QString("Résultat :");
+    //*log += xml.toString();
+    //*log += QString("Fin de Game::load(QString)");
 
     if(!error)
         qDebug() << *log;
@@ -460,6 +461,12 @@ const Graph::Node *Game::getPieceNode(unsigned int line, unsigned int column, co
         return NULL;
     else
         return state[m_boardMatrix(line, column)->info];
+}
+
+void Game::clear()
+{
+    GeneralGame::clear();
+    m_nbPieces = 0;
 }
 
 Game::~Game()

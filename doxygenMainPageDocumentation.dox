@@ -1,22 +1,22 @@
 /*!
-    \mainpage Documentation du Framework GOST : "Game of Sliding Technology"
+    \mainpage Documentation du Framework GOST : "Games based On Sliding Technology"
     
     GOST permet de créer des jeux à pièces coulissantes très facilement
     à partir de fichiers de configuration, au format xml ou au format texte.
     
-    Dans le cadre d'une architecture MVC (Modèle, Vue, Controller), cette partie 
+    Dans le cadre d'une architecture MVC (Modèle, Vue, contrôleur), cette partie 
     du framework est gérée par la classe Game, la classe MyGraphicsScene, et la classe MainWindow.
   
     GOST propose aussi un niveau d'abstration beaucoup plus élevé avec le contenu du namespace Gost.
     En effet, Gost::GeneralGame est une base pour n'importe quel jeu de logique,
     de dimension indéfinie, aux règles totalement libres, ... La seule limite est l'imagination
     du programmeur qui utilisera cette classe abstraite.
-  
-    Exemple de format xml :
-    \xml
-        "<?xml version='1.0' encoding='UTF-8'?> <!-- Définit l'encode et la version du xml. -->
-        <game> <!-- Tout le contenu du jeu doit être à l'intérieur de la balise Game. -->
-            <identity> <!-- Carte d'identité du jeu. Cette balise est facultative. -->
+    
+    Voici un exemple de jeu au format xml :
+    \code
+        <?xml version='1.0' encoding='UTF-8'?> <!-- Encodage et version du xml -->
+        <game> <!-- Tout le contenu du jeu doit être dans la balise Game. -->
+            <identity> <!-- Identité du jeu. Cette balise est facultative. -->
                 <name name="Sample Game"/> <!-- Le nom du jeu. -->
                 <date day="28" month="10" year="2012"/> <!-- La date de création du jeu. -->
                 <creators> <!-- Les créateurs. -->
@@ -29,32 +29,139 @@
                 </versions>
             </identity>
             <board> <!-- Le plateau du jeu. -->
-                <background> <!-- Le fond d'écran.  Cette balise est facultative.-->
+                <background> <!-- Cette balise est facultative.-->
                     <color red="0" blue="0" green="255"/>
                     <image file="img.bmp"/>
                     <!--When there is both an image and a color, the color is used if an error occurs while loading the image.-->
                 </background>
-                <initialShape type="defined"> <!-- L'état initial. -->
-                    <line> <!-- Une ligne. -->
-                        <column type="void"> <!-- Une case sur la ligne. Cette case est inaccessible aux pièces (comme un mur ou du vide). -->
-                        <column type="piece" number="1"/> <!-- Cette case contient la pièce numéro 1. La pièce 0 est réservée au joker, il est donc impossible de l'utiliser pour déclarer une pièce "0"-->
-                        <column type="free"/> <!-- Cette case est libre. -->
+                <!-- Etat initial. -->
+                <initialShape type="defined"> 
+                    <line>
+                        <column type="void"/>
+                        <column type="piece" number="1"/>
+                        <column type="piece" number="2"/>
+                        <column type="free"/>
                     </line>
                 </initialShape>
-                <finalShape> <!-- L'état final du jeu. -->
+                <!-- Etat final du jeu. -->
+                <finalShape>
                     <line>
-                        <column type="jocker"/> <!-- Les cases de type jocker peuvent contenir n'importe quelle pièce, voire aucune. -->
-                        <column type="piece" number="1"/> <!-- La pièce 1 doit obligatoirement être sur cette case pour finir le jeu.-->
+                        <column type="void"/>
+                        <column type="jocker"/>
+                        <column type="jocker"/>
+                        <column type="piece" number="2"/>
                     </line>
                 </finalShape>
-                <pieces> <!-- Définit les pièces.  Cette balise est facultative.-->
+                <pieces> <!-- Définit les pièces. Cette balise est facultative.-->
                     <piece number="1">
-                        <color red="255" blue="0" green="0"/>
+                    <color red="255" blue="0" green="0"/>
                     </piece>
                 </pieces>
-                <free> <!-- Définit les cases vides.  Cette balise est facultative.-->
+                <free> <!-- Définit les cases vides. Cette balise est facultative.-->
                     <color red="0" blue="255" green="0"/>
                 </free>
             </board>
-        </game>"
+        </game>
+    \endcode
+    
+    Résultat :
+    \image html "sampleScreenshot.png"
+    \image latex "sampleScreenshot.png"
+    
+    Explications : 
+    - Les balises columns acceptent trois types : void, free, jocker et piece.
+        + void : cette case sera inaccessible (comme le vide, ou un mur)
+        + free : cette case sera libre, c'est à dire qu'on peut placer des pièces dessus.
+                 Pour l'état final, cela signifie aussi que la case doit être libre.
+        + jocker : Ce type est réservé à l'état final. Cette case pourra contenir n'importe quelle pièce, voire aucune pièce.
+        + piece : cette case contiendra la pièce définie par le champ number.
+    - Les pièces sont définies par leurs numéros. Ces numéros doivent être des entiers strictement positifs.
+    - Pour créer des pièces composées de plusieurs case, vous devez donner le même numéro à plusieurs cases.
+    - Ne pas mettre de commentaire dans les balises initialShape et finaleShape.
+    - Certaines foncionnalités ne sont pas encore implémentées.
+    
+    Exemple avec le Taquin :
+    \code
+        <?xml version='1.0' encoding='UTF-8'?>
+        <game>
+            <identity>
+                <name name="Taquin"/>
+                <date day="28" month="10" year="2012"/>
+                <creators>
+                    <creator name="Matthieu"/>
+                    <creator name="Sébastien"/>
+                    <creator name="Victor"/>
+                </creators>
+                <versions>
+                    <version changelog="Add colors" creator="Matthieu" number="1"/>
+                </versions>
+            </identity>
+            <board>
+                <background>
+                    <color red="0" blue="0" green="255"/>
+                    <image file="img.bmp"/>
+                    <!--When there is both an image and a color, the color is used if an error occurs while loading the image.-->
+                </background>
+                <initialShape type="defined">
+                    <line>
+                        <column type="piece" number="1"/>
+                        <column type="piece" number="2"/>
+                        <column type="piece" number="3"/>
+                    </line>
+                    <line>
+                        <column type="piece" number="4"/>
+                        <column type="piece" number="5"/>
+                        <column type="free"/>
+                    </line>
+                    <line>
+                        <column type="piece" number="7"/>
+                        <column type="piece" number="8"/>
+                        <column type="piece" number="6"/>
+                    </line>
+                </initialShape>
+                <finalShape>
+                    <line>
+                        <column type="piece" number="1"/>
+                        <column type="piece" number="2"/>
+                        <column type="piece" number="3"/>
+                    </line>
+                    <line>
+                        <column type="piece" number="4"/>
+                        <column type="piece" number="5"/>
+                        <column type="piece" number="6"/>
+                    </line>
+                    <line>
+                        <column type="piece" number="7"/>
+                        <column type="piece" number="8"/>
+                        <column type="free"/>
+                    </line>
+                </finalShape>
+                <pieces>
+                    <piece number="1">
+                        <display>
+                            <color red="255" blue="0" green="0"/>
+                            <text text="1"/>
+                        </display>
+                    </piece>
+                    <piece number="2">
+                        <display>
+                            <color red="100" blue="255" green="200"/>
+                            <text text="1"/>
+                        </display>
+                    </piece>
+                </pieces>
+                <free>
+                    <display>
+                        <color red="0" blue="255" green="0"/>
+                        <text text="1"/>
+                    </display>
+                </free>
+            </board>
+        </game>
+    \endcode
+    
+    \image html "taquinScreenShot.png"
+    \image latex "taquinScreenShot.png"
  */
+
+ 

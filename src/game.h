@@ -15,6 +15,8 @@
 class Game : public Gost::GeneralGame
 {
 public:
+    Game() : GeneralGame(), m_nbPieces(0) {}
+
     /*!
      * \brief Permet de charger un jeu au format xml.
      * \param xml Le fichier à charger.
@@ -55,11 +57,29 @@ public:
      */
     const Gost::Graph::Node* getPieceNode(unsigned int line, unsigned int column, const Gost::State &state) const;
 
+    /*!
+     *  \return Le nombre de pièces du jeu.
+     */
+    virtual inline unsigned int getNbPieces() const {return m_nbPieces;}
+
+    /*! \brief Vide le jeu.
+     */
+    virtual void clear();
+
     virtual ~Game();///< Le destructeur.
 
 protected :
     Gost::Matrix<Gost::Graph::Node*> m_boardMatrix; ///< Représente le tableau de jeu. Utile pour l'accès en ligne/colonne.
-
+    /*!
+     * \brief Représente le nombre de pièces.
+     *
+     * m_nbPieces est calculé une seule fois, lors du chargement du jeu, pour éviter parcourir la liste des pièces à chaque fois
+     * que l'on cherche cette information.
+     * Ne pas confondre le nombre de pièces, et le nombre de cases.
+     *
+     * \see Gost::GeneralGame::m_nbNodes
+     */
+    unsigned int m_nbPieces;
 };
 
 #endif // GAME_H
