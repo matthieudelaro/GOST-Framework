@@ -289,14 +289,14 @@ void MainWindow::redo()
 
 void MainWindow::showDifferentsPossibleStates()
 {
-    List::Node<const State *>* IAResult = NULL;
+    /*List::Node<const State *>* IAResult = NULL;
     try
     {
          IAResult = IA::aStar(m_game.getInitialState(),m_game.getFinalState(),m_game);
     }catch(const BadAllocation& e)
     {
         QMessageBox::warning(this,"Erreur", "Une erreur est survenue en mémoire, rendant impossible la recherche de la solution. Cela est probablement dû à un manque de mémoire vive sur votre ordinateur, par rapport à l'implémentation actuelles de l'algorithme de recherche, et par rapport à la complexité du jeu.");
-    }
+    }*/
 
     //if(IAResult)
      //   m_debugHistoricalwindow->displayGameHistory(IAResult,m_game);
