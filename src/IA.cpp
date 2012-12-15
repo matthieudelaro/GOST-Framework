@@ -171,7 +171,7 @@ List::Node<const State *>* IA::aStar(const State &initialState,const State &fina
     AStarNode<const State*, unsigned int, unsigned int> *currentState = closeNode->info;
 
     //while(IA::stateValue(currentState->first,game) != IA::stateValue(finalState,game)) // tant que l'on a pas l'état final
-    while (!((*(currentState->first)) == finalState))
+    while (!(*(currentState->first) == finalState))
     {
         qDebug() << "nouvel état";
         //on récupères tous les voisins de l'état courant
@@ -203,7 +203,7 @@ List::Node<const State *>* IA::aStar(const State &initialState,const State &fina
                     AStarNode<const State*, unsigned int, unsigned int> *findResult = findResultList->info;
                     tmpNeighbour->third = IA::hScore(*(neighbours->info),finalState,game);
 
-                    if((tmpNeighbour->second + tmpNeighbour->third) < (findResult->second + findResult->third))
+                    if(tmpNeighbour->second < findResult->second)
                     {//si le nouveau passage sur ce noeud est plus avantageux on modifie son homologue dans la liste ouverte
                         findResult->second = tmpNeighbour->second;
                         findResult->third = tmpNeighbour->third;
@@ -229,19 +229,21 @@ List::Node<const State *>* IA::aStar(const State &initialState,const State &fina
             {
                 qDebug() << "nouveau noeud max";
                 if((tmpBestNodeFromOpenList->info->second +
-                    tmpBestNodeFromOpenList->info->third) < (BestNodeFromOpenList->info->second + BestNodeFromOpenList->info->third))
+                    tmpBestNodeFromOpenList->info->third) <
+                        (BestNodeFromOpenList->info->second +
+                         BestNodeFromOpenList->info->third))
                     BestNodeFromOpenList = tmpBestNodeFromOpenList;
                 tmpBestNodeFromOpenList = tmpBestNodeFromOpenList->next;
             }
 
-            AStarNode<const State*, unsigned int, unsigned int> *bestToAddInCloseNode = BestNodeFromOpenList->info;
+            AStarNode<const State*, unsigned int, unsigned int> *bestNodeToAddInCloseNode = BestNodeFromOpenList->info;
             List::remove(BestNodeFromOpenList,openNode);
-            List::push_front(bestToAddInCloseNode,closeNode);
-            currentState = bestToAddInCloseNode;
+            List::push_front(bestNodeToAddInCloseNode,closeNode);
+            currentState = bestNodeToAddInCloseNode;
         }
         else //sinon il n'y a pas de solutions
         {
-            qDebug( ) << "pas de solutions";
+            qDebug() << "pas de solutions";
             return NULL;
         }
     }

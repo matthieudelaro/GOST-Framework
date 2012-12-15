@@ -252,17 +252,22 @@ namespace List
     template<typename T>
     void remove(Node<T>* toRemove, Node<T>* l)
     {
-        if(l == NULL)
+        if(l == NULL || toRemove == NULL)
             return;
-        if(toRemove == l)
+        if(toRemove == l) // cas de la tête de liste
         {
             l = l->next;
+            toRemove->next = NULL;
             delete toRemove;
+            toRemove = NULL;
+
         }
         else if(toRemove == l->next)
         {
             l->next = toRemove->next;
+            toRemove->next = NULL;
             delete toRemove;
+            toRemove = NULL;
         }
         else
         {
