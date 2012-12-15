@@ -384,23 +384,25 @@ namespace List
         List::Node<T> *l2 = new List::Node<T>;
         l2->info = 100;
         l2->next = new List::Node<T>;
-        l2->info = 200;
-        l2->next = new List::Node<T>;
-        l2->next->info = 300;
-        l2->next->next = NULL;
+        l2->next->info = 200;
+        l2->next->next = new List::Node<T>;
+        l2->next->next->info = 300;
+        l2->next->next->next = NULL;
 
         List::push_front(1, l);
         List::push_front(2, l);
         List::pop_front(l);
         List::push_front(3, l);
         List::push_front(32, l);
+        List::push_front(l, l2);
         //List::push_front(l,nodeToRemove);
         List::push_front(1, l);
         List::push_front(2, l);
         List::push_front(1, l);
         List::push_front(2, l);
 
-        List::push_front(l, l2);
+
+
 
 
         //List::remove(nodeToRemove,l);
