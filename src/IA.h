@@ -26,13 +26,13 @@ namespace IA
      *  \param piece est l'élément dont on test déplacement
      *  \param game est une référence vers le jeu
      */
-    List::Node<const State *>* getPossibleMove(const State& currentState, const Graph::Node* piece, const GeneralGame &game);
+    List::Node<const State *>* getPossibleMoves(const State& currentState, const Graph::Node* piece, const GeneralGame &game);
 
     /*! \brief Cette fonction évalue les coups possibles par rapport à un état et les renvoie sous forme de liste
      *  \param currentState est l'état courant à étudier
      *  \param game est une référence vers le jeu
      */
-    List::Node<const State *>* getPossibleMove(const State& currentState, const GeneralGame &game);
+    List::Node<const State *>* getPossibleMoves(const State& currentState, const GeneralGame &game);
 
     /*!
      * \brief Implémente l'algorithme A*
@@ -41,7 +41,7 @@ namespace IA
      * \param game Le jeu.
      * \return Une liste d'états correspondant à la résolution du jeu.
      */
-    List::Node<const State *>* aStar(const State& initialState,const State& finalState, const GeneralGame &game);
+    List::Node<const State *>* aStar(const State& initialState, const GeneralGame &game);
 
     /*!
      * \brief Calcule le coût G d'un état.

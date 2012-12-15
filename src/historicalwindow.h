@@ -58,6 +58,7 @@ protected:
     Gost::List::Node<MyGraphicsScene*> *m_scenes;///< Contient les représentations graphiques des états.
     Gost::List::Node<QGraphicsView*> *m_views;///< Contient les représentations graphiques des états.
     QVBoxLayout *m_verticalLayout;///< Permet d'afficher les états les uns au dessus des autres.
+    bool m_scrollToBottom;///< Détermine si l'affichage doit être déplacé en bas de la fenêtre
 };
 
 #endif // HISTORICALWINDOW_H

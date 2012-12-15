@@ -38,7 +38,7 @@ State* IA::possibleMove(const State& currentState, const Graph::Node* initialBoa
     }
     //qDebug() << "on ne prend pas une piece vide";
 
-    //on parcoure tous les noeuds de la pièce pour vérifier que chaque noeud peut être déplacé
+    //on parcourt tous les noeuds de la pièce pour vérifier que chaque noeud peut être déplacé
     //on en profite pour prendre en note les déplacements à effectuer si déplacement est autorisé
     List::Node<Triple<unsigned int, unsigned int, const Graph::Node*>* > *moves = NULL;//l'index de la case source, l'index de la case destination, et le Node de la pièce qu'il faut mettre dedans
     //algorithme actuel :
@@ -108,7 +108,7 @@ State* IA::possibleMove(const State& currentState, const Graph::Node* initialBoa
     return afterMove;
 }
 
-List::Node<const State *>* IA::getPossibleMove(const State& currentState, const Graph::Node* piece, const GeneralGame &game)
+List::Node<const State *>* IA::getPossibleMoves(const State& currentState, const Graph::Node* piece, const GeneralGame &game)
 {
     List::Node<const State *>* possibleMoves = NULL;
     for(unsigned int i = 0; i < Graph::Node::nbLinks ; i ++)
@@ -125,7 +125,7 @@ List::Node<const State *>* IA::getPossibleMove(const State& currentState, const 
     return possibleMoves;
 }
 
-List::Node<const State *>* IA::getPossibleMove(const State& currentState, const GeneralGame &game)
+List::Node<const State *>* IA::getPossibleMoves(const State& currentState, const GeneralGame &game)
 {
     const List::Node<Graph::Node *>* piecesToCheck = game.getPieces();
 
@@ -134,7 +134,7 @@ List::Node<const State *>* IA::getPossibleMove(const State& currentState, const 
     while(piecesToCheck)
     {
 
-        List::Node<const State *> *moveToTest = IA::getPossibleMove(currentState,piecesToCheck->info,game);
+        List::Node<const State *> *moveToTest = IA::getPossibleMoves(currentState,piecesToCheck->info,game);
 
         if(moveToTest)
             List::push_front(possibleMoves, moveToTest);
@@ -144,7 +144,7 @@ List::Node<const State *>* IA::getPossibleMove(const State& currentState, const 
     return possibleMoves;
 }
 
-List::Node<const State *>* IA::aStar(const State &initialState,const State &finalState, const GeneralGame &game)
+List::Node<const State *>* IA::aStar(const State &initialState, const GeneralGame &game)
 {
     qDebug() << "_";
     qDebug() << "Debut de l'algorithme A*";
@@ -159,21 +159,21 @@ List::Node<const State *>* IA::aStar(const State &initialState,const State &fina
     List::Node<AStarNode<const State*, unsigned int, unsigned int> *> *openedList = NULL;
     List::Node<AStarNode<const State*, unsigned int, unsigned int> *> *closedList = NULL;
 
-    qDebug() << "##push_front sur liste fermee.";
+    //qDebug() << "##push_front sur liste fermee.";
     List::push_front(currentState, closedList);
 
     while( ! IA::isEnd(*(currentState->first), game.getFinalState(), &game) )// => Approved :)
     {
-        qDebug() << " ";
-        qDebug() << " ";
+        //qDebug() << " ";
+        //qDebug() << " ";
 
-        qDebug() << "On n'est pas à l'etat final.";
+        //qDebug() << "On n'est pas à l'etat final.";
 
-        List::Node<const State *> *neighbours = IA::getPossibleMove( *(currentState->first), game);
+        List::Node<const State *> *neighbours = IA::getPossibleMoves( *(currentState->first), game);
         List::Node<const State *> *itNeighbours = neighbours;
         while(itNeighbours)//pour tous les voisins du noeud courant => Approved :)
         {
-            qDebug() << "On regarde un nouveau voisin : " << itNeighbours;
+            //qDebug() << "On regarde un nouveau voisin : " << itNeighbours;
 
             //si un noeud voisin est déjà dans la liste fermée, on l'oublie
                 bool foundInClosedList = false;
@@ -185,7 +185,7 @@ List::Node<const State *>* IA::aStar(const State &initialState,const State &fina
                     else
                         itClosedList = itClosedList->next;
                 }
-                qDebug() << "On a trouvé le voisin dans la liste fermée = " << foundInClosedList << " (" << itClosedList << " )";
+                //qDebug() << "On a trouvé le voisin dans la liste fermée = " << foundInClosedList << " (" << itClosedList << " )";
 
             if(!foundInClosedList)//si un noeud voisin est déjà dans la liste fermée, on l'oublie
             {
@@ -199,39 +199,39 @@ List::Node<const State *>* IA::aStar(const State &initialState,const State &fina
                     else
                         itOpenedList = itOpenedList->next;
                 }
-                qDebug() << "On a trouvé le voisin dans la liste ouverte = " << foundInOpenedList << " (" << itOpenedList << " )";
+                //qDebug() << "On a trouvé le voisin dans la liste ouverte = " << foundInOpenedList << " (" << itOpenedList << " )";
 
                 unsigned int gScoreState = 1 + currentState->second;
                 if(foundInOpenedList)//si un noeud voisin est déjà dans la liste ouverte
                 {
                     if(itOpenedList->info->second > gScoreState)//on met à jour la liste ouverte si le noeud dans la liste ouverte a une moins bonne qualité (et on n'oublie pas de mettre à jour son parent)
                     {
-                        qDebug() << "Mise à jour de l'ancien état.";
+                        //qDebug() << "Mise à jour de l'ancien état.";
                         itOpenedList->info->second = gScoreState;
                         itOpenedList->info->parent = currentState;
                     }
                 }
                 else//sinon, on ajoute le noeud voisin dans la liste ouverte avec comme parent le noeud courant
                 {
-                    qDebug() << "Ajout du nouvel état dans openedList.";
+                    //qDebug() << "Ajout du nouvel état dans openedList.";
                     AStarNode<const State*, unsigned int, unsigned int> *newState = new AStarNode<const State*, unsigned int, unsigned int>;
                     newState->first = itNeighbours->info;
                     newState->second = gScoreState;
                     newState->third = hScore(*(itNeighbours->info), game.getFinalState(), game);
                     newState->parent = currentState;
 
-                    qDebug() << "##push_front sur liste ouverte.";
+                    //qDebug() << "##push_front sur liste ouverte.";
                     List::push_front(newState, openedList);
                 }
             }
             itNeighbours = itNeighbours->next;
         }
-        qDebug() << "La liste ouverte est composee de" << List::size(openedList) << " états.";
-        qDebug() << "La liste fermée est composee de" << List::size(closedList) << " états.";
+        //qDebug() << "La liste ouverte est composee de" << List::size(openedList) << " états.";
+        //qDebug() << "La liste fermée est composee de" << List::size(closedList) << " états.";
 
         if(List::size(openedList) == 0)//Si la liste ouverte est vide, il n'y a pas de solution, fin de l'algorithme
         {
-            qDebug() << "openedList est vide. On quitte.";
+            //qDebug() << "openedList est vide. On quitte.";
             return NULL;
         }
 
@@ -248,14 +248,15 @@ List::Node<const State *>* IA::aStar(const State &initialState,const State &fina
         }
         //On le met dans la liste fermée et on le retire de la liste ouverte
         //noeud courant = noeud que l'on vient d'ajouter à la liste fermée
-        qDebug() << "##remove sur liste ouverte.";
+        //qDebug() << "##remove sur liste ouverte.";
         List::removeElementFromList(best, openedList);
         best->next = NULL;//sinon on garde la suite de openedList
-        qDebug() << "##push_front sur liste fermée.";
+        //qDebug() << "##push_front sur liste fermée.";
         List::push_front(best->info, closedList);
         currentState = best->info;
     }
 
+    //on construit le chemin de résolution
     List::Node<const State*> *resolutionPath = NULL;
     AStarNode<const State*, unsigned int, unsigned int> *itResolution = currentState;
     while(itResolution)
@@ -263,6 +264,7 @@ List::Node<const State *>* IA::aStar(const State &initialState,const State &fina
         List::push_front(itResolution->first, resolutionPath);
         itResolution = itResolution->parent;
     }
+    qDebug() << "Fin de l'algorithme A*.";
     return resolutionPath;
 
 //On commence par le noeud de départ, c'est le noeud courant

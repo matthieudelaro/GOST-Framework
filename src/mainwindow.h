@@ -88,6 +88,16 @@ public slots:
     void redo();
 
     /*!
+     *  \brief Recherche et affiche la solution.
+     */
+    void researchSolution();
+
+    /*!
+     *  \brief Permet au joueur de recommencer une partie.
+     */
+    void newGame();
+
+    /*!
      *  \brief montre les différents états possibles
      */
     void showDifferentsPossibleStates();
@@ -107,6 +117,7 @@ protected:
      */
     EndWindow *m_finalStateWindow;
     HistoricalWindow *m_historicalWindow;///< La fenêtre affichant l'historique du jeu.
+    HistoricalWindow *m_solutionWindow;///< La fenêtre affichant la solution du jeu.
     HistoricalWindow *m_debugHistoricalwindow;///< La fenêtre de debug.
     Gost::List::Node<const Gost::State *> *m_currentState;///< L'état courant dans l'historique.
     Gost::List::Node<const Gost::State *> *m_history;///< Liste contenant l'historique des mouvements de l'utilisateur.

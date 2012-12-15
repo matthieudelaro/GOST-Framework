@@ -45,6 +45,7 @@
     <addaction name="actionAfficher_Fin"/>
     <addaction name="actionAfficher_l_Historique"/>
     <addaction name="actionDebug"/>
+    <addaction name="actionAfficher_la_solution"/>
    </widget>
    <widget class="QMenu" name="menuAction">
     <property name="title">
@@ -67,6 +68,12 @@
    <property name="text">
     <string>Nouvelle partie</string>
    </property>
+   <property name="shortcut">
+    <string>Ctrl+N</string>
+   </property>
+   <property name="shortcutContext">
+    <enum>Qt::ApplicationShortcut</enum>
+   </property>
   </action>
   <action name="actionQuitter">
    <property name="text">
@@ -83,6 +90,9 @@
    <property name="shortcut">
     <string>Ctrl+F</string>
    </property>
+   <property name="shortcutContext">
+    <enum>Qt::ApplicationShortcut</enum>
+   </property>
   </action>
   <action name="actionAnnuler">
    <property name="text">
@@ -90,6 +100,9 @@
    </property>
    <property name="shortcut">
     <string>Ctrl+Z</string>
+   </property>
+   <property name="shortcutContext">
+    <enum>Qt::ApplicationShortcut</enum>
    </property>
    <property name="autoRepeat">
     <bool>false</bool>
@@ -102,6 +115,9 @@
    <property name="shortcut">
     <string>Ctrl+H</string>
    </property>
+   <property name="shortcutContext">
+    <enum>Qt::ApplicationShortcut</enum>
+   </property>
   </action>
   <action name="actionDebug">
    <property name="text">
@@ -110,6 +126,9 @@
    <property name="shortcut">
     <string>Ctrl+D</string>
    </property>
+   <property name="shortcutContext">
+    <enum>Qt::ApplicationShortcut</enum>
+   </property>
   </action>
   <action name="actionRefaire_le_dernier_coup">
    <property name="text">
@@ -117,6 +136,20 @@
    </property>
    <property name="shortcut">
     <string>Ctrl+Y</string>
+   </property>
+   <property name="shortcutContext">
+    <enum>Qt::ApplicationShortcut</enum>
+   </property>
+  </action>
+  <action name="actionAfficher_la_solution">
+   <property name="text">
+    <string>Afficher la solution</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+S</string>
+   </property>
+   <property name="shortcutContext">
+    <enum>Qt::ApplicationShortcut</enum>
    </property>
   </action>
  </widget>

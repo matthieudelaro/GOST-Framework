@@ -24,7 +24,7 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWi
 
     QList<QKeySequence> raccourcisChoixJeu;
     raccourcisChoixJeu.push_back(QKeySequence("Ctrl+o"));//o comme ouvrir
-    raccourcisChoixJeu.push_back(QKeySequence("Ctrl+c"));//c comme choisir. Plus accessible pour la main gauche
+    raccourcisChoixJeu.push_back(QKeySequence("Ctrl+c"));//c comme choisir. Plus accessible pour la main gauche. Très utiles pour tester le programme.
     ui->actionChoixJeu->setShortcuts(raccourcisChoixJeu);
 
     m_labelMovesNumber = new QLabel(QString());
@@ -33,6 +33,7 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWi
     m_finalStateWindow = NULL;
     m_historicalWindow = NULL;
     m_debugHistoricalwindow = NULL;
+    m_solutionWindow = NULL;
     QObject::connect(ui->actionQuitter,SIGNAL(triggered()),qApp,SLOT(quit()));
     QObject::connect(ui->actionChoixJeu,SIGNAL(triggered()),this,SLOT(callChoiceGameFile()));
     QObject::connect(ui->actionAnnuler,SIGNAL(triggered()),this,SLOT(cancel()));
@@ -111,6 +112,12 @@ bool MainWindow::loadGameFromPath(QString &path, QString *error)
         delete m_debugHistoricalwindow;
         m_debugHistoricalwindow = NULL;
     }
+    if(m_solutionWindow)
+    {
+        m_solutionWindow->close();
+        delete m_solutionWindow;
+        m_solutionWindow = NULL;
+    }
     List::clearDelete(m_history);
     m_currentState = NULL;
     m_movesNumber = 0;
@@ -139,11 +146,15 @@ bool MainWindow::loadGameFromPath(QString &path, QString *error)
     m_finalStateWindow->display(m_game);
 
     m_historicalWindow = new HistoricalWindow;
-    m_historicalWindow->setWindowTitle("Historique");
+    m_historicalWindow->setWindowTitle(QString::fromUtf8("Historique"));
     m_debugHistoricalwindow = new HistoricalWindow;
-    m_debugHistoricalwindow->setWindowTitle("Fenêtre de debug");
+    m_debugHistoricalwindow->setWindowTitle(QString::fromUtf8("Fenêtre de debug"));
+    m_solutionWindow = new HistoricalWindow;
+    m_solutionWindow->setWindowTitle(QString::fromUtf8("Solution"));
     QObject::connect(ui->actionAfficher_l_Historique,SIGNAL(triggered()),m_historicalWindow,SLOT(show()));
     QObject::connect(ui->actionDebug,SIGNAL(triggered()),m_debugHistoricalwindow,SLOT(show()));
+    QObject::connect(ui->actionAfficher_la_solution,SIGNAL(triggered()), this, SLOT(researchSolution()));
+    QObject::connect(ui->actionNouvellePartie,SIGNAL(triggered()), this, SLOT(newGame()));
 
     setState();
     return true;
@@ -162,7 +173,7 @@ void MainWindow::setState()
 
     if(IA::isEnd(*(m_currentState->info),m_game.getFinalState(),&m_game))
         QMessageBox::information(NULL,"Fin du jeu",QString::fromUtf8("Bien joué"));
-    //else
+    else
         showDifferentsPossibleStates();
 }
 
@@ -188,6 +199,11 @@ MainWindow::~MainWindow()
     {
         m_debugHistoricalwindow->close();
         delete m_debugHistoricalwindow;
+    }
+    if(m_solutionWindow)
+    {
+        m_solutionWindow->close();
+        delete m_solutionWindow;
     }
 
     List::clearDelete(m_history);
@@ -287,19 +303,44 @@ void MainWindow::redo()
     }
 }
 
-void MainWindow::showDifferentsPossibleStates()
+void MainWindow::researchSolution()
 {
     List::Node<const State *>* IAResult = NULL;
     try
     {
-         IAResult = IA::aStar(*(m_currentState->info),m_game.getFinalState(),m_game);
+         IAResult = IA::aStar(*(m_currentState->info), m_game);
     }catch(const BadAllocation& e)
     {
         QMessageBox::warning(this,"Erreur", "Une erreur est survenue en mémoire, rendant impossible la recherche de la solution. Cela est probablement dû à un manque de mémoire vive sur votre ordinateur, par rapport à l'implémentation actuelles de l'algorithme de recherche, et par rapport à la complexité du jeu.");
     }
 
     if(IAResult)
-        m_debugHistoricalwindow->displayGameHistory(IAResult,m_game);
+    {
+        m_solutionWindow->displayGameHistory(IAResult,m_game);
+        m_solutionWindow->show();
+    }
+}
+
+void MainWindow::newGame()
+{
+    if(!m_currentState)
+        return;//on ne fait rien si il n'y a pas de jeu en cours
+    loadGameFromPath(m_loadedPath);
+}
+
+void MainWindow::showDifferentsPossibleStates()
+{
+//    List::Node<const State *>* IAResult = NULL;
+//    try
+//    {
+//         IAResult = IA::aStar(*(m_currentState->info) ,m_game);
+//    }catch(const BadAllocation& e)
+//    {
+//        QMessageBox::warning(this,"Erreur", "Une erreur est survenue en mémoire, rendant impossible la recherche de la solution. Cela est probablement dû à un manque de mémoire vive sur votre ordinateur, par rapport à l'implémentation actuelles de l'algorithme de recherche, et par rapport à la complexité du jeu.");
+//    }
+
+//    if(IAResult)
+//        m_debugHistoricalwindow->displayGameHistory(IAResult,m_game);
 
     //List::Node<const State *>* possibleStates = IA::getPossibleMove(*(m_currentState->info),m_game);
 

@@ -13,6 +13,8 @@ HistoricalWindow::HistoricalWindow(QWidget *parent) :
     m_scenes = NULL;
     m_views = NULL;
 
+    m_scrollToBottom = false;
+
     m_verticalLayout = new QVBoxLayout;
 
     ui->scrollAreaWidgetContents->setLayout(m_verticalLayout);
@@ -24,6 +26,8 @@ void HistoricalWindow::displayGameHistory(List::Node<const State *> * possibleSt
     List::clearDelete(m_scenes);
     List::clearDelete(m_views);
 
+    m_scrollToBottom = oppositeOrder;
+
     addStates(possibleStates, game, oppositeOrder);
 }
 
@@ -34,8 +38,11 @@ HistoricalWindow::~HistoricalWindow()
 
 void HistoricalWindow::moveScrollBarToBottom(int min, int max)
 {
-    Q_UNUSED(min);
-    ui->scrollArea->verticalScrollBar()->setValue(max);
+    if(m_scrollToBottom)
+    {
+        Q_UNUSED(min);
+        ui->scrollArea->verticalScrollBar()->setValue(max);
+    }
 }
 
 void HistoricalWindow::addStates(List::Node<const State *> *possibleStates, Game &game, bool oppositeOrder)
