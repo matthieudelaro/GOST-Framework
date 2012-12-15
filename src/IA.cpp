@@ -146,6 +146,9 @@ List::Node<const State *>* IA::getPossibleMove(const State& currentState, const 
 
 List::Node<const State *>* IA::aStar(const State &initialState,const State &finalState, const GeneralGame &game)
 {
+    qDebug() << "_";
+    qDebug() << "Debut de l'algorithme A*";
+
     AStarNode<const State*, unsigned int, unsigned int> *currentState = new AStarNode<const State*, unsigned int, unsigned int>;
     currentState->first = new State(initialState);
     currentState->second = 0;
@@ -156,11 +159,15 @@ List::Node<const State *>* IA::aStar(const State &initialState,const State &fina
     List::Node<AStarNode<const State*, unsigned int, unsigned int> *> *openedList = NULL;
     List::Node<AStarNode<const State*, unsigned int, unsigned int> *> *closedList = NULL;
 
+    qDebug() << "##push_front sur liste fermee.";
     List::push_front(currentState, closedList);
 
-    while(!( *(currentState->first) == finalState ))//noeud courant != noeud de destination => Approved :)
+    while( ! IA::isEnd(*(currentState->first), game.getFinalState(), &game) )// => Approved :)
     {
-        qDebug() << "On n'est pas à l'état final.";
+        qDebug() << " ";
+        qDebug() << " ";
+
+        qDebug() << "On n'est pas à l'etat final.";
 
         List::Node<const State *> *neighbours = IA::getPossibleMove( *(currentState->first), game);
         List::Node<const State *> *itNeighbours = neighbours;
@@ -183,24 +190,80 @@ List::Node<const State *>* IA::aStar(const State &initialState,const State &fina
             if(!foundInClosedList)//si un noeud voisin est déjà dans la liste fermée, on l'oublie
             {
                 //si un noeud voisin est déjà dans la liste ouverte, on met à jour la liste ouverte si le noeud dans la liste ouverte a une moins bonne qualité (et on n'oublie pas de mettre à jour son parent)
+                bool foundInOpenedList = false;
+                List::Node<AStarNode<const State*, unsigned int, unsigned int> *> *itOpenedList = openedList;
+                while(itOpenedList && !foundInOpenedList)//approved :)
+                {
+                    if( *(itOpenedList->info->first) == *(itNeighbours->info) )
+                            foundInOpenedList = true;
+                    else
+                        itOpenedList = itOpenedList->next;
+                }
+                qDebug() << "On a trouvé le voisin dans la liste ouverte = " << foundInOpenedList << " (" << itOpenedList << " )";
 
+                unsigned int gScoreState = 1 + currentState->second;
+                if(foundInOpenedList)//si un noeud voisin est déjà dans la liste ouverte
+                {
+                    if(itOpenedList->info->second > gScoreState)//on met à jour la liste ouverte si le noeud dans la liste ouverte a une moins bonne qualité (et on n'oublie pas de mettre à jour son parent)
+                    {
+                        qDebug() << "Mise à jour de l'ancien état.";
+                        itOpenedList->info->second = gScoreState;
+                        itOpenedList->info->parent = currentState;
+                    }
+                }
+                else//sinon, on ajoute le noeud voisin dans la liste ouverte avec comme parent le noeud courant
+                {
+                    qDebug() << "Ajout du nouvel état dans openedList.";
+                    AStarNode<const State*, unsigned int, unsigned int> *newState = new AStarNode<const State*, unsigned int, unsigned int>;
+                    newState->first = itNeighbours->info;
+                    newState->second = gScoreState;
+                    newState->third = hScore(*(itNeighbours->info), game.getFinalState(), game);
+                    newState->parent = currentState;
+
+                    qDebug() << "##push_front sur liste ouverte.";
+                    List::push_front(newState, openedList);
+                }
             }
-            //si un noeud voisin est déjà dans la liste ouverte, on met à jour la liste ouverte si le noeud dans la liste ouverte a une moins bonne qualité (et on n'oublie pas de mettre à jour son parent)
-            //sinon, on ajoute le noeud voisin dans la liste ouverte avec comme parent le noeud courant
             itNeighbours = itNeighbours->next;
         }
-        break;
-        //Si la liste ouverte est vide, il n'y a pas de solution, fin de l'algorithme
+        qDebug() << "La liste ouverte est composee de" << List::size(openedList) << " états.";
+        qDebug() << "La liste fermée est composee de" << List::size(closedList) << " états.";
+
+        if(List::size(openedList) == 0)//Si la liste ouverte est vide, il n'y a pas de solution, fin de l'algorithme
+        {
+            qDebug() << "openedList est vide. On quitte.";
+            return NULL;
+        }
 
         //On cherche le meilleur noeud de toute la liste ouverte.
-
+        List::Node<AStarNode<const State*, unsigned int, unsigned int> *> *itOpenedList = openedList, *best = openedList;
+        while(itOpenedList)
+        {
+            if( (itOpenedList->info->second + itOpenedList->info->third)
+                    < (best->info->second + best->info->third))
+            {
+                best = itOpenedList;
+            }
+            itOpenedList = itOpenedList->next;
+        }
         //On le met dans la liste fermée et on le retire de la liste ouverte
         //noeud courant = noeud que l'on vient d'ajouter à la liste fermée
+        qDebug() << "##remove sur liste ouverte.";
+        List::removeElementFromList(best, openedList);
+        best->next = NULL;//sinon on garde la suite de openedList
+        qDebug() << "##push_front sur liste fermée.";
+        List::push_front(best->info, closedList);
+        currentState = best->info;
     }
 
     List::Node<const State*> *resolutionPath = NULL;
+    AStarNode<const State*, unsigned int, unsigned int> *itResolution = currentState;
+    while(itResolution)
+    {
+        List::push_front(itResolution->first, resolutionPath);
+        itResolution = itResolution->parent;
+    }
     return resolutionPath;
-
 
 //On commence par le noeud de départ, c'est le noeud courant
 //On regarde tous ses noeuds voisins

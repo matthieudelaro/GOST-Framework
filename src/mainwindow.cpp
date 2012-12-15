@@ -162,7 +162,7 @@ void MainWindow::setState()
 
     if(IA::isEnd(*(m_currentState->info),m_game.getFinalState(),&m_game))
         QMessageBox::information(NULL,"Fin du jeu",QString::fromUtf8("Bien joué"));
-    else
+    //else
         showDifferentsPossibleStates();
 }
 
@@ -298,8 +298,8 @@ void MainWindow::showDifferentsPossibleStates()
         QMessageBox::warning(this,"Erreur", "Une erreur est survenue en mémoire, rendant impossible la recherche de la solution. Cela est probablement dû à un manque de mémoire vive sur votre ordinateur, par rapport à l'implémentation actuelles de l'algorithme de recherche, et par rapport à la complexité du jeu.");
     }
 
-    //if(IAResult)
-     //   m_debugHistoricalwindow->displayGameHistory(IAResult,m_game);
+    if(IAResult)
+        m_debugHistoricalwindow->displayGameHistory(IAResult,m_game);
 
     //List::Node<const State *>* possibleStates = IA::getPossibleMove(*(m_currentState->info),m_game);
 
