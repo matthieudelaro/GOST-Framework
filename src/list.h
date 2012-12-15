@@ -372,6 +372,29 @@ namespace List
             return find(key, n->next);
     }
 
+    /*!
+     *  \brief Retire l'élément toRemove de la liste l. Cet élément ne sera pas modifié (ni supprimé !).
+     *  \param toRemove L'élément à retirer.
+     *  \param l La liste dans laquelle on recherche toRemove.
+     *  \return true si l'élément a été trouvé et retiré, false sinon.
+     */
+    template<typename T>
+    bool removeElementFromList(Node<T>* toRemove, Node<T>* &l)
+    {
+        if(!l || !toRemove)
+            return false;
+
+        if(l == toRemove)
+        {
+            l = l->next;
+            return true;
+        }
+        else
+        {
+            removeElementFromList(toRemove, l->next);
+        }
+    }
+
 
     /*!
      * \brief Implémente une série de tests pour tester le namespace de manière autonome.
@@ -405,6 +428,7 @@ namespace List
         List::push_front(2, l);
         List::push_front(1, l);
         List::push_front(2, l);
+        List::removeElementFromList(l2, l);
 
 
 
@@ -414,6 +438,13 @@ namespace List
 
         qDebug() << "\nl :";
         List::Node<T>* it = l;
+        while(it)
+        {
+            qDebug() << it->info;
+            it = it->next;
+        }
+
+        it = l2;
         while(it)
         {
             qDebug() << it->info;

@@ -146,6 +146,82 @@ List::Node<const State *>* IA::getPossibleMove(const State& currentState, const 
 
 List::Node<const State *>* IA::aStar(const State &initialState,const State &finalState, const GeneralGame &game)
 {
+    AStarNode<const State*, unsigned int, unsigned int> *currentState = new AStarNode<const State*, unsigned int, unsigned int>;
+    currentState->first = new State(initialState);
+    currentState->second = 0;
+    currentState->third = 0;
+    currentState->parent = NULL;
+
+    //                        état          g              h
+    List::Node<AStarNode<const State*, unsigned int, unsigned int> *> *openedList = NULL;
+    List::Node<AStarNode<const State*, unsigned int, unsigned int> *> *closedList = NULL;
+
+    List::push_front(currentState, closedList);
+
+    while(!( *(currentState->first) == finalState ))//noeud courant != noeud de destination => Approved :)
+    {
+        qDebug() << "On n'est pas à l'état final.";
+
+        List::Node<const State *> *neighbours = IA::getPossibleMove( *(currentState->first), game);
+        List::Node<const State *> *itNeighbours = neighbours;
+        while(itNeighbours)//pour tous les voisins du noeud courant => Approved :)
+        {
+            qDebug() << "On regarde un nouveau voisin : " << itNeighbours;
+
+            //si un noeud voisin est déjà dans la liste fermée, on l'oublie
+                bool foundInClosedList = false;
+                List::Node<AStarNode<const State*, unsigned int, unsigned int> *> *itClosedList = closedList;
+                while(itClosedList && !foundInClosedList)//approved :)
+                {
+                    if( *(itClosedList->info->first) == *(itNeighbours->info) )
+                            foundInClosedList = true;
+                    else
+                        itClosedList = itClosedList->next;
+                }
+                qDebug() << "On a trouvé le voisin dans la liste fermée = " << foundInClosedList << " (" << itClosedList << " )";
+
+            if(!foundInClosedList)//si un noeud voisin est déjà dans la liste fermée, on l'oublie
+            {
+                //si un noeud voisin est déjà dans la liste ouverte, on met à jour la liste ouverte si le noeud dans la liste ouverte a une moins bonne qualité (et on n'oublie pas de mettre à jour son parent)
+
+            }
+            //si un noeud voisin est déjà dans la liste ouverte, on met à jour la liste ouverte si le noeud dans la liste ouverte a une moins bonne qualité (et on n'oublie pas de mettre à jour son parent)
+            //sinon, on ajoute le noeud voisin dans la liste ouverte avec comme parent le noeud courant
+            itNeighbours = itNeighbours->next;
+        }
+        break;
+        //Si la liste ouverte est vide, il n'y a pas de solution, fin de l'algorithme
+
+        //On cherche le meilleur noeud de toute la liste ouverte.
+
+        //On le met dans la liste fermée et on le retire de la liste ouverte
+        //noeud courant = noeud que l'on vient d'ajouter à la liste fermée
+    }
+
+    List::Node<const State*> *resolutionPath = NULL;
+    return resolutionPath;
+
+
+//On commence par le noeud de départ, c'est le noeud courant
+//On regarde tous ses noeuds voisins
+    //si un noeud voisin est un obstacle, on l'oublie
+    //si un noeud voisin est déjà dans la liste fermée, on l'oublie
+    //si un noeud voisin est déjà dans la liste ouverte, on met à jour la liste ouverte si le noeud dans la liste ouverte a une moins bonne qualité (et on n'oublie pas de mettre à jour son parent)
+    //sinon, on ajoute le noeud voisin dans la liste ouverte avec comme parent le noeud courant
+//On cherche le meilleur noeud de toute la liste ouverte. Si la liste ouverte est vide, il n'y a pas de solution, fin de l'algorithme
+//On le met dans la liste fermée et on le retire de la liste ouverte
+//On réitère avec ce noeud comme noeud courant jusqu'à ce que le noeud courant soit le noeud de destination.
+
+}
+
+
+
+
+
+
+
+/*List::Node<const State *>* IA::aStar(const State &initialState,const State &finalState, const GeneralGame &game)
+{
     //                        état          g              h
     List::Node<AStarNode<const State*, unsigned int, unsigned int> *> *openNode = NULL;
     List::Node<AStarNode<const State*, unsigned int, unsigned int> *> *closeNode = NULL;
@@ -198,10 +274,10 @@ List::Node<const State *>* IA::aStar(const State &initialState,const State &fina
                 //on regarde si on ne passe pas sur un noeud déjà visité
                 List::Node<AStarNode<const State*, unsigned int, unsigned int> *> *findResultList = List::find(tmpNeighbour,openNode);
                 qDebug() << "result : " << findResultList;
+                tmpNeighbour->third = IA::hScore(*(neighbours->info),finalState,game);
                 if(findResultList) //s'il est dans la liste ouverte on regarde s'il est plus avantageux
                 {
                     AStarNode<const State*, unsigned int, unsigned int> *findResult = findResultList->info;
-                    tmpNeighbour->third = IA::hScore(*(neighbours->info),finalState,game);
 
                     if(tmpNeighbour->second < findResult->second)
                     {//si le nouveau passage sur ce noeud est plus avantageux on modifie son homologue dans la liste ouverte
@@ -250,14 +326,14 @@ List::Node<const State *>* IA::aStar(const State &initialState,const State &fina
 
     List::Node<const State *>* toReturn = NULL;
 
-    while(closeNode)
-    {
-        List::push_front(closeNode->info->first,toReturn);
-        closeNode = closeNode->next;
-    }
+//    while(closeNode)
+//    {
+//        List::push_front(closeNode->info->first,toReturn);
+//        closeNode = closeNode->next;
+//    }
 
     return toReturn;
-}
+}*/
 
 
 
@@ -265,6 +341,7 @@ List::Node<const State *>* IA::aStar(const State &initialState,const State &fina
 unsigned int IA::gScore(const State& currentState, const State& initialState, const State &finalState, const GeneralGame &game)
 {
     //improve this function ?
+    return 0;
 }
 
 
