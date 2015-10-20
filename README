@@ -1,15 +1,40 @@
-Pour recevoir :
-git pull seb master
+GOST : Games based On Sliding Technology framework
 
-A chaque commit (souvent):
-git add .
-git commit -m "message à écrire"
+Ce framework a pour but de poser un cadre de création de jeux à pièces coulissantes de type Taquin ou Âne Rouge.
+Il implémente une base générique applicable à n'importe quel jeu (dans le namespace Gost), avec un algorithme de résolution.
+Une interface utilisateur pour les jeux 2D, ainsi qu'un système de fichiers de configurations au formats xml et texte
+permet aussi de créer des jeux rapidement et efficacement, même pour ceux qui ne sauraient pas programmer.
 
-Pour envoyer:
-git push seb master
+Auteurs :
++ Sébastien Morinière
++ Victor Haffreingue
++ Matthieu de La Roche Saint-André
 
-Pour générer la documentation :
-- aller dans le répertoire racine du projet
-- doxygen Doxyfile
-  La documentation est générée dans le dossier doc/
-  La page d'accueil est dans doc/html/index.html
+Architecture des fichiers :
++ src/ : les sources du programme
++ res/ : les resources du programme
++ res/games : les jeux
++ doc/ : le fichier destination de la génération de la documentation
++ 
++ Doxyfile : le fichier de configuration principal de la génération de la documentation
++ doxygenMainPageDocumentation.dox : le fichier de configuration de la page principale de la documentation
++ mascotte.png : la mascotte du programme. Utilisé pour la documentation.
++ sampleScreenshot.png Utilisé pour la documentation.
++ taquinScreenShot.png Utilisé pour la documentation.
+
+Générer la documentation :
++ installer Doxygen (sudo apt-get install doxygen, ou télécharger sur http://www.stack.nl/~dimitri/doxygen/)
++ aller à la racine du projet (où se trouve le fichier Doxyfile)
++ entrer la commande : doxygen Doxyfile
++ La documentation est alors générée dans doc/. Pour voir la version html, ouvrir le fichier doc/html/index.html
+
+Compiler :
++ installer QtCreator
++ ouvrir le fichier src/projetSDD1.pro
+
+Utilisation du dépôt Git :
++ recevoir les données : git pull origin master
++ envoyer les données : git push origin master
++ noter et commenter les changements apportés : git commit -m "message"
+
+

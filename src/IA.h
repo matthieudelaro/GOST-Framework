@@ -37,7 +37,6 @@ namespace IA
     /*!
      * \brief Implémente l'algorithme A*
      * \param initialState L'état de départ.
-     * \param finalState L'état final.
      * \param game Le jeu.
      * \return Une liste d'états correspondant à la résolution du jeu.
      */
